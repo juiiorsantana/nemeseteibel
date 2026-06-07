@@ -1,0 +1,161 @@
+---
+// Services.astro
+// --------------------------------------------------------
+// Seção de serviços: 3 cards sobre fundo de campo rural.
+// Imagem de fundo: assets/img/bgsecao2.avif → /img/bgsecao2.avif
+// --------------------------------------------------------
+
+const services = [
+  {
+    title: 'Direito Fundiário: Segurança na posse e uso da sua terra',
+    body:  'Cuidamos da regularização, posse e transferência de imóveis, garantindo que seu patrimônio esteja protegido e livre de conflitos',
+    cta:   'Solicitar análise fundiária',
+    delay: 'reveal-d1',
+  },
+  {
+    title: 'Direito do Agronegócio: soluções jurídicas para quem produz',
+    body:  'Assessoria jurídica especializada para operações agrícolas e pecuárias, contratos, regularizações e proteção do seu negócio',
+    cta:   'Falar com especialista',
+    delay: 'reveal-d2',
+  },
+  {
+    title: 'Direito Ambiental: preservação e segurança nas atividades rurais',
+    body:  'Atuamos na regularização ambiental de propriedades e empreendimentos, evitando sanções e promovendo o uso sustentável dos recursos naturais.',
+    cta:   'Falar com especialista',
+    delay: 'reveal-d3',
+  },
+];
+---
+
+<section class="services" id="servicos" aria-labelledby="servicos-heading">
+
+  <img
+    class="services-bg"
+    src="/img/bgsecao2.avif"
+    alt=""
+    aria-hidden="true"
+    loading="lazy"
+    decoding="async"
+    width="1600"
+    height="800"
+  />
+  <div class="services-overlay" aria-hidden="true"></div>
+
+  <div class="services-inner">
+    <h2 id="servicos-heading" class="services-heading reveal">
+      Não deixe problemas jurídicos comprometerem seu patrimônio rural.
+    </h2>
+
+    <div class="services-grid">
+      {services.map((s) => (
+        <article class={`service-card reveal ${s.delay}`}>
+          <h3 class="service-title">{s.title}</h3>
+          <p class="service-body">{s.body}</p>
+          <a
+            href="https://wa.me/556500000000"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-green-sm"
+          >
+            {s.cta}
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+
+</section>
+
+<style>
+  .services {
+    position: relative;
+    padding: clamp(5rem, 9vw, 8rem) var(--padding-x);
+    background: var(--color-bg);
+    overflow: hidden;
+  }
+
+  /* Imagem de fundo */
+  .services-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  /* Overlay claro e quente — deixa a imagem visível mas suavizada */
+  .services-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(245, 240, 232, 0.72);
+    z-index: 1;
+  }
+
+  .services-inner {
+    position: relative;
+    z-index: 2;
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .services-heading {
+    font-family: var(--font-heading);
+    font-size: clamp(1.4rem, 3.2vw, 2.1rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--color-secondary);
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 3.5rem;
+    line-height: 1.35;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  /* Glass cards */
+  .service-card {
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: var(--radius-lg);
+    padding: 2.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    transition: var(--transition);
+    box-shadow: 0 4px 24px rgba(58, 52, 38, 0.06);
+  }
+  .service-card:hover {
+    background: rgba(255, 255, 255, 0.55);
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px rgba(58, 52, 38, 0.12);
+    border-color: rgba(255, 255, 255, 0.75);
+  }
+
+  .service-title {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+    line-height: 1.3;
+  }
+
+  .service-body {
+    font-size: 0.88rem;
+    color: var(--color-text-light);
+    line-height: 1.65;
+    flex: 1;
+  }
+
+  @media (max-width: 1024px) {
+    .services-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 768px) {
+    .services-grid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,345 @@
+---
+// src/pages/blog/[...slug].astro
+// Página individual de artigo
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props:  { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const av = post.data.author === 'Manuela Nemes'
+  ? { initials: 'MN', cls: 'av-mn' }
+  : { initials: 'PT', cls: 'av-pt' };
+---
+
+<Layout
+  title={`${post.data.title} | Nemes & Teibel Advogados`}
+  description={post.data.excerpt}
+>
+
+  <!-- ── Breadcrumb ────── -->
+  <nav class="article-breadcrumb" aria-label="Navegação estrutural">
+    <div class="container">
+      <a href="/blog/" class="breadcrumb-back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+        Voltar aos Insights
+      </a>
+      <span class="breadcrumb-sep" aria-hidden="true">/</span>
+      <span class="breadcrumb-tag">{post.data.tag}</span>
+    </div>
+  </nav>
+
+  <!-- ── Header do artigo ─ -->
+  <header class="article-header">
+    <div class="container article-header-inner">
+      <span class="article-tag-pill">{post.data.tag}</span>
+      <h1 class="article-title">{post.data.title}</h1>
+      <div class="article-meta">
+        <div class="article-author">
+          <span class={`avatar ${av.cls}`} aria-hidden="true">{av.initials}</span>
+          <span class="author-name">{post.data.author}</span>
+        </div>
+        <span class="article-meta-sep" aria-hidden="true">·</span>
+        <span class="article-meta-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          {post.data.date}
+        </span>
+        <span class="article-meta-sep" aria-hidden="true">·</span>
+        <span class="article-meta-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          {post.data.readTime} de leitura
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Imagem de capa ─── -->
+  <div class="article-cover">
+    <div class="container">
+      <img
+        src={post.data.img}
+        alt={post.data.imgAlt}
+        width="1200"
+        height="630"
+        fetchpriority="high"
+        decoding="async"
+        class="article-cover-img"
+      />
+    </div>
+  </div>
+
+  <!-- ── Corpo do artigo ── -->
+  <article class="article-body" aria-label={post.data.title}>
+    <div class="container">
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+  </article>
+
+  <!-- ── CTA ──────────────── -->
+  <section class="article-cta" aria-label="Entre em contato">
+    <div class="container article-cta-inner">
+      <div class="article-cta-text">
+        <p class="article-cta-label">Tem dúvidas sobre o tema?</p>
+        <p class="article-cta-title">Fale com nossas especialistas</p>
+        <p class="article-cta-sub">
+          Avaliamos a situação da sua propriedade e indicamos o caminho mais adequado para o seu caso.
+        </p>
+      </div>
+      <a
+        href="https://wa.me/556500000000"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-green"
+        aria-label="Fale conosco pelo WhatsApp"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink:0">
+          <path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path fill="currentColor" d="M12 0C5.373 0 0 5.373 0 12c0 2.139.563 4.14 1.541 5.876L.057 23.887l6.156-1.616A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-4.992-1.363l-.358-.213-3.716.975.993-3.63-.234-.373A9.77 9.77 0 012.182 12c0-5.42 4.398-9.818 9.818-9.818 5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/>
+        </svg>
+        Falar pelo WhatsApp
+      </a>
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  /* ── Breadcrumb ──────────────────────────────────── */
+  .article-breadcrumb {
+    background: var(--color-bg-green);
+    border-bottom: 1px solid rgba(100, 120, 60, 0.12);
+    padding: 1rem var(--padding-x);
+  }
+  .article-breadcrumb .container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .breadcrumb-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: var(--color-text-light);
+    transition: color 0.25s ease;
+  }
+  .breadcrumb-back:hover { color: var(--color-accent-dark); }
+  .breadcrumb-sep { color: var(--color-text-muted); font-size: 0.78rem; }
+  .breadcrumb-tag {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-accent-dark);
+  }
+
+  /* ── Header ──────────────────────────────────────── */
+  .article-header {
+    background: var(--color-bg-green);
+    padding: clamp(2.5rem, 5vw, 4rem) var(--padding-x) clamp(2rem, 4vw, 3rem);
+  }
+  .article-header-inner { max-width: 780px; }
+
+  .article-tag-pill {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-white);
+    background: var(--color-accent-dark);
+    padding: 0.3rem 0.875rem;
+    border-radius: 50px;
+    margin-bottom: 1.25rem;
+  }
+  .article-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.65rem, 4vw, 2.75rem);
+    font-weight: 700;
+    color: var(--color-secondary);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .article-author { display: flex; align-items: center; gap: 0.6rem; }
+  .avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.68rem; font-weight: 700;
+    color: var(--color-white);
+    flex-shrink: 0;
+  }
+  .av-mn { background: #5A6B3A; }
+  .av-pt { background: #3A6B5A; }
+  .author-name { font-size: 0.88rem; font-weight: 600; color: var(--color-text); }
+  .article-meta-sep { color: var(--color-text-muted); }
+  .article-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+  }
+
+  /* ── Capa ────────────────────────────────────────── */
+  .article-cover {
+    background: var(--color-bg);
+    padding: 0 var(--padding-x);
+  }
+  .article-cover .container { max-width: 900px; }
+  .article-cover-img {
+    width: 100%;
+    max-height: 480px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    margin-top: -1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Corpo / Prose ───────────────────────────────── */
+  .article-body {
+    background: var(--color-bg);
+    padding: clamp(2.5rem, 5vw, 4rem) var(--padding-x) clamp(3rem, 6vw, 5rem);
+  }
+  .article-body .container { max-width: 720px; }
+
+  .prose {
+    font-size: clamp(0.97rem, 1.6vw, 1.05rem);
+    color: var(--color-text);
+    line-height: 1.85;
+  }
+  .prose :global(h2) {
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+    font-weight: 700;
+    color: var(--color-secondary);
+    line-height: 1.25;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(184, 151, 42, 0.22);
+  }
+  .prose :global(h3) {
+    font-family: var(--font-heading);
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    font-weight: 700;
+    color: var(--color-secondary);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  .prose :global(p) {
+    margin-bottom: 1.35rem;
+  }
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: 1.5rem;
+    margin-bottom: 1.35rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .prose :global(ul) { list-style: none; padding-left: 0; }
+  .prose :global(ul li) {
+    padding-left: 1.5rem;
+    position: relative;
+    color: var(--color-text);
+  }
+  .prose :global(ul li::before) {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 6px;
+    height: 6px;
+    background: var(--color-accent-gold);
+    border-radius: 50%;
+  }
+  .prose :global(ol) { list-style: decimal; }
+  .prose :global(ol li) { color: var(--color-text); padding-left: 0.25rem; }
+  .prose :global(li strong),
+  .prose :global(p strong) {
+    font-weight: 700;
+    color: var(--color-secondary);
+  }
+  .prose :global(blockquote) {
+    border-left: 3px solid var(--color-accent-gold);
+    padding: 0.75rem 0 0.75rem 1.5rem;
+    margin: 1.75rem 0;
+    color: var(--color-text-light);
+    font-style: italic;
+  }
+
+  /* ── CTA ─────────────────────────────────────────── */
+  .article-cta {
+    background: linear-gradient(135deg, var(--color-secondary) 0%, #2A2014 100%);
+    padding: clamp(3rem, 6vw, 5rem) var(--padding-x);
+  }
+  .article-cta-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+  .article-cta-text { flex: 1; min-width: 260px; }
+  .article-cta-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent-gold);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .article-cta-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.35rem, 3vw, 2rem);
+    font-weight: 700;
+    color: var(--color-white);
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+  .article-cta-sub {
+    font-size: 0.92rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+    max-width: 400px;
+  }
+
+  /* ── Responsivo ──────────────────────────────────── */
+  @media (max-width: 640px) {
+    .article-cta-inner { flex-direction: column; align-items: flex-start; }
+    .article-cover-img { margin-top: 0; border-radius: var(--radius-sm); max-height: 240px; }
+    .article-meta { gap: 0.5rem; }
+    .article-meta-sep { display: none; }
+  }
+</style>

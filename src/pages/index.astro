@@ -1,0 +1,23 @@
+---
+// pages/index.astro
+// --------------------------------------------------------
+// Página principal — apenas importa e ordena os componentes.
+// Para adicionar/remover/reordenar seções, edite aqui.
+// --------------------------------------------------------
+import Layout   from '../layouts/Layout.astro';
+import Hero     from '../components/Hero.astro';
+import Ticker   from '../components/Ticker.astro';
+import Services from '../components/Services.astro';
+import Problems from '../components/Problems.astro';
+import Team     from '../components/Team.astro';
+import Insights from '../components/Insights.astro';
+---
+
+<Layout>
+  <Hero />
+  <Ticker />
+  <Services />
+  <Problems />
+  <Team />
+  <Insights />
+</Layout>

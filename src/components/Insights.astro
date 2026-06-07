@@ -1,0 +1,267 @@
+---
+// Insights.astro
+// --------------------------------------------------------
+// Seção "Insights Jurídicos" — últimos 3 posts do blog.
+// Os dados vêm de src/content/blog/*.md
+// --------------------------------------------------------
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const posts = allPosts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+function avatarInfo(author: string) {
+  return author === 'Manuela Nemes'
+    ? { initials: 'MN', cls: 'av-mn' }
+    : { initials: 'PT', cls: 'av-pt' };
+}
+---
+
+<section class="insights" id="insights" aria-labelledby="insights-heading">
+  <div class="insights-inner">
+
+    <header class="insights-header">
+      <h2 id="insights-heading" class="section-title reveal">Insights Jurídicos</h2>
+      <p class="section-subtitle reveal reveal-d1">
+        Acompanhe as últimas atualizações sobre Direito Agrário, Ambiental e Minerário
+      </p>
+      <div class="insights-divider reveal reveal-d2" aria-hidden="true"></div>
+    </header>
+
+    <div class="insights-grid">
+      {posts.map((post, i) => {
+        const av = avatarInfo(post.data.author);
+        const delay = `reveal-d${i + 1}`;
+        return (
+          <article class={`insight-card reveal ${delay}`}>
+
+            <a href={`/blog/${post.slug}/`} class="insight-img-link" tabindex="-1" aria-hidden="true">
+              <div class="insight-img-wrap">
+                <img
+                  src={post.data.img}
+                  alt={post.data.imgAlt}
+                  loading="lazy"
+                  decoding="async"
+                  width="600"
+                  height="375"
+                />
+                <span class="insight-tag">{post.data.tag}</span>
+              </div>
+            </a>
+
+            <div class="insight-body">
+              <div class="insight-meta">
+                <span>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                  </svg>
+                  {post.data.date}
+                </span>
+                <span>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  {post.data.readTime}
+                </span>
+              </div>
+
+              <h3 class="insight-title">
+                <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
+              </h3>
+              <p class="insight-excerpt">{post.data.excerpt}</p>
+
+              <div class="insight-footer">
+                <div class="insight-author">
+                  <span class={`avatar ${av.cls}`} aria-hidden="true">{av.initials}</span>
+                  <span class="author-name">{post.data.author}</span>
+                </div>
+                <a href={`/blog/${post.slug}/`} class="read-more" aria-label={`Ler artigo: ${post.data.title}`}>
+                  Ler mais →
+                </a>
+              </div>
+            </div>
+
+          </article>
+        );
+      })}
+    </div>
+
+    <div class="insights-footer reveal">
+      <a href="/blog/" class="insights-all-link">
+        Ver todos os Insights
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .insights {
+    padding: clamp(4rem, 8vw, 7rem) var(--padding-x);
+    background: var(--color-bg-green);
+  }
+  .insights-inner { max-width: var(--max-width); margin: 0 auto; }
+
+  .insights-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .insights-header .section-subtitle { max-width: 580px; margin: 0.625rem auto 0; }
+  .insights-divider {
+    width: 48px; height: 3px;
+    background: var(--color-accent-gold);
+    border-radius: 2px;
+    margin: 1rem auto 0;
+  }
+
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+
+  .insight-card {
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition);
+  }
+  .insight-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+
+  .insight-img-link { display: block; }
+  .insight-img-wrap {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+  .insight-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.55s ease;
+  }
+  .insight-card:hover .insight-img-wrap img { transform: scale(1.05); }
+
+  .insight-tag {
+    position: absolute;
+    top: 1rem; left: 1rem;
+    background: rgba(255,255,255,0.93);
+    backdrop-filter: blur(4px);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-secondary);
+    padding: 0.35rem 0.875rem;
+    border-radius: 50px;
+  }
+
+  .insight-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+  }
+
+  .insight-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+  }
+  .insight-meta span { display: flex; align-items: center; gap: 0.3rem; }
+
+  .insight-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #2EA040;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+  .insight-title a {
+    color: inherit;
+    transition: opacity 0.25s ease;
+  }
+  .insight-title a:hover { opacity: 0.8; }
+
+  .insight-excerpt {
+    font-size: 0.855rem;
+    color: var(--color-text-light);
+    line-height: 1.65;
+    flex: 1;
+  }
+
+  .insight-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.25rem;
+  }
+  .insight-author { display: flex; align-items: center; gap: 0.6rem; }
+  .avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.68rem; font-weight: 700;
+    color: var(--color-white);
+    flex-shrink: 0;
+  }
+  .av-mn { background: #5A6B3A; }
+  .av-pt { background: #3A6B5A; }
+
+  .author-name { font-size: 0.84rem; font-weight: 500; color: var(--color-text); }
+
+  .read-more {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    transition: var(--transition);
+  }
+  .insight-card:hover .read-more { color: var(--color-accent); }
+
+  /* ── "Ver todos" ─────────────────────────────────── */
+  .insights-footer {
+    margin-top: 2.75rem;
+    text-align: center;
+  }
+  .insights-all-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    border: 1.5px solid var(--color-primary);
+    padding: 0.65rem 1.5rem;
+    border-radius: 50px;
+    transition: var(--transition);
+    letter-spacing: 0.01em;
+  }
+  .insights-all-link:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+  }
+
+  @media (max-width: 1024px) {
+    .insights-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 768px) {
+    .insights-grid { grid-template-columns: 1fr; }
+  }
+</style>

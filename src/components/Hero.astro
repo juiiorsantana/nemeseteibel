@@ -1,0 +1,185 @@
+---
+// Hero.astro
+// --------------------------------------------------------
+// Imagens (em assets/img/):
+//   bg1.avif        → fundo da seção (1920×1000)
+//   HeroNemes.avif  → foto das advogadas com fundo transparente
+//   logo-topo.png   → logotipo real
+// --------------------------------------------------------
+---
+
+<section class="hero" id="inicio" aria-label="Apresentação — Nemes &amp; Teibel Advogados">
+
+  <!-- Fundo da seção -->
+  <img
+    class="hero-bg"
+    src="/img/bg1.avif"
+    alt=""
+    aria-hidden="true"
+    width="1920"
+    height="1000"
+    fetchpriority="high"
+    decoding="sync"
+  />
+
+  <!-- Foto das advogadas com fundo transparente — direita -->
+  <img
+    class="hero-photo"
+    src="/img/HeroNemes.avif"
+    alt="Paula Teibel e Manuela Nemes — Nemes &amp; Teibel Advogados"
+    width="900"
+    height="1000"
+    fetchpriority="high"
+    decoding="sync"
+  />
+
+  <div class="hero-content">
+
+    <!-- Logotipo real -->
+    <a href="#inicio" class="logo reveal" aria-label="Nemes &amp; Teibel Advogados — Página inicial">
+      <img
+        src="/img/logo.avif"
+        alt="Nemes &amp; Teibel Advogados"
+        class="logo-img"
+        width="220"
+        height="60"
+        decoding="async"
+      />
+    </a>
+
+    <!-- Copy -->
+    <div class="hero-copy">
+      <h1 class="hero-h1 reveal reveal-d1">
+        Especialistas em<br />Regularização e<br />Consultoria Preventiva
+      </h1>
+      <p class="hero-sub reveal reveal-d2">
+        Sua Propriedade Rural Regularizada com Segurança Jurídica Total
+      </p>
+      <a
+        href="https://wa.me/556500000000"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-green reveal reveal-d3"
+        aria-label="Fale conosco pelo WhatsApp"
+      >
+        <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path fill="currentColor" d="M12 0C5.373 0 0 5.373 0 12c0 2.139.563 4.14 1.541 5.876L.057 23.887l6.156-1.616A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-4.992-1.363l-.358-.213-3.716.975.993-3.63-.234-.373A9.77 9.77 0 012.182 12c0-5.42 4.398-9.818 9.818-9.818 5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/>
+        </svg>
+        Fale conosco agora!
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Fundo — cobre toda a seção com opacidade reduzida */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+    opacity: 0.45;
+  }
+
+  /* Foto das advogadas (fundo transparente) — com respiro à direita */
+  .hero-photo {
+    position: absolute;
+    right: 4rem;
+    bottom: 0;
+    height: 85%;
+    width: auto;
+    max-width: 52%;
+    object-fit: contain;
+    object-position: right bottom;
+    z-index: 1;
+  }
+
+  /* Conteúdo (logo + texto) — acima de tudo */
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    /* 72px = altura da navbar fixa */
+    padding: calc(72px + 4rem) var(--padding-x) 5rem;
+  }
+
+  /* Logo */
+  .logo {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+  }
+  .logo-img {
+    height: 110px;
+    width: auto;
+    display: block;
+  }
+
+  /* Copy */
+  .hero-copy { max-width: 460px; }
+
+  .hero-h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    font-weight: 700;
+    color: var(--color-secondary);
+    line-height: 1.12;
+    margin-bottom: 1.1rem;
+  }
+
+  .hero-sub {
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+    color: var(--color-text-light);
+    line-height: 1.6;
+    margin-bottom: 2.25rem;
+  }
+
+  .wa-icon { width: 20px; height: 20px; flex-shrink: 0; }
+
+  /* Responsivo */
+  @media (max-width: 1024px) {
+    .hero-photo { max-width: 50%; height: 80%; }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      flex-direction: column;
+      min-height: auto;
+    }
+
+    .hero-photo {
+      position: relative;
+      max-width: 100%;
+      width: 90%;
+      height: auto;
+      margin: 0 auto;
+      order: 2;
+    }
+
+    .hero-content {
+      padding: 3rem var(--padding-x) 1rem;
+      order: 1;
+    }
+
+    .logo-img { height: 64px; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-h1   { font-size: 1.75rem; }
+    .logo-img  { height: 52px; }
+  }
+</style>

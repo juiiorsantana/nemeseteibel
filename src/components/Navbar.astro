@@ -1,0 +1,289 @@
+---
+// Navbar.astro
+// --------------------------------------------------------
+// Fixed — transparente por padrão.
+// Ao scrollar adiciona classe .scrolled → glassmorphism.
+// Mobile: hamburger + menu slide-down com glass.
+// --------------------------------------------------------
+
+const links = [
+  { label: 'Início',       href: '/#inicio'    },
+  { label: 'Serviços',     href: '/#servicos'  },
+  { label: 'Problemas',    href: '/#problemas' },
+  { label: 'Nossa Equipe', href: '/#equipe'    },
+  { label: 'Insights',     href: '/#insights'  },
+  { label: 'Blog',         href: '/blog/'      },
+];
+---
+
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+
+    <!-- Logo -->
+    <a href="#inicio" class="nav-logo" aria-label="Nemes &amp; Teibel Advogados">
+      <img
+        src="/img/logo.avif"
+        alt="Nemes &amp; Teibel Advogados"
+        height="48"
+        width="auto"
+        decoding="async"
+      />
+    </a>
+
+    <!-- Links — desktop -->
+    <nav class="nav-links" id="nav-links" aria-label="Menu principal">
+      {links.map((l) => (
+        <a href={l.href} class="nav-link">{l.label}</a>
+      ))}
+    </nav>
+
+    <!-- CTA desktop -->
+    <a
+      href="https://wa.me/556500000000"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="nav-cta"
+      aria-label="Fale conosco pelo WhatsApp"
+    >
+      Fale conosco
+    </a>
+
+    <!-- Hamburger — mobile -->
+    <button
+      class="nav-hamburger"
+      id="nav-hamburger"
+      aria-label="Abrir menu"
+      aria-expanded="false"
+      aria-controls="nav-links"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </div>
+
+  <!-- Menu mobile (slide-down) -->
+  <div class="nav-mobile" id="nav-mobile" aria-hidden="true">
+    {links.map((l) => (
+      <a href={l.href} class="nav-mobile-link">{l.label}</a>
+    ))}
+    <a
+      href="https://wa.me/556500000000"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="nav-mobile-cta"
+    >
+      Fale conosco
+    </a>
+  </div>
+</header>
+
+<style>
+  /* ── Base ──────────────────────────────────────────── */
+  .navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    transition:
+      background 0.4s ease,
+      backdrop-filter 0.4s ease,
+      box-shadow 0.4s ease;
+  }
+
+  /* ── Estado: scrollado → glass ─────────────────────── */
+  .navbar.scrolled {
+    background: rgba(245, 240, 232, 0.78);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border-bottom: 1px solid rgba(140, 115, 85, 0.12);
+    box-shadow: 0 2px 24px rgba(58, 52, 38, 0.07);
+  }
+
+  /* ── Inner ─────────────────────────────────────────── */
+  .nav-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--padding-x);
+    height: 72px;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  /* ── Logo ──────────────────────────────────────────── */
+  .nav-logo { display: flex; align-items: center; flex-shrink: 0; }
+  .nav-logo img {
+    height: 44px;
+    width: auto;
+    display: block;
+    transition: opacity 0.3s ease;
+  }
+  .nav-logo:hover img { opacity: 0.8; }
+
+  /* ── Links desktop ─────────────────────────────────── */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin: 0 auto; /* centraliza entre logo e CTA */
+  }
+
+  .nav-link {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-secondary);
+    padding: 0.5rem 0.875rem;
+    border-radius: 50px;
+    transition: background 0.25s ease, color 0.25s ease;
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+  }
+  .nav-link:hover {
+    background: rgba(140, 115, 85, 0.1);
+    color: var(--color-primary);
+  }
+
+  /* ── CTA desktop ───────────────────────────────────── */
+  .nav-cta {
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-secondary);
+    border: 1.5px solid rgba(140, 115, 85, 0.5);
+    padding: 0.5rem 1.25rem;
+    border-radius: 50px;
+    transition: var(--transition);
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+  .nav-cta:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-white);
+  }
+
+  /* ── Hamburger ─────────────────────────────────────── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+  }
+  .nav-hamburger:hover { background: rgba(140, 115, 85, 0.1); }
+
+  .nav-hamburger span {
+    display: block;
+    height: 1.5px;
+    background: var(--color-secondary);
+    border-radius: 2px;
+    transition: transform 0.32s ease, opacity 0.2s ease;
+    transform-origin: center;
+  }
+
+  /* Hamburger → X */
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* ── Menu mobile ───────────────────────────────────── */
+  .nav-mobile {
+    display: none;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem var(--padding-x) 1.25rem;
+    border-top: 1px solid rgba(140, 115, 85, 0.1);
+
+    /* slide-down */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.38s cubic-bezier(0.4, 0, 0.2, 1), padding 0.38s ease;
+  }
+  .nav-mobile.open {
+    max-height: 400px;
+    padding-top: 1rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .nav-mobile-link {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-secondary);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    transition: background 0.2s ease;
+  }
+  .nav-mobile-link:hover { background: rgba(140, 115, 85, 0.08); }
+
+  .nav-mobile-cta {
+    margin-top: 0.5rem;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-white);
+    background: var(--color-accent);
+    padding: 0.875rem 1.5rem;
+    border-radius: 50px;
+    transition: var(--transition);
+  }
+  .nav-mobile-cta:hover { background: var(--color-accent-dark); }
+
+  /* ── Responsivo ────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .nav-links,
+    .nav-cta    { display: none; }
+
+    .nav-hamburger { display: flex; }
+    .nav-mobile    { display: flex; }
+
+    /* glass no mobile também quando aberto */
+    .navbar.mobile-open {
+      background: rgba(245, 240, 232, 0.92);
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
+    }
+  }
+</style>
+
+<script>
+  const navbar     = document.getElementById('navbar')!;
+  const hamburger  = document.getElementById('nav-hamburger')!;
+  const mobileMenu = document.getElementById('nav-mobile')!;
+  const mobileLinks = mobileMenu.querySelectorAll('.nav-mobile-link, .nav-mobile-cta');
+
+  // Scroll → glass
+  const onScroll = () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Hamburger toggle
+  hamburger.addEventListener('click', () => {
+    const isOpen = hamburger.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', String(isOpen));
+    mobileMenu.classList.toggle('open', isOpen);
+    mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+    navbar.classList.toggle('mobile-open', isOpen);
+  });
+
+  // Fecha ao clicar num link
+  mobileLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      mobileMenu.classList.remove('open');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      navbar.classList.remove('mobile-open');
+    });
+  });
+</script>

@@ -1,0 +1,129 @@
+---
+// Problems.astro
+// --------------------------------------------------------
+// Seção "Problemas que Resolvemos" — 3 image cards.
+// Imagens: public/images/problema-*.webp
+// --------------------------------------------------------
+
+const problems = [
+  {
+    title: 'Propriedades Rurais Irregulares',
+    img:   '/images/problema-propriedades-rurais.webp',
+    alt:   'Lavoura com plantas jovens emergindo do solo',
+    delay: 'reveal-d1',
+  },
+  {
+    title: 'Prevenção de Riscos Legais',
+    img:   '/images/problema-riscos-legais.webp',
+    alt:   'Pessoa assinando documentos jurídicos',
+    delay: 'reveal-d2',
+  },
+  {
+    title: 'Atendimento Simplificado',
+    img:   '/images/problema-atendimento.webp',
+    alt:   'Escritório moderno com amplas janelas',
+    delay: 'reveal-d3',
+  },
+];
+---
+
+<section class="problems" id="problemas" aria-labelledby="problemas-heading">
+  <div class="problems-inner">
+
+    <header class="problems-header">
+      <h2 id="problemas-heading" class="section-title reveal">Problemas que Resolvemos</h2>
+    </header>
+
+    <div class="problems-grid">
+      {problems.map((p) => (
+        <article class={`problem-card reveal ${p.delay}`}>
+          <img
+            src={p.img}
+            alt={p.alt}
+            loading="lazy"
+            decoding="async"
+            width="600"
+            height="450"
+          />
+          <div class="problem-overlay">
+            <h3 class="problem-title">{p.title}</h3>
+            <a
+              href="https://wa.me/556500000000"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-ghost"
+            >
+              Saiba mais
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .problems {
+    padding: clamp(4rem, 7vw, 6rem) var(--padding-x);
+    background: #F0EDE5;
+  }
+
+  .problems-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .problems-header {
+    text-align: center;
+    margin-bottom: 2.75rem;
+  }
+
+  .problems-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .problem-card {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+  }
+  .problem-card:hover { transform: scale(1.025); box-shadow: var(--shadow-md); }
+
+  .problem-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.55s ease;
+  }
+  .problem-card:hover img { transform: scale(1.06); }
+
+  .problem-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(25,22,14,0.78) 0%, rgba(25,22,14,0.22) 55%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1.75rem;
+    gap: 1rem;
+  }
+
+  .problem-title {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-white);
+    line-height: 1.3;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .problems-grid { grid-template-columns: 1fr; }
+  }
+</style>
