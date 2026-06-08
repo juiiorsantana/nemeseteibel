@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title?: string;
@@ -91,10 +92,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
   <Navbar />
   <slot />
+  <Footer />
 
   <!-- Botão flutuante WhatsApp -->
   <a
-    href="https://wa.me/556500000000"
+    href="https://wa.me/556541410010?text=Vim%20pelo%20site!%20Gostaria%20de%20falar%20com%20uma%20especialista."
     target="_blank"
     rel="noopener noreferrer"
     class="wa-float"

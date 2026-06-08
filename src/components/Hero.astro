@@ -56,7 +56,7 @@
         Sua Propriedade Rural Regularizada com Segurança Jurídica Total
       </p>
       <a
-        href="https://wa.me/556500000000"
+        href="https://wa.me/556541410010?text=Vim%20pelo%20site!%20Gostaria%20de%20falar%20com%20uma%20especialista."
         target="_blank"
         rel="noopener noreferrer"
         class="btn btn-green reveal reveal-d3"
@@ -157,29 +157,39 @@
 
   @media (max-width: 768px) {
     .hero {
-      flex-direction: column;
-      min-height: auto;
+      min-height: 85vh;
+      align-items: flex-start;
     }
 
+    /* foto volta a ser absolute, centralizada no fundo */
     .hero-photo {
-      position: relative;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      right: auto;
+      width: auto;
       max-width: 100%;
-      width: 90%;
-      height: auto;
-      margin: 0 auto;
-      order: 2;
+      height: 75vh;
+      object-fit: contain;
+      object-position: bottom center;
+      z-index: 1;
     }
 
     .hero-content {
-      padding: 3rem var(--padding-x) 1rem;
-      order: 1;
+      padding: calc(72px + 2rem) var(--padding-x) 2rem;
+      text-align: center;
+      z-index: 3;
     }
 
-    .logo-img { height: 64px; }
+    .logo { display: none; }
+
+    .hero-copy { max-width: 100%; }
+
+    .hero-copy .btn { margin-inline: auto; }
   }
 
   @media (max-width: 480px) {
-    .hero-h1   { font-size: 1.75rem; }
-    .logo-img  { height: 52px; }
+    .hero-h1 { font-size: 1.75rem; }
   }
 </style>

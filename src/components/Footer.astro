@@ -1,0 +1,188 @@
+---
+// Footer.astro
+---
+
+<!-- ── CTA pré-footer ── -->
+<section class="footer-cta" aria-label="Chamada para ação">
+  <div class="footer-cta-inner">
+    <h2 class="footer-cta-title">
+      Não deixe problemas jurídicos comprometerem seu patrimônio rural.
+    </h2>
+    <p class="footer-cta-sub">
+      Solicite agora uma análise personalizada e tenha a tranquilidade que sua propriedade merece.
+    </p>
+    <a
+      href="https://wa.me/556541410010"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn btn-green footer-cta-btn"
+      aria-label="Falar com especialista no WhatsApp"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink:0">
+        <path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        <path fill="currentColor" d="M12 0C5.373 0 0 5.373 0 12c0 2.139.563 4.14 1.541 5.876L.057 23.887l6.156-1.616A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-4.992-1.363l-.358-.213-3.716.975.993-3.63-.234-.373A9.77 9.77 0 012.182 12c0-5.42 4.398-9.818 9.818-9.818 5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/>
+      </svg>
+      Falar com especialista no WhatsApp
+    </a>
+  </div>
+</section>
+
+<!-- ── Footer principal ── -->
+<footer class="footer" aria-label="Rodapé">
+  <div class="footer-inner">
+
+    <div class="footer-col">
+      <p class="footer-col-title">Escritório de Advocacia</p>
+      <p class="footer-text">
+        Especializado em Direito Agrário, Ambiental e Fundiário em Mato Grosso.
+      </p>
+      <p class="footer-text footer-address">
+        Av. Historiador Rubens de Mendonça, 2368<br />
+        Bosque da Saúde, Cuiabá - MT, 78050-000
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <p class="footer-col-title">Contato</p>
+      <ul class="footer-contact-list">
+        <li>
+          <a href="https://wa.me/556541410010" target="_blank" rel="noopener noreferrer">
+            WhatsApp: (65) 4141-0010
+          </a>
+        </li>
+        <li>
+          <a href="tel:+556541410010">Telefone: (65) 4141-0010</a>
+        </li>
+        <li>
+          <a href="mailto:nemeseteibeladvogados@hotmail.com">
+            E-mail: nemeseteibeladvogados@hotmail.com
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <p class="footer-col-title">Áreas de Atuação</p>
+      <ul class="footer-areas-list">
+        <li><a href="/#servicos">Regularização Fundiária</a></li>
+        <li><a href="/#servicos">Direito Agrário</a></li>
+        <li><a href="/#servicos">Direito Ambiental</a></li>
+        <li><a href="/#servicos">Direito Minerário</a></li>
+        <li><a href="/#servicos">Consultoria Preventiva</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 Nemes &amp; Teibel Advocacia. Todos os direitos reservados.</p>
+    <p>OAB/MT — Advogadas inscritas e regularizadas</p>
+  </div>
+</footer>
+
+<style>
+  /* ── CTA pré-footer ─────────────────────────────── */
+  .footer-cta {
+    background: #141820;
+    padding: clamp(3.5rem, 7vw, 5.5rem) var(--padding-x);
+    text-align: center;
+  }
+  .footer-cta-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .footer-cta-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+    font-weight: 700;
+    color: var(--color-white);
+    line-height: 1.25;
+  }
+  .footer-cta-sub {
+    font-size: clamp(0.9rem, 1.8vw, 1rem);
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.7;
+    max-width: 560px;
+  }
+  .footer-cta-btn {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    padding: 1rem 2rem;
+  }
+
+  /* ── Footer principal ───────────────────────────── */
+  .footer {
+    background: #1A2030;
+    padding: clamp(3rem, 6vw, 4.5rem) var(--padding-x) 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .footer-col-title {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-white);
+    margin-bottom: 1rem;
+  }
+  .footer-text {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.7;
+  }
+  .footer-address { margin-top: 0.75rem; }
+
+  .footer-contact-list,
+  .footer-areas-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .footer-contact-list li a,
+  .footer-areas-list li a {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    transition: color 0.25s ease;
+  }
+  .footer-contact-list li a:hover,
+  .footer-areas-list li a:hover {
+    color: var(--color-accent);
+  }
+
+  /* ── Barra inferior ─────────────────────────────── */
+  .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 1.5rem 0;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.35rem;
+    text-align: center;
+  }
+  .footer-bottom p {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.28);
+  }
+
+  /* ── Responsivo ─────────────────────────────────── */
+  @media (max-width: 768px) {
+    .footer-inner {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+</style>
