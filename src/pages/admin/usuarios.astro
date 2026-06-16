@@ -1,0 +1,434 @@
+---
+export const prerender = false;
+
+import { createSupabaseAdminClient } from '../../lib/supabase';
+
+const user = Astro.locals.user;
+const supabaseAdmin = createSupabaseAdminClient();
+
+let successMessage = '';
+let errorMessage = '';
+
+if (Astro.request.method === 'POST') {
+  const formData = await Astro.request.formData();
+  const action = formData.get('action');
+
+  if (action === 'create') {
+    const email = String(formData.get('email') ?? '').trim().toLowerCase();
+    const password = String(formData.get('password') ?? '');
+
+    if (!email || !password) {
+      errorMessage = 'E-mail e senha são obrigatórios.';
+    } else if (password.length < 6) {
+      errorMessage = 'A senha deve ter no mínimo 6 caracteres.';
+    } else {
+      const { error } = await supabaseAdmin.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: true,
+      });
+      if (error) {
+        errorMessage = error.message.toLowerCase().includes('already')
+          ? 'Já existe um administrador com esse e-mail.'
+          : `Erro ao criar administrador: ${error.message}`;
+      } else {
+        successMessage = `Administrador ${email} criado com sucesso!`;
+      }
+    }
+  }
+
+  if (action === 'delete') {
+    const targetId = String(formData.get('id') ?? '');
+    const targetEmail = String(formData.get('email') ?? '');
+
+    if (targetEmail === user?.email) {
+      errorMessage = 'Você não pode remover sua própria conta.';
+    } else {
+      const { error } = await supabaseAdmin.auth.admin.deleteUser(targetId);
+      errorMessage = error ? `Erro ao remover: ${error.message}` : '';
+      if (!error) successMessage = `Administrador ${targetEmail} removido.`;
+    }
+  }
+}
+
+const { data: usersData } = await supabaseAdmin.auth.admin.listUsers();
+const admins = (usersData?.users ?? [])
+  .map((u) => ({ id: u.id, email: u.email ?? '', createdAt: u.created_at }))
+  .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usuários — Nemes & Teibel Admin</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #F0EDE6;
+      min-height: 100vh;
+      color: #3D3828;
+    }
+
+    .topbar {
+      background: #3A3426;
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .topbar-left { display: flex; align-items: center; gap: 1.5rem; }
+
+    .topbar-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: #F5F0E8;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .topbar-brand span { color: #B8972A; }
+
+    .topbar-nav { display: flex; gap: 0.25rem; }
+
+    .nav-link {
+      font-size: 0.82rem;
+      color: rgba(245, 240, 232, 0.6);
+      text-decoration: none;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .nav-link:hover { color: #F5F0E8; background: rgba(245,240,232,0.08); }
+    .nav-link.active { color: #F5F0E8; background: rgba(245,240,232,0.12); }
+
+    .topbar-right { display: flex; align-items: center; gap: 1rem; }
+
+    .user-badge { font-size: 0.8rem; color: rgba(245, 240, 232, 0.65); }
+
+    .btn-logout {
+      background: transparent;
+      border: 1px solid rgba(245, 240, 232, 0.3);
+      color: #F5F0E8;
+      padding: 0.4rem 0.875rem;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-logout:hover { background: rgba(245, 240, 232, 0.1); }
+
+    .main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    .page-header { margin-bottom: 2rem; }
+
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      color: #3A3426;
+      font-weight: 700;
+    }
+
+    .page-header p {
+      font-size: 0.875rem;
+      color: #9A9285;
+      margin-top: 0.25rem;
+    }
+
+    /* ALERTS */
+    .alert {
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .alert-success {
+      background: #f0fdf0;
+      border: 1px solid #86efac;
+      color: #166534;
+    }
+
+    .alert-error {
+      background: #fff0f0;
+      border: 1px solid #f5c0c0;
+      color: #c0392b;
+    }
+
+    /* CARDS */
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(58, 52, 38, 0.08);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid rgba(58, 52, 38, 0.08);
+    }
+
+    .card-header h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #3A3426;
+    }
+
+    .card-body { padding: 1.5rem; }
+
+    /* FORM */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+
+    .field { display: flex; flex-direction: column; gap: 0.4rem; }
+
+    label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #3A3426;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+      padding: 0.7rem 1rem;
+      border: 1.5px solid rgba(58, 52, 38, 0.18);
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: #3D3828;
+      background: #FAFAF8;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus { border-color: #8C7355; }
+
+    .btn-primary {
+      padding: 0.7rem 1.5rem;
+      background: #3DBE4F;
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      margin-top: 0.5rem;
+      align-self: flex-end;
+    }
+
+    .btn-primary:hover { background: #2EA040; transform: translateY(-1px); }
+
+    /* TABLE */
+    table { width: 100%; border-collapse: collapse; }
+
+    thead th {
+      text-align: left;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #9A9285;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.75rem 1.5rem;
+      border-bottom: 1px solid rgba(58, 52, 38, 0.08);
+    }
+
+    tbody tr { transition: background 0.15s; }
+    tbody tr:hover { background: #FAFAF8; }
+
+    tbody td {
+      padding: 0.875rem 1.5rem;
+      font-size: 0.875rem;
+      border-bottom: 1px solid rgba(58, 52, 38, 0.06);
+      color: #3D3828;
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+
+    .td-email { font-weight: 600; }
+
+    .td-date { color: #9A9285; font-size: 0.78rem; white-space: nowrap; }
+
+    .badge-you {
+      display: inline-block;
+      font-size: 0.65rem;
+      background: #F0F5E8;
+      color: #3DBE4F;
+      padding: 0.15rem 0.5rem;
+      border-radius: 50px;
+      font-weight: 700;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+
+    .btn-delete {
+      background: transparent;
+      border: 1px solid rgba(192, 57, 43, 0.3);
+      color: #c0392b;
+      padding: 0.3rem 0.75rem;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-delete:hover { background: #fff0f0; border-color: #c0392b; }
+    .btn-delete:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    .empty-state {
+      text-align: center;
+      padding: 2.5rem;
+      color: #9A9285;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <a href="/admin" class="topbar-brand">Nemes <span>&</span> Teibel — Admin</a>
+      <nav class="topbar-nav">
+        <a href="/admin" class="nav-link">Dashboard</a>
+        <a href="/admin/materiais" class="nav-link">Materiais</a>
+        <a href="/admin/formularios" class="nav-link">Formulários</a>
+        <a href="/admin/usuarios" class="nav-link active">Usuários</a>
+      </nav>
+    </div>
+    <div class="topbar-right">
+      <span class="user-badge">{user?.email}</span>
+      <form method="POST" action="/api/auth/logout">
+        <button type="submit" class="btn-logout">Sair</button>
+      </form>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-header">
+      <h1>Usuários Administradores</h1>
+      <p>Gerencie quem tem acesso ao painel.</p>
+    </div>
+
+    {successMessage && <div class="alert alert-success">{successMessage}</div>}
+    {errorMessage && <div class="alert alert-error">{errorMessage}</div>}
+
+    <!-- Formulário de cadastro -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Novo Administrador</h2>
+      </div>
+      <div class="card-body">
+        <form method="POST">
+          <input type="hidden" name="action" value="create" />
+          <div class="form-grid">
+            <div class="field">
+              <label for="email">E-mail</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="usuario@exemplo.com"
+                autocomplete="off"
+              />
+            </div>
+            <div class="field">
+              <label for="password">Senha</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                placeholder="Mínimo 6 caracteres"
+                autocomplete="new-password"
+              />
+            </div>
+          </div>
+          <button type="submit" class="btn-primary">Cadastrar</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Lista de admins -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Administradores cadastrados ({admins.length})</h2>
+      </div>
+
+      {admins.length === 0 ? (
+        <div class="empty-state">Nenhum administrador cadastrado.</div>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>E-mail</th>
+              <th>Cadastrado em</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {admins.map((a) => (
+              <tr>
+                <td class="td-email">
+                  {a.email}
+                  {a.email === user?.email && <span class="badge-you">você</span>}
+                </td>
+                <td class="td-date">
+                  {a.createdAt
+                    ? new Date(a.createdAt).toLocaleDateString('pt-BR')
+                    : '—'}
+                </td>
+                <td>
+                  <form method="POST" onsubmit="return confirm('Remover este administrador?')">
+                    <input type="hidden" name="action" value="delete" />
+                    <input type="hidden" name="id" value={a.id} />
+                    <input type="hidden" name="email" value={a.email} />
+                    <button
+                      type="submit"
+                      class="btn-delete"
+                      disabled={a.email === user?.email}
+                    >
+                      Remover
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  </main>
+</body>
+</html>

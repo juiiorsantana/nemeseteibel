@@ -6,7 +6,7 @@ readTime: '7 min'
 tag: 'Direito Fundiário'
 author: 'Paula Teibel'
 excerpt: 'A Regularização Fundiária legaliza propriedades rurais, garantindo o direito à posse e permitindo acesso a crédito, financiamentos e seguros, fortalecendo a economia e a segurança jurídica do produtor rural.'
-img: '/images/insight-regularizacao-fundiaria.webp'
+img: 'https://www.notariado.org.br/wp-content/uploads/2023/03/regularizacao-fundiaria-1024x683.jpg'
 imgAlt: 'Vista aérea de propriedades rurais'
 ---
 

@@ -197,17 +197,140 @@ const problems = [
   </section>
 
   <!-- ────────────────────────────────────────────────────────────── -->
+  <!-- BLOCO 06B — Isca Digital: Cartilha                             -->
+  <!-- ────────────────────────────────────────────────────────────── -->
+  <section class="lp-lead" aria-labelledby="lp-lead-heading">
+    <div class="lp-lead-glow" aria-hidden="true"></div>
+
+    <div class="lp-lead-inner">
+
+      <!-- Coluna texto + form -->
+      <div class="lp-lead-content reveal">
+        <div class="lp-lead-header">
+          <span class="lp-lead-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+            </svg>
+            Material gratuito
+          </span>
+          <h2 id="lp-lead-heading" class="lp-lead-title">
+            Baixe a cartilha gratuita antes de assinar qualquer contrato
+          </h2>
+          <p class="lp-lead-sub">
+            Um guia prático sobre o que verificar na compra e venda de imóvel rural — escrito pelas especialistas do escritório.
+          </p>
+        </div>
+
+        <div class="lp-lead-card reveal reveal-d1">
+          <form class="lp-lead-form" id="lp-lead-form" novalidate>
+            <div class="lp-field">
+              <label for="lead-nome">Nome completo</label>
+              <input
+                type="text"
+                id="lead-nome"
+                name="nome"
+                placeholder="Seu nome"
+                required
+                autocomplete="name"
+              />
+            </div>
+
+            <div class="lp-contact-toggle" role="group" aria-label="Como prefere receber">
+              <span class="lp-toggle-label">Receber por</span>
+              <div class="lp-toggle-options">
+                <label class="lp-toggle-opt">
+                  <input type="radio" name="contact-type" value="email" checked />
+                  <span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+                    E-mail
+                  </span>
+                </label>
+                <label class="lp-toggle-opt">
+                  <input type="radio" name="contact-type" value="whatsapp" />
+                  <span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+                    WhatsApp
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <div class="lp-field" id="field-email">
+              <label for="lead-email">E-mail</label>
+              <input
+                type="email"
+                id="lead-email"
+                name="email"
+                placeholder="seu@email.com"
+                autocomplete="email"
+              />
+            </div>
+            <div class="lp-field" id="field-whatsapp" hidden>
+              <label for="lead-whatsapp">WhatsApp</label>
+              <input
+                type="tel"
+                id="lead-whatsapp"
+                name="whatsapp"
+                placeholder="(65) 99999-9999"
+                autocomplete="tel"
+              />
+            </div>
+
+            <button type="submit" class="btn btn-green lp-lead-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+              </svg>
+              Baixar cartilha grátis
+            </button>
+
+            <p class="lp-lead-privacy">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+              Seus dados estão seguros. Não enviamos spam.
+            </p>
+          </form>
+        </div>
+      </div>
+
+      <!-- Mockup da cartilha -->
+      <div class="lp-lead-mockup reveal reveal-d2">
+        <div class="lp-mockup-book">
+          <div class="lp-mockup-spine" aria-hidden="true"></div>
+          <div class="lp-mockup-cover">
+            <div class="lp-mockup-cover-top">
+              <span class="lp-mockup-tag">Guia gratuito</span>
+              <div class="lp-mockup-logo-line" aria-hidden="true"></div>
+            </div>
+            <div class="lp-mockup-cover-body">
+              <p class="lp-mockup-title">Cartilha de<br/>Compra e Venda<br/>de Imóvel Rural</p>
+              <p class="lp-mockup-sub">O que verificar antes de assinar</p>
+            </div>
+            <div class="lp-mockup-cover-bottom">
+              <span>Nemes &amp; Teibel Advogados</span>
+            </div>
+          </div>
+        </div>
+        <div class="lp-mockup-shadow" aria-hidden="true"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ────────────────────────────────────────────────────────────── -->
   <!-- BLOCO 07 — Quem vai te atender                                 -->
   <!-- ────────────────────────────────────────────────────────────── -->
-  <section class="lp-expert" aria-label="Sobre a advogada especialista">
+  <section class="lp-expert" aria-label="Sobre as advogadas especialistas">
+
+    <!-- Paula Teibel — foto à esquerda -->
     <div class="container lp-expert-inner">
 
       <div class="lp-expert-photo-wrap reveal">
-        <!-- Substituir pelo <img src="/img/paula-teibel.webp" ... /> quando a foto estiver disponível -->
-        <div class="lp-expert-photo-placeholder" aria-label="Foto de Paula Teibel — a inserir">
-          <span class="lp-expert-initials" aria-hidden="true">PT</span>
-          <p class="lp-expert-photo-hint">Foto a inserir</p>
-        </div>
+        <img
+          src="/img/paula.avif"
+          alt="Dra. Paula Teibel"
+          class="lp-expert-photo"
+          loading="lazy"
+          decoding="async"
+        />
       </div>
 
       <div class="lp-expert-bio reveal reveal-d1">
@@ -233,6 +356,46 @@ const problems = [
       </div>
 
     </div>
+
+    <div class="lp-expert-sep" aria-hidden="true"></div>
+
+    <!-- Manuela Nemes — foto à direita -->
+    <div class="container lp-expert-inner lp-expert-inner--reverse">
+
+      <div class="lp-expert-bio reveal reveal-d1">
+        <p class="lp-expert-label">Também no escritório</p>
+        <h2 class="lp-expert-name">Manuela Nemes</h2>
+        <p class="lp-expert-role">Advogada Especialista em Direito Agrário e Minerário</p>
+        <p class="lp-expert-text">
+          Manuela acumula mais de 15 anos de atuação em Direito Agrário, Fundiário e Agronegócio. Vice-Presidente da Comissão de Assuntos Fundiários da OAB/MT, ela alia consultoria preventiva, regularização fundiária e demandas ambientais ligadas ao setor mineral — um perfil raro que complementa a análise em cada due diligence realizada pelo escritório.
+        </p>
+        <a
+          href={WA}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-green"
+          aria-label="Falar com Manuela Nemes pelo WhatsApp"
+        >
+          <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path fill="currentColor" d="M12 0C5.373 0 0 5.373 0 12c0 2.139.563 4.14 1.541 5.876L.057 23.887l6.156-1.616A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-4.992-1.363l-.358-.213-3.716.975.993-3.63-.234-.373A9.77 9.77 0 012.182 12c0-5.42 4.398-9.818 9.818-9.818 5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/>
+          </svg>
+          Falar com Manuela Nemes
+        </a>
+      </div>
+
+      <div class="lp-expert-photo-wrap reveal">
+        <img
+          src="/img/Manu.avif"
+          alt="Dra. Manuela Nemes"
+          class="lp-expert-photo"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
+    </div>
+
   </section>
 
   <!-- ────────────────────────────────────────────────────────────── -->
@@ -586,7 +749,7 @@ const problems = [
     .lp-stat-divider { display: none; }
   }
 
-  /* ── ESPECIALISTA ────────────────────────────────── */
+  /* ── ESPECIALISTAS ───────────────────────────────── */
   .lp-expert {
     background: var(--color-bg-light);
     padding: clamp(4rem, 7vw, 6rem) var(--padding-x);
@@ -599,27 +762,23 @@ const problems = [
     max-width: var(--max-width);
     margin: 0 auto;
   }
-  .lp-expert-photo-placeholder {
-    background: linear-gradient(145deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-    border-radius: var(--radius-lg);
+  .lp-expert-inner--reverse {
+    grid-template-columns: 1fr 340px;
+  }
+  .lp-expert-sep {
+    max-width: var(--max-width);
+    margin: clamp(3rem, 6vw, 5rem) auto;
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  .lp-expert-photo {
+    width: 100%;
     aspect-ratio: 3 / 4;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
-  }
-  .lp-expert-initials {
-    font-family: var(--font-heading);
-    font-size: 4.5rem;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.85);
-    line-height: 1;
-  }
-  .lp-expert-photo-hint {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.38);
+    display: block;
   }
   .lp-expert-label {
     font-size: 0.75rem;
@@ -700,18 +859,337 @@ const problems = [
     color: rgba(255, 255, 255, 0.45);
   }
 
+  /* ── ISCA DIGITAL ───────────────────────────────── */
+  .lp-lead {
+    background: var(--color-bg);
+    padding: clamp(3.5rem, 7vw, 6rem) var(--padding-x);
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid rgba(58,52,38,0.08);
+  }
+  .lp-lead-glow {
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(184,151,42,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .lp-lead-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 3.5rem;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header (badge + title + sub) */
+  .lp-lead-header {
+    margin-bottom: 1.5rem;
+  }
+  .lp-lead-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(61,190,79,0.08);
+    border: 1px solid rgba(61,190,79,0.25);
+    color: var(--color-accent-dark);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    margin-bottom: 1.25rem;
+  }
+  .lp-lead-badge svg { flex-shrink: 0; }
+  .lp-lead-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 700;
+    color: var(--color-secondary);
+    line-height: 1.25;
+    margin-bottom: 0.75rem;
+  }
+  .lp-lead-sub {
+    font-size: clamp(0.88rem, 1.6vw, 1rem);
+    color: var(--color-text-light);
+    line-height: 1.7;
+  }
+
+  /* Card do formulário */
+  .lp-lead-card {
+    background: var(--color-white);
+    border: 1px solid rgba(58,52,38,0.08);
+    border-radius: var(--radius-md);
+    padding: 1.75rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Toggle email / whatsapp */
+  .lp-contact-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+  .lp-toggle-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .lp-toggle-options {
+    display: flex;
+    border: 1.5px solid rgba(58,52,38,0.13);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    flex: 1;
+    min-width: 0;
+  }
+  .lp-toggle-opt {
+    display: flex;
+    flex: 1;
+    cursor: pointer;
+  }
+  .lp-toggle-opt input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .lp-toggle-opt span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 100%;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--color-text-light);
+    background: var(--color-bg-light);
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    border-right: 1.5px solid rgba(58,52,38,0.13);
+    user-select: none;
+    white-space: nowrap;
+  }
+  .lp-toggle-opt span svg { flex-shrink: 0; }
+  .lp-toggle-opt:last-child span { border-right: none; }
+  .lp-toggle-opt input[type="radio"]:checked + span {
+    background: var(--color-secondary);
+    color: var(--color-white);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .lp-toggle-opt input[type="radio"]:focus-visible + span {
+    outline: 2px solid var(--color-accent-gold);
+    outline-offset: -2px;
+  }
+
+  /* Form */
+  .lp-lead-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .lp-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .lp-field[hidden] { display: none !important; }
+  .lp-field label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .lp-field input {
+    background: var(--color-white);
+    border: 1.5px solid rgba(58,52,38,0.13);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-text);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    outline: none;
+    width: 100%;
+    -webkit-appearance: none;
+  }
+  .lp-field input::placeholder { color: var(--color-text-muted); }
+  .lp-field input:focus {
+    border-color: var(--color-accent-gold);
+    box-shadow: 0 0 0 3px rgba(184,151,42,0.12);
+  }
+  .lp-field input.error {
+    border-color: #e05555;
+    box-shadow: 0 0 0 3px rgba(224,85,85,0.1);
+  }
+
+  .lp-lead-btn {
+    font-size: 1rem;
+    padding: 0.95rem 1.5rem;
+    margin-top: 0.25rem;
+    justify-content: center;
+    width: 100%;
+    gap: 0.5rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    position: relative;
+    overflow: hidden;
+  }
+  .lp-lead-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
+  .lp-lead-btn:hover::after { transform: translateX(100%); }
+  .lp-lead-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+  .lp-lead-btn:disabled::after { display: none; }
+
+  .lp-lead-privacy {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.73rem;
+    color: var(--color-text-muted);
+    justify-content: center;
+  }
+  .lp-lead-privacy svg { flex-shrink: 0; }
+
+  /* Mockup livro */
+  .lp-lead-mockup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  @keyframes float-book {
+    0%, 100% { transform: perspective(800px) rotateY(-12deg) translateY(0); }
+    50%       { transform: perspective(800px) rotateY(-12deg) translateY(-10px); }
+  }
+  .lp-mockup-book {
+    display: flex;
+    width: 260px;
+    filter: drop-shadow(0 28px 48px rgba(58,52,38,0.25));
+    animation: float-book 5s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lp-mockup-book { animation: none; transform: perspective(800px) rotateY(-12deg); }
+  }
+  .lp-mockup-spine {
+    width: 24px;
+    background: linear-gradient(180deg, #2A5C18 0%, #1A3A0D 100%);
+    border-radius: 3px 0 0 3px;
+    flex-shrink: 0;
+  }
+  .lp-mockup-cover {
+    flex: 1;
+    background: linear-gradient(160deg, #2E6B1A 0%, #1E4A10 50%, #163808 100%);
+    border-radius: 0 6px 6px 0;
+    padding: 22px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 340px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-left: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .lp-mockup-cover::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 70px; height: 70px;
+    background: radial-gradient(circle at top right, rgba(184,151,42,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .lp-mockup-cover-top {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .lp-mockup-tag {
+    font-size: 0.55rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-accent-gold);
+    background: rgba(184,151,42,0.15);
+    border: 1px solid rgba(184,151,42,0.35);
+    padding: 3px 8px;
+    border-radius: 50px;
+    display: inline-block;
+    width: fit-content;
+  }
+  .lp-mockup-logo-line {
+    width: 36px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-accent-gold) 0%, rgba(184,151,42,0.2) 100%);
+    border-radius: 1px;
+  }
+  .lp-mockup-cover-body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 6px; }
+  .lp-mockup-title {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+  }
+  .lp-mockup-sub {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.45;
+  }
+  .lp-mockup-cover-bottom {
+    font-size: 0.52rem;
+    color: rgba(255,255,255,0.3);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 8px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .lp-mockup-shadow {
+    width: 180px;
+    height: 12px;
+    background: rgba(20,15,6,0.18);
+    border-radius: 50%;
+    filter: blur(14px);
+    margin-top: 4px;
+    margin-left: 18px;
+  }
+
   /* ── RESPONSIVO ──────────────────────────────────── */
   @media (max-width: 1024px) {
     .lp-expert-inner { grid-template-columns: 280px 1fr; gap: 3rem; }
+    .lp-lead-inner { grid-template-columns: 1fr 250px; gap: 2.5rem; }
+    .lp-mockup-book { width: 220px; }
+    .lp-mockup-cover { min-height: 290px; padding: 18px 16px; }
   }
 
   @media (max-width: 900px) {
-    .lp-expert-inner {
+    .lp-expert-inner,
+    .lp-expert-inner--reverse {
       grid-template-columns: 1fr;
       gap: 2.5rem;
     }
+    .lp-expert-inner--reverse .lp-expert-photo-wrap { order: -1; }
     .lp-expert-photo-wrap { max-width: 260px; margin: 0 auto; }
-    .lp-expert-photo-placeholder { aspect-ratio: 1; }
     .lp-expert-bio { text-align: center; }
   }
 
@@ -722,6 +1200,26 @@ const problems = [
     .lp-cred-divider { width: 60px; height: 1px; }
     .lp-hero { min-height: auto; }
     .lp-hero-content { padding: 4rem var(--padding-x); }
+
+    /* Lead section mobile */
+    .lp-lead { padding: clamp(2.5rem, 6vw, 4rem) var(--padding-x); }
+    .lp-lead-inner {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    .lp-lead-mockup {
+      order: 2;
+      justify-content: center;
+    }
+    .lp-mockup-book {
+      width: 200px;
+      animation: none;
+      transform: perspective(800px) rotateY(-8deg);
+    }
+    .lp-mockup-cover { min-height: 260px; padding: 16px 14px; }
+    .lp-mockup-title { font-size: 0.92rem; }
+    .lp-mockup-shadow { width: 150px; }
+    .lp-lead-card { padding: 1.5rem; }
   }
 
   @media (max-width: 480px) {
@@ -729,5 +1227,93 @@ const problems = [
     .lp-hero-cta { font-size: 0.95rem; padding: 0.9rem 1.5rem; }
     .lp-logo { height: 40px; }
     .lp-cta-final-btn { font-size: 1rem; }
+
+    /* Lead section small mobile */
+    .lp-lead { padding: 2rem var(--padding-x); }
+    .lp-lead-title { font-size: 1.3rem; }
+    .lp-lead-card { padding: 1.25rem; }
+    .lp-toggle-label { width: 100%; margin-bottom: -0.25rem; }
+    .lp-contact-toggle { gap: 0.45rem; }
+    .lp-toggle-options { width: 100%; }
+    .lp-lead-btn { font-size: 0.95rem; padding: 0.9rem 1.25rem; }
+    .lp-mockup-book { width: 170px; }
+    .lp-mockup-cover { min-height: 220px; }
   }
 </style>
+
+<script>
+  // ── Formulário de isca digital ───────────────────────────────────
+  const MATERIAL_ID = 'ca3f57e9-765a-457b-b0d6-17374bbc1726';
+
+  const form = document.getElementById('lp-lead-form') as HTMLFormElement | null;
+  if (form) {
+    const fieldEmail = document.getElementById('field-email') as HTMLDivElement | null;
+    const fieldWa    = document.getElementById('field-whatsapp') as HTMLDivElement | null;
+    const radios     = form.querySelectorAll('input[name="contact-type"]') as NodeListOf<HTMLInputElement>;
+
+    radios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        if (radio.value === 'email') {
+          fieldEmail?.removeAttribute('hidden');
+          fieldWa?.setAttribute('hidden', '');
+        } else {
+          fieldWa?.removeAttribute('hidden');
+          fieldEmail?.setAttribute('hidden', '');
+        }
+      });
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const nomeEl     = form.querySelector('#lead-nome') as HTMLInputElement;
+      const nome       = nomeEl.value.trim();
+      const activeType = (form.querySelector('input[name="contact-type"]:checked') as HTMLInputElement)?.value;
+      const contactEl  = form.querySelector(activeType === 'email' ? '#lead-email' : '#lead-whatsapp') as HTMLInputElement;
+      const contact    = contactEl?.value.trim() ?? '';
+
+      let valid = true;
+      if (!nome)    { nomeEl.classList.add('error');    valid = false; } else nomeEl.classList.remove('error');
+      if (!contact) { contactEl.classList.add('error'); valid = false; } else contactEl.classList.remove('error');
+      if (!valid) return;
+
+      const btn = form.querySelector('.lp-lead-btn') as HTMLButtonElement;
+      btn.disabled = true;
+      btn.textContent = 'Gerando link…';
+
+      try {
+        const res = await fetch('/api/materials/download', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            material_id: MATERIAL_ID,
+            name: nome,
+            email: activeType === 'email' ? contact : '',
+            phone: activeType === 'whatsapp' ? contact : '',
+            source: 'lp-due-diligence',
+          }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.signedUrl) {
+          window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
+          btn.textContent = '✓ Download iniciado!';
+        } else {
+          btn.textContent = 'Erro — tente novamente';
+          btn.disabled = false;
+          return;
+        }
+      } catch {
+        btn.textContent = 'Erro — tente novamente';
+        btn.disabled = false;
+        return;
+      }
+
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg> Baixar cartilha grátis`;
+      }, 4000);
+    });
+  }
+</script>

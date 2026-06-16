@@ -1,6 +1,11 @@
 dist/
 node_modules/
+.agents/
 .astro/
 .env
 .env.*
 !.env.example
+
+# Arquivos de credenciais sensíveis
+*credentials*.env
+.vercel/

@@ -6,7 +6,7 @@ readTime: '6 min'
 tag: 'Direito Fundiário'
 author: 'Manuela Nemes'
 excerpt: 'Propriedades rurais regularizadas garantem segurança jurídica e proteção contra invasões. A regularização é a melhor forma de prevenir riscos e resguardar o patrimônio rural.'
-img: '/images/insight-invasoes-campo.webp'
+img: 'https://opresenterural.com.br/wp-content/uploads/2024/09/Invas%C3%A3o-de-terras-e1740149618127.jpg'
 imgAlt: 'Placa Propriedade Privada Entrada Proibida'
 ---
 

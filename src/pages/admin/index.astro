@@ -1,0 +1,433 @@
+---
+export const prerender = false;
+
+const user = Astro.locals.user;
+const supabase = Astro.locals.supabase;
+
+interface Contact {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  message: string;
+  service_interest?: string;
+  status: 'novo' | 'em_contato' | 'convertido' | 'descartado';
+  source?: string;
+  created_at: string;
+}
+
+let contacts: Contact[] = [];
+let contactsError = false;
+
+const { data, error } = await supabase
+  .from('contacts')
+  .select('*')
+  .order('created_at', { ascending: false })
+  .limit(50);
+
+if (error) {
+  contactsError = true;
+} else {
+  contacts = (data ?? []) as Contact[];
+}
+
+const now = new Date().toLocaleDateString('pt-BR', {
+  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+});
+
+const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+const newThisWeek = contacts.filter(c => new Date(c.created_at) >= oneWeekAgo).length;
+const novos = contacts.filter(c => c.status === 'novo').length;
+
+const statusLabel: Record<string, string> = {
+  novo: 'Novo',
+  em_contato: 'Em contato',
+  convertido: 'Convertido',
+  descartado: 'Descartado',
+};
+const statusColor: Record<string, string> = {
+  novo: '#3DBE4F',
+  em_contato: '#B8972A',
+  convertido: '#4A8CF7',
+  descartado: '#9A9285',
+};
+
+// Stats de materiais (supabase usa sessão do admin logado — RLS auth_all_materials)
+const { count: activeMaterials } = await supabase
+  .from('materials')
+  .select('*', { count: 'exact', head: true })
+  .eq('is_active', true);
+
+const { count: totalDownloads } = await supabase
+  .from('material_downloads')
+  .select('*', { count: 'exact', head: true });
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Admin — Nemes & Teibel</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #F0EDE6;
+      min-height: 100vh;
+      color: #3D3828;
+    }
+
+    .topbar {
+      background: #3A3426;
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .topbar-left { display: flex; align-items: center; gap: 1.5rem; }
+
+    .topbar-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: #F5F0E8;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .topbar-brand span { color: #B8972A; }
+
+    .topbar-nav { display: flex; gap: 0.25rem; }
+
+    .nav-link {
+      font-size: 0.82rem;
+      color: rgba(245, 240, 232, 0.6);
+      text-decoration: none;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .nav-link:hover { color: #F5F0E8; background: rgba(245,240,232,0.08); }
+    .nav-link.active { color: #F5F0E8; background: rgba(245,240,232,0.12); }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-badge {
+      font-size: 0.8rem;
+      color: rgba(245, 240, 232, 0.65);
+    }
+
+    .btn-logout {
+      background: transparent;
+      border: 1px solid rgba(245, 240, 232, 0.3);
+      color: #F5F0E8;
+      padding: 0.4rem 0.875rem;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-logout:hover { background: rgba(245, 240, 232, 0.1); }
+
+    .main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    .page-header { margin-bottom: 2rem; }
+
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      color: #3A3426;
+      font-weight: 700;
+    }
+
+    .page-header p {
+      font-size: 0.875rem;
+      color: #9A9285;
+      margin-top: 0.25rem;
+      text-transform: capitalize;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 2px 8px rgba(58, 52, 38, 0.08);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #9A9285;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #3A3426;
+      margin-top: 0.25rem;
+      line-height: 1;
+    }
+
+    .stat-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      background: #F0F5E8;
+      color: #3DBE4F;
+      padding: 0.2rem 0.5rem;
+      border-radius: 50px;
+      margin-top: 0.5rem;
+      font-weight: 600;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: #3A3426;
+      margin-bottom: 1rem;
+    }
+
+    .table-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(58, 52, 38, 0.08);
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid rgba(58, 52, 38, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .table-header h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #3A3426;
+    }
+
+    .count {
+      font-size: 0.78rem;
+      background: #F5F0E8;
+      color: #8C7355;
+      padding: 0.25rem 0.625rem;
+      border-radius: 50px;
+      font-weight: 600;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    thead th {
+      text-align: left;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #9A9285;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.75rem 1.5rem;
+      border-bottom: 1px solid rgba(58, 52, 38, 0.08);
+    }
+
+    tbody tr { transition: background 0.15s; }
+    tbody tr:hover { background: #FAFAF8; }
+
+    tbody td {
+      padding: 0.875rem 1.5rem;
+      font-size: 0.875rem;
+      border-bottom: 1px solid rgba(58, 52, 38, 0.06);
+      color: #3D3828;
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+
+    .td-name { font-weight: 600; }
+    .td-email { color: #8C7355; font-size: 0.82rem; }
+    .td-date { color: #9A9285; font-size: 0.78rem; white-space: nowrap; }
+    .td-msg { max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      color: #9A9285;
+    }
+
+    .empty-state .icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .empty-state p { font-size: 0.875rem; }
+
+    .status-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 50px;
+      white-space: nowrap;
+    }
+
+    .setup-notice {
+      background: #FFF9E6;
+      border: 1px solid rgba(184, 151, 42, 0.3);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      font-size: 0.82rem;
+      color: #8C6800;
+      margin-top: 1rem;
+      line-height: 1.7;
+    }
+
+    .setup-notice code {
+      background: rgba(184, 151, 42, 0.12);
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+      font-size: 0.78rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <a href="/admin" class="topbar-brand">Nemes <span>&</span> Teibel — Admin</a>
+      <nav class="topbar-nav">
+        <a href="/admin" class="nav-link active">Dashboard</a>
+        <a href="/admin/materiais" class="nav-link">Materiais</a>
+        <a href="/admin/formularios" class="nav-link">Formulários</a>
+        <a href="/admin/usuarios" class="nav-link">Usuários</a>
+      </nav>
+    </div>
+    <div class="topbar-right">
+      <span class="user-badge">{user?.email}</span>
+      <form method="POST" action="/api/auth/logout">
+        <button type="submit" class="btn-logout">Sair</button>
+      </form>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-header">
+      <h1>Painel de Controle</h1>
+      <p>{now}</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-label">Contatos recebidos</div>
+        <div class="stat-value">{contacts.length}</div>
+        <div class="stat-badge">Total</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Novos (últimos 7 dias)</div>
+        <div class="stat-value">{newThisWeek}</div>
+        <div class="stat-badge">Esta semana</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Aguardando contato</div>
+        <div class="stat-value">{novos}</div>
+        <div class="stat-badge" style="background:#F0F5E8;color:#3DBE4F">Novo</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Materiais ativos</div>
+        <div class="stat-value">{activeMaterials ?? 0}</div>
+        <div class="stat-badge" style="background:#EFF6FF;color:#4A8CF7">Biblioteca</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Downloads totais</div>
+        <div class="stat-value">{totalDownloads ?? 0}</div>
+        <div class="stat-badge" style="background:#FFF9E6;color:#B8972A">Materiais</div>
+      </div>
+    </div>
+
+    <div class="section-title">Leads & Contatos</div>
+
+    <div class="table-card">
+      <div class="table-header">
+        <h2>Mensagens recebidas</h2>
+        <span class="count">{contacts.length} registros</span>
+      </div>
+
+      {contactsError ? (
+        <div class="empty-state">
+          <div class="icon">⚠️</div>
+          <p>Erro ao conectar ao Supabase. Verifique as variáveis <strong>SUPABASE_URL</strong> e <strong>SUPABASE_ANON_KEY</strong>.</p>
+        </div>
+      ) : contacts.length === 0 ? (
+        <div class="empty-state">
+          <div class="icon">📭</div>
+          <p>Nenhum contato recebido ainda.</p>
+        </div>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Telefone</th>
+              <th>Serviço</th>
+              <th>Mensagem</th>
+              <th>Status</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody>
+            {contacts.map((c) => (
+              <tr>
+                <td class="td-name">{c.name}</td>
+                <td class="td-email">{c.email}</td>
+                <td>{c.phone ?? '—'}</td>
+                <td>{c.service_interest ?? '—'}</td>
+                <td class="td-msg">{c.message}</td>
+                <td>
+                  <span class="status-badge" style={`background:${statusColor[c.status] ?? '#9A9285'}22;color:${statusColor[c.status] ?? '#9A9285'}`}>
+                    {statusLabel[c.status] ?? c.status}
+                  </span>
+                </td>
+                <td class="td-date">
+                  {new Date(c.created_at).toLocaleDateString('pt-BR')}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+
+    {contactsError && (
+      <div class="setup-notice">
+        <strong>Como configurar:</strong> Adicione <code>SUPABASE_URL</code> e <code>SUPABASE_ANON_KEY</code> no arquivo <code>.env</code>
+        com os dados do seu projeto Supabase. A tabela <code>contacts</code> precisa existir no banco
+        (criada via migração) para que os contatos apareçam aqui.
+      </div>
+    )}
+  </main>
+</body>
+</html>

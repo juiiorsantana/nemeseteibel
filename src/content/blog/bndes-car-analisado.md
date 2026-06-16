@@ -6,7 +6,7 @@ readTime: '5 min'
 tag: 'Direito Ambiental'
 author: 'Manuela Nemes'
 excerpt: 'BNDES reduzirá em 0,5 ponto percentual os juros do Pronamp Custeio para produtores rurais com CAR analisado e conforme ou em regularização. A medida entra em vigor em 20 de fevereiro e visa incentivar a regularização ambiental das propriedades rurais.'
-img: '/images/insight-bndes-car.webp'
+img: 'https://imgs.jusbr.com/publications/images/c72268084da4c24825c63a11b8beed8b'
 imgAlt: 'Dossel de floresta — Direito Ambiental'
 ---
 

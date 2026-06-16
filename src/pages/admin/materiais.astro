@@ -1,0 +1,558 @@
+---
+export const prerender = false;
+
+const user = Astro.locals.user;
+const supabase = Astro.locals.supabase;
+
+interface Material {
+  id: string;
+  title: string;
+  description: string | null;
+  category: string | null;
+  file_name: string;
+  file_size: number | null;
+  is_active: boolean;
+  download_count: number;
+  created_at: string;
+}
+
+interface DownloadRow {
+  id: string;
+  name: string;
+  email: string | null;
+  phone: string | null;
+  source: string | null;
+  created_at: string;
+  materials: { title: string } | null;
+}
+
+// supabase usa sessão do admin logado — RLS auth_all_materials permite ver todos
+const { data: materials } = await supabase
+  .from('materials')
+  .select('id, title, description, category, file_name, file_size, is_active, download_count, created_at')
+  .order('created_at', { ascending: false });
+
+const { data: recentDownloads } = await supabase
+  .from('material_downloads')
+  .select('id, name, email, phone, source, created_at, materials(title)')
+  .order('created_at', { ascending: false })
+  .limit(20);
+
+const list: Material[] = (materials ?? []) as Material[];
+const downloads: DownloadRow[] = (recentDownloads ?? []) as DownloadRow[];
+
+function formatBytes(bytes: number | null): string {
+  if (!bytes) return '—';
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Materiais — Nemes & Teibel Admin</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; background: #F0EDE6; min-height: 100vh; color: #3D3828; }
+
+    .topbar { background: #3A3426; padding: 0 2rem; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .topbar-left { display: flex; align-items: center; gap: 1.5rem; }
+    .topbar-brand { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: #F5F0E8; font-weight: 700; text-decoration: none; }
+    .topbar-brand span { color: #B8972A; }
+    .topbar-nav { display: flex; gap: 0.25rem; }
+    .nav-link { font-size: 0.82rem; color: rgba(245,240,232,0.6); text-decoration: none; padding: 0.35rem 0.75rem; border-radius: 6px; transition: all 0.2s; }
+    .nav-link:hover { color: #F5F0E8; background: rgba(245,240,232,0.08); }
+    .nav-link.active { color: #F5F0E8; background: rgba(245,240,232,0.12); }
+    .topbar-right { display: flex; align-items: center; gap: 1rem; }
+    .user-badge { font-size: 0.8rem; color: rgba(245,240,232,0.65); }
+    .btn-logout { background: transparent; border: 1px solid rgba(245,240,232,0.3); color: #F5F0E8; padding: 0.4rem 0.875rem; border-radius: 50px; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+    .btn-logout:hover { background: rgba(245,240,232,0.1); }
+
+    .main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+    .page-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;
+    }
+    .page-header-text h1 { font-family: 'Playfair Display', serif; font-size: 1.75rem; color: #3A3426; font-weight: 700; }
+    .page-header-text p { font-size: 0.875rem; color: #9A9285; margin-top: 0.25rem; }
+    .btn-new {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.65rem 1.25rem; background: #3A3426; color: #F5F0E8;
+      border: none; border-radius: 50px; font-family: 'DM Sans', sans-serif;
+      font-size: 0.875rem; font-weight: 600; cursor: pointer;
+      transition: background 0.2s; white-space: nowrap; flex-shrink: 0;
+    }
+    .btn-new:hover { background: #B8972A; }
+
+    .section-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #3A3426; margin-bottom: 1rem; }
+
+    /* ── Modal de upload ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(58,52,38,0.5); backdrop-filter: blur(4px);
+      z-index: 200; align-items: center; justify-content: center; padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff; border-radius: 20px; width: 100%; max-width: 520px;
+      box-shadow: 0 24px 64px rgba(58,52,38,0.18); overflow: hidden;
+    }
+    .modal-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 1.5rem; border-bottom: 1px solid rgba(58,52,38,0.08);
+    }
+    .modal-head h2 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: #3A3426; }
+    .btn-close {
+      background: none; border: none; cursor: pointer; color: #9A9285;
+      padding: 0.25rem; border-radius: 6px; transition: color 0.2s;
+      display: flex; align-items: center;
+    }
+    .btn-close:hover { color: #3A3426; }
+    .modal-body { padding: 1.5rem; }
+
+    /* Drop zone */
+    .drop-zone {
+      border: 2px dashed rgba(58,52,38,0.2); border-radius: 12px;
+      padding: 2rem 1rem; text-align: center; cursor: pointer;
+      transition: all 0.2s; background: #FAFAF8; margin-bottom: 1rem;
+      position: relative;
+    }
+    .drop-zone.drag-over { border-color: #B8972A; background: #FFF9E6; }
+    .drop-zone input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .drop-zone-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .drop-zone-text { font-size: 0.875rem; color: #7A7060; }
+    .drop-zone-text strong { color: #B8972A; }
+    .drop-zone-hint { font-size: 0.72rem; color: #9A9285; margin-top: 0.25rem; }
+    .drop-zone-name { font-size: 0.82rem; color: #3A3426; font-weight: 600; margin-top: 0.5rem; display: none; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.875rem; }
+    @media(max-width:500px) { .form-grid { grid-template-columns: 1fr; } }
+    .field { display: flex; flex-direction: column; gap: 0.35rem; }
+    .field.full { grid-column: 1 / -1; }
+    label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #3A3426; }
+    input[type="text"], textarea {
+      padding: 0.6rem 0.875rem; border: 1.5px solid rgba(58,52,38,0.15); border-radius: 9px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.875rem; color: #3D3828;
+      background: #FAFAF8; outline: none; transition: border-color 0.2s;
+    }
+    input[type="text"]:focus, textarea:focus { border-color: #B8972A; }
+    textarea { resize: vertical; min-height: 72px; }
+    .modal-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem; border-top: 1px solid rgba(58,52,38,0.08);
+      gap: 0.75rem;
+    }
+    .upload-progress { font-size: 0.8rem; color: #9A9285; display: none; flex: 1; }
+    .btn-upload {
+      padding: 0.65rem 1.5rem; background: #3A3426; color: #F5F0E8; border: none;
+      border-radius: 50px; font-family: 'DM Sans', sans-serif; font-size: 0.875rem;
+      font-weight: 600; cursor: pointer; transition: background 0.2s;
+      display: inline-flex; align-items: center; gap: 0.4rem; white-space: nowrap;
+    }
+    .btn-upload:hover { background: #B8972A; }
+    .btn-upload:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-cancel {
+      padding: 0.65rem 1rem; background: transparent; color: #9A9285;
+      border: 1px solid rgba(58,52,38,0.15); border-radius: 50px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 500;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-cancel:hover { border-color: #9A9285; color: #3A3426; }
+
+    /* Table */
+    .table-card { background: #fff; border-radius: 14px; box-shadow: 0 2px 8px rgba(58,52,38,0.08); overflow: hidden; margin-bottom: 2rem; }
+    .table-header { padding: 1rem 1.5rem; border-bottom: 1px solid rgba(58,52,38,0.08); display: flex; align-items: center; justify-content: space-between; }
+    .table-header h2 { font-size: 0.95rem; font-weight: 700; color: #3A3426; }
+    .count { font-size: 0.78rem; background: #F5F0E8; color: #8C7355; padding: 0.25rem 0.625rem; border-radius: 50px; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th { text-align: left; font-size: 0.72rem; font-weight: 700; color: #9A9285; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.75rem 1.5rem; border-bottom: 1px solid rgba(58,52,38,0.08); }
+    tbody tr { transition: background 0.15s; }
+    tbody tr:hover { background: #FAFAF8; }
+    tbody td { padding: 0.875rem 1.5rem; font-size: 0.875rem; border-bottom: 1px solid rgba(58,52,38,0.06); color: #3D3828; }
+    tbody tr:last-child td { border-bottom: none; }
+    .td-title { font-weight: 600; max-width: 200px; }
+    .td-file { font-size: 0.78rem; color: #9A9285; }
+    .td-num { font-weight: 700; color: #3A3426; }
+    .td-date { color: #9A9285; font-size: 0.78rem; white-space: nowrap; }
+
+    .badge-active { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 50px; background: #F0F5E8; color: #3DBE4F; }
+    .badge-inactive { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 50px; background: #F5F0E8; color: #9A9285; }
+
+    .actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .btn-toggle, .btn-delete, .btn-copy {
+      padding: 0.3rem 0.7rem; border-radius: 50px; font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 0.3rem;
+    }
+    .btn-toggle { background: transparent; border: 1px solid rgba(58,52,38,0.2); color: #3A3426; }
+    .btn-toggle:hover { background: #F5F0E8; }
+    .btn-delete { background: transparent; border: 1px solid rgba(192,57,43,0.3); color: #c0392b; }
+    .btn-delete:hover { background: #fff0f0; border-color: #c0392b; }
+    .btn-copy { background: transparent; border: 1px solid rgba(74,140,247,0.35); color: #4A8CF7; }
+    .btn-copy:hover { background: #EFF6FF; }
+    .btn-copy.copied { border-color: #3DBE4F; color: #3DBE4F; background: #F0F5E8; }
+
+    .empty-state { text-align: center; padding: 2.5rem; color: #9A9285; font-size: 0.875rem; }
+
+    .alert { padding: 0.75rem 1rem; border-radius: 10px; font-size: 0.875rem; margin-bottom: 1.5rem; }
+    .alert-success { background: #f0fdf0; border: 1px solid #86efac; color: #166534; }
+    .alert-error { background: #fff0f0; border: 1px solid #f5c0c0; color: #c0392b; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <a href="/admin" class="topbar-brand">Nemes <span>&</span> Teibel — Admin</a>
+      <nav class="topbar-nav">
+        <a href="/admin" class="nav-link">Dashboard</a>
+        <a href="/admin/materiais" class="nav-link active">Materiais</a>
+        <a href="/admin/formularios" class="nav-link">Formulários</a>
+        <a href="/admin/usuarios" class="nav-link">Usuários</a>
+      </nav>
+    </div>
+    <div class="topbar-right">
+      <span class="user-badge">{user?.email}</span>
+      <form method="POST" action="/api/auth/logout">
+        <button type="submit" class="btn-logout">Sair</button>
+      </form>
+    </div>
+  </header>
+
+  <!-- Modal de upload -->
+  <div class="modal-overlay" id="upload-modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-head">
+        <h2 id="modal-title">Novo material</h2>
+        <button class="btn-close" onclick="closeModal()" aria-label="Fechar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="upload-form" novalidate>
+          <!-- Drop zone -->
+          <div class="drop-zone" id="drop-zone">
+            <input type="file" id="up-file" name="file" accept=".pdf,.jpg,.jpeg,.png,.webp" required />
+            <div class="drop-zone-icon">📎</div>
+            <div class="drop-zone-text"><strong>Clique para escolher</strong> ou arraste o arquivo aqui</div>
+            <div class="drop-zone-hint">PDF, JPG, PNG, WebP — máx. 50 MB</div>
+            <div class="drop-zone-name" id="drop-zone-name"></div>
+          </div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="up-title">Título *</label>
+              <input type="text" id="up-title" name="title" placeholder="Ex: Cartilha de Regularização Fundiária" required />
+            </div>
+            <div class="field">
+              <label for="up-category">Categoria</label>
+              <input type="text" id="up-category" name="category" placeholder="Ex: Regularização, Due Diligence…" />
+            </div>
+            <div class="field full">
+              <label for="up-desc">Descrição</label>
+              <textarea id="up-desc" name="description" placeholder="Descreva brevemente o conteúdo deste material…"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-foot">
+        <div class="upload-progress" id="upload-progress">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin 1s linear infinite;display:inline-block"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
+          Enviando arquivo…
+        </div>
+        <div style="display:flex;gap:0.5rem;margin-left:auto">
+          <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+          <button type="submit" form="upload-form" class="btn-upload" id="btn-upload">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+            Fazer upload
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="page-header-text">
+        <h1>Biblioteca de Materiais</h1>
+        <p>Cada download captura um lead automaticamente.</p>
+      </div>
+      <button class="btn-new" onclick="openModal()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+        Novo material
+      </button>
+    </div>
+
+    <div id="alert-area"></div>
+
+    <!-- Lista de materiais -->
+    <div class="section-title">Materiais cadastrados</div>
+    <div class="table-card">
+      <div class="table-header">
+        <h2>Todos os materiais</h2>
+        <span class="count">{list.length} registros</span>
+      </div>
+
+      {list.length === 0 ? (
+        <div class="empty-state">Nenhum material cadastrado ainda.</div>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Categoria</th>
+              <th>Arquivo</th>
+              <th>Downloads</th>
+              <th>Status</th>
+              <th>Data</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {list.map((m) => (
+              <tr id={`row-${m.id}`}>
+                <td class="td-title">{m.title}</td>
+                <td>{m.category ?? '—'}</td>
+                <td class="td-file">{m.file_name}<br />{formatBytes(m.file_size)}</td>
+                <td class="td-num">{m.download_count}</td>
+                <td>
+                  <span class={m.is_active ? 'badge-active' : 'badge-inactive'} id={`badge-${m.id}`}>
+                    {m.is_active ? 'Ativo' : 'Inativo'}
+                  </span>
+                </td>
+                <td class="td-date">{new Date(m.created_at).toLocaleDateString('pt-BR')}</td>
+                <td>
+                  <div class="actions">
+                    <button
+                      class="btn-copy"
+                      data-id={m.id}
+                      onclick="copyLink(this)"
+                      title="Copiar link público deste material"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/></svg>
+                      Link
+                    </button>
+                    <button
+                      class="btn-toggle"
+                      data-id={m.id}
+                      data-active={String(m.is_active)}
+                      onclick="toggleMaterial(this)"
+                    >
+                      {m.is_active ? 'Desativar' : 'Ativar'}
+                    </button>
+                    <button
+                      class="btn-delete"
+                      data-id={m.id}
+                      data-title={m.title}
+                      onclick="deleteMaterial(this)"
+                    >
+                      Excluir
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+
+    <!-- Downloads recentes -->
+    <div class="section-title">Downloads recentes</div>
+    <div class="table-card">
+      <div class="table-header">
+        <h2>Leads que baixaram materiais</h2>
+        <span class="count">{downloads.length} registros</span>
+      </div>
+      {downloads.length === 0 ? (
+        <div class="empty-state">Nenhum download registrado ainda.</div>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Contato</th>
+              <th>Material</th>
+              <th>Origem</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody>
+            {downloads.map((d) => (
+              <tr>
+                <td style="font-weight:600">{d.name}</td>
+                <td style="font-size:0.82rem;color:#8C7355">{d.email ?? d.phone ?? '—'}</td>
+                <td style="font-size:0.82rem">{d.materials?.title ?? '—'}</td>
+                <td style="font-size:0.78rem;color:#9A9285">{d.source ?? '—'}</td>
+                <td class="td-date">{new Date(d.created_at).toLocaleDateString('pt-BR')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  </main>
+</body>
+
+<style>
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+<script>
+  // ── Modal ──
+  function openModal() {
+    document.getElementById('upload-modal')!.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('upload-modal')!.classList.remove('open');
+    document.body.style.overflow = '';
+    (document.getElementById('upload-form') as HTMLFormElement).reset();
+    document.getElementById('drop-zone-name')!.style.display = 'none';
+    document.getElementById('drop-zone-name')!.textContent = '';
+  }
+  document.getElementById('upload-modal')!.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).id === 'upload-modal') closeModal();
+  });
+
+  // ── Drag & drop ──
+  const dropZone = document.getElementById('drop-zone')!;
+  const fileInput = document.getElementById('up-file') as HTMLInputElement;
+  const dropName  = document.getElementById('drop-zone-name')!;
+
+  function showFileName(name: string) {
+    dropName.textContent = '📄 ' + name;
+    dropName.style.display = 'block';
+  }
+
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files?.[0]) showFileName(fileInput.files[0].name);
+  });
+  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const file = e.dataTransfer?.files[0];
+    if (file) {
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      fileInput.files = dt.files;
+      showFileName(file.name);
+    }
+  });
+
+  function showAlert(msg: string, type: 'success' | 'error') {
+    const area = document.getElementById('alert-area')!;
+    area.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+    setTimeout(() => { area.innerHTML = ''; }, 5000);
+  }
+
+  // ── Upload ──
+  document.getElementById('upload-form')!.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const btn = document.getElementById('btn-upload') as HTMLButtonElement;
+    const progress = document.getElementById('upload-progress')!;
+
+    btn.disabled = true;
+    progress.style.display = 'flex';
+    progress.style.alignItems = 'center';
+    progress.style.gap = '0.4rem';
+
+    try {
+      const fd = new FormData(form);
+      const res = await fetch('/api/materials/upload', { method: 'POST', body: fd });
+      const data = await res.json();
+
+      if (res.ok) {
+        closeModal();
+        showAlert(`✓ "${data.title}" enviado! Recarregue a página para ver na lista.`, 'success');
+      } else {
+        showAlert(data.error ?? 'Erro ao enviar.', 'error');
+      }
+    } catch {
+      showAlert('Erro de conexão.', 'error');
+    } finally {
+      btn.disabled = false;
+      progress.style.display = 'none';
+    }
+  });
+
+  // Copiar link público
+  function copyLink(btn: HTMLButtonElement) {
+    const id = btn.dataset.id!;
+    const url = `${location.origin}/materiais?m=${id}`;
+    navigator.clipboard.writeText(url).then(() => {
+      btn.classList.add('copied');
+      btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg> Copiado!`;
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/></svg> Link`;
+      }, 2500);
+    });
+  }
+
+  // Toggle ativo/inativo
+  async function toggleMaterial(btn: HTMLButtonElement) {
+    const id = btn.dataset.id!;
+    const isActive = btn.dataset.active === 'true';
+
+    btn.disabled = true;
+    try {
+      const res = await fetch('/api/materials/toggle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        const newActive: boolean = data.is_active;
+        btn.dataset.active = String(newActive);
+        btn.textContent = newActive ? 'Desativar' : 'Ativar';
+        const badge = document.getElementById(`badge-${id}`)!;
+        badge.textContent = newActive ? 'Ativo' : 'Inativo';
+        badge.className = newActive ? 'badge-active' : 'badge-inactive';
+      } else {
+        showAlert(data.error ?? 'Erro ao atualizar.', 'error');
+      }
+    } catch {
+      showAlert('Erro de conexão.', 'error');
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  // Deletar
+  async function deleteMaterial(btn: HTMLButtonElement) {
+    const id = btn.dataset.id!;
+    const title = btn.dataset.title ?? 'este material';
+    if (!confirm(`Excluir "${title}"? Esta ação remove o arquivo e todos os registros de download.`)) return;
+
+    btn.disabled = true;
+    try {
+      const res = await fetch(`/api/materials/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (res.ok) {
+        document.getElementById(`row-${id}`)?.remove();
+        showAlert('Material excluído com sucesso.', 'success');
+      } else {
+        showAlert(data.error ?? 'Erro ao excluir.', 'error');
+      }
+    } catch {
+      showAlert('Erro de conexão.', 'error');
+    } finally {
+      btn.disabled = false;
+    }
+  }
+</script>
+</html>

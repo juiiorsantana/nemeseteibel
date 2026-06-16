@@ -1,0 +1,512 @@
+---
+export const prerender = false;
+
+const supabase = Astro.locals.supabase;
+
+interface Material {
+  id: string;
+  title: string;
+  description: string | null;
+  category: string | null;
+  download_count: number;
+  created_at: string;
+}
+
+const { data: materials } = await supabase
+  .from('materials')
+  .select('id, title, description, category, download_count, created_at')
+  .eq('is_active', true)
+  .order('created_at', { ascending: false });
+
+const list: Material[] = (materials ?? []) as Material[];
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Materiais Gratuitos — Nemes & Teibel Advogados</title>
+  <meta name="description" content="Baixe gratuitamente guias, cartilhas e materiais jurídicos sobre regularização fundiária e direito rural." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #F5F0E8;
+      color: #3D3828;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      background: #3A3426;
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: #F5F0E8;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .nav-brand span { color: #B8972A; }
+    .nav-back {
+      font-size: 0.82rem;
+      color: rgba(245,240,232,0.65);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: #F5F0E8; }
+
+    /* ── HERO ── */
+    .hero {
+      background: #3A3426;
+      color: #F5F0E8;
+      text-align: center;
+      padding: 3.5rem 1.5rem 4rem;
+    }
+    .hero-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #B8972A;
+      margin-bottom: 0.75rem;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1rem;
+      color: rgba(245,240,232,0.75);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── GRID ── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 4rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(58,52,38,0.08);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(58,52,38,0.12);
+    }
+    .card-icon {
+      background: #F5F0E8;
+      padding: 2rem 1.5rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-icon svg { width: 48px; height: 48px; color: #B8972A; }
+    .card-body { padding: 1.25rem 1.5rem 1.5rem; flex: 1; display: flex; flex-direction: column; }
+    .card-category {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #B8972A;
+      margin-bottom: 0.5rem;
+    }
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #3A3426;
+      line-height: 1.35;
+      margin-bottom: 0.625rem;
+    }
+    .card-desc {
+      font-size: 0.85rem;
+      color: #7A7060;
+      line-height: 1.6;
+      flex: 1;
+      margin-bottom: 1rem;
+    }
+    .card-meta {
+      font-size: 0.72rem;
+      color: #9A9285;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-download {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      background: #3A3426;
+      color: #F5F0E8;
+      border: none;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: background 0.2s;
+    }
+    .btn-download:hover { background: #B8972A; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(58,52,38,0.55);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 20px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 60px rgba(58,52,38,0.2);
+    }
+    .modal-close {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 0.5rem;
+    }
+    .btn-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #9A9285;
+      padding: 0.25rem;
+      transition: color 0.2s;
+    }
+    .btn-close:hover { color: #3A3426; }
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #3A3426;
+      margin-bottom: 0.375rem;
+    }
+    .modal-sub {
+      font-size: 0.82rem;
+      color: #9A9285;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .form-field { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.875rem; }
+    .form-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #3A3426;
+    }
+    .form-input {
+      padding: 0.7rem 1rem;
+      border: 1.5px solid rgba(58,52,38,0.15);
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: #3D3828;
+      background: #FAFAF8;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus { border-color: #B8972A; }
+    .form-input.error { border-color: #e53e3e; }
+
+    /* Toggle email / whatsapp */
+    .contact-toggle { display: flex; gap: 0.5rem; margin-bottom: 0.875rem; }
+    .toggle-btn {
+      flex: 1;
+      padding: 0.5rem;
+      border: 1.5px solid rgba(58,52,38,0.15);
+      border-radius: 8px;
+      background: #FAFAF8;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #9A9285;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .toggle-btn.active { border-color: #B8972A; background: #FFF9E6; color: #8C6800; }
+
+    .btn-submit {
+      width: 100%;
+      padding: 0.875rem;
+      background: #B8972A;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
+    }
+    .btn-submit:hover { background: #9A7E22; }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .modal-success {
+      text-align: center;
+      padding: 1.5rem 0 0.5rem;
+    }
+    .modal-success .icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+    .modal-success p { font-size: 0.9rem; color: #7A7060; line-height: 1.6; }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem 1rem;
+      color: #9A9285;
+    }
+    .empty-state p { font-size: 1rem; margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-brand">Nemes <span>&</span> Teibel</a>
+  <a href="/" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    Voltar ao site
+  </a>
+</nav>
+
+<section class="hero">
+  <div class="hero-label">Materiais Gratuitos</div>
+  <h1>Conhecimento jurídico<br />ao alcance do produtor rural</h1>
+  <p>Baixe gratuitamente nossas cartilhas e guias sobre regularização fundiária, due diligence rural e direito agrário.</p>
+</section>
+
+<main class="container">
+  {list.length === 0 ? (
+    <div class="empty-state">
+      <div style="font-size:2.5rem">📂</div>
+      <p>Nenhum material disponível no momento.<br />Volte em breve!</p>
+    </div>
+  ) : (
+    <div class="grid">
+      {list.map((m) => (
+        <div class="card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            {m.category && <div class="card-category">{m.category}</div>}
+            <div class="card-title">{m.title}</div>
+            {m.description && <div class="card-desc">{m.description}</div>}
+            <div class="card-meta">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+              {m.download_count} {m.download_count === 1 ? 'download' : 'downloads'}
+            </div>
+            <button
+              class="btn-download"
+              data-id={m.id}
+              data-title={m.title}
+              onclick="openModal(this)"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+              Baixar gratuitamente
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</main>
+
+<!-- Modal de lead capture -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-close">
+      <button class="btn-close" onclick="closeModal()" aria-label="Fechar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div id="modal-form-area">
+      <div class="modal-title" id="modal-title">Receber material gratuito</div>
+      <div class="modal-sub">Informe seus dados para liberar o download imediato.</div>
+
+      <form id="lead-form" novalidate>
+        <input type="hidden" id="field-material-id" name="material_id" />
+
+        <div class="form-field">
+          <label class="form-label" for="field-nome">Seu nome</label>
+          <input class="form-input" type="text" id="field-nome" name="name" placeholder="Nome completo" required />
+        </div>
+
+        <div class="contact-toggle">
+          <button type="button" class="toggle-btn active" id="btn-email-tab" onclick="switchTab('email')">E-mail</button>
+          <button type="button" class="toggle-btn" id="btn-wa-tab" onclick="switchTab('whatsapp')">WhatsApp</button>
+        </div>
+
+        <div class="form-field" id="field-email-wrap">
+          <label class="form-label" for="field-email">E-mail</label>
+          <input class="form-input" type="email" id="field-email" name="email" placeholder="seu@email.com" />
+        </div>
+        <div class="form-field" id="field-wa-wrap" style="display:none">
+          <label class="form-label" for="field-wa">WhatsApp</label>
+          <input class="form-input" type="tel" id="field-wa" name="phone" placeholder="(65) 99999-9999" />
+        </div>
+
+        <button type="submit" class="btn-submit" id="btn-submit">
+          Baixar agora — grátis
+        </button>
+      </form>
+    </div>
+
+    <div class="modal-success" id="modal-success" style="display:none">
+      <div class="icon">✅</div>
+      <p><strong>Download iniciado!</strong><br />Obrigado. Seu arquivo está sendo baixado.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  let activeTab = 'email';
+
+  function openModalById(id: string, title: string) {
+    (document.getElementById('field-material-id') as HTMLInputElement).value = id;
+    (document.getElementById('modal-title') as HTMLElement).textContent = title;
+    document.getElementById('modal-form-area')!.style.display = '';
+    document.getElementById('modal-success')!.style.display = 'none';
+    document.getElementById('modal-overlay')!.classList.add('open');
+  }
+
+  function openModal(btn: HTMLButtonElement) {
+    openModalById(btn.dataset.id ?? '', btn.dataset.title ?? 'material');
+  }
+
+  // Auto-abre modal se ?m=[id] estiver na URL
+  const params = new URLSearchParams(location.search);
+  const autoId = params.get('m');
+  if (autoId) {
+    const btn = document.querySelector(`[data-id="${autoId}"]`) as HTMLButtonElement | null;
+    if (btn) openModalById(autoId, btn.dataset.title ?? 'material');
+  }
+
+  function closeModal() {
+    document.getElementById('modal-overlay')!.classList.remove('open');
+    (document.getElementById('lead-form') as HTMLFormElement).reset();
+    resetErrors();
+  }
+
+  function switchTab(tab: string) {
+    activeTab = tab;
+    document.getElementById('field-email-wrap')!.style.display = tab === 'email' ? '' : 'none';
+    document.getElementById('field-wa-wrap')!.style.display   = tab === 'whatsapp' ? '' : 'none';
+    document.getElementById('btn-email-tab')!.classList.toggle('active', tab === 'email');
+    document.getElementById('btn-wa-tab')!.classList.toggle('active', tab === 'whatsapp');
+  }
+
+  function resetErrors() {
+    document.querySelectorAll('.form-input').forEach(el => el.classList.remove('error'));
+  }
+
+  document.getElementById('modal-overlay')!.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).id === 'modal-overlay') closeModal();
+  });
+
+  document.getElementById('lead-form')!.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    resetErrors();
+
+    const materialId = (document.getElementById('field-material-id') as HTMLInputElement).value;
+    const name       = (document.getElementById('field-nome') as HTMLInputElement).value.trim();
+    const email      = (document.getElementById('field-email') as HTMLInputElement).value.trim();
+    const phone      = (document.getElementById('field-wa') as HTMLInputElement).value.trim();
+    const contact    = activeTab === 'email' ? email : phone;
+
+    let valid = true;
+    if (!name) { (document.getElementById('field-nome') as HTMLInputElement).classList.add('error'); valid = false; }
+    if (!contact) {
+      const el = activeTab === 'email'
+        ? document.getElementById('field-email')
+        : document.getElementById('field-wa');
+      el?.classList.add('error');
+      valid = false;
+    }
+    if (!valid) return;
+
+    const btn = document.getElementById('btn-submit') as HTMLButtonElement;
+    btn.disabled = true;
+    btn.textContent = 'Aguarde…';
+
+    try {
+      const res = await fetch('/api/materials/download', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          material_id: materialId,
+          name,
+          email: activeTab === 'email' ? email : '',
+          phone: activeTab === 'whatsapp' ? phone : '',
+          source: 'pagina-materiais',
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.signedUrl) {
+        window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
+        document.getElementById('modal-form-area')!.style.display = 'none';
+        document.getElementById('modal-success')!.style.display = '';
+        setTimeout(closeModal, 3500);
+      } else {
+        alert(data.error ?? 'Erro ao processar. Tente novamente.');
+        btn.disabled = false;
+        btn.textContent = 'Baixar agora — grátis';
+      }
+    } catch {
+      alert('Erro de conexão. Verifique sua internet e tente novamente.');
+      btn.disabled = false;
+      btn.textContent = 'Baixar agora — grátis';
+    }
+  });
+</script>
+</body>
+</html>
