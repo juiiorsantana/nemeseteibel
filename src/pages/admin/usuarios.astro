@@ -134,6 +134,28 @@ const admins = (usersData?.users ?? [])
 
     .btn-logout:hover { background: rgba(245, 240, 232, 0.1); }
 
+    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; color: #F5F0E8; }
+    .hamburger svg { display: block; }
+    .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(58,52,38,0.5); z-index: 199; }
+    .mobile-overlay.open { display: block; }
+    .mobile-drawer { display: none; position: fixed; top: 0; right: 0; width: 260px; height: 100%; background: #3A3426; z-index: 200; padding: 1.25rem; transform: translateX(100%); transition: transform 0.3s ease; overflow-y: auto; }
+    .mobile-drawer.open { display: block; transform: translateX(0); }
+    .drawer-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(245,240,232,0.1); }
+    .drawer-header span { font-size: 0.8rem; color: rgba(245,240,232,0.65); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 170px; }
+    .drawer-close { background: none; border: none; color: #F5F0E8; cursor: pointer; padding: 0.25rem; }
+    .drawer-nav { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 1.5rem; }
+    .drawer-nav a { font-size: 0.9rem; color: rgba(245,240,232,0.7); text-decoration: none; padding: 0.7rem 0.75rem; border-radius: 8px; transition: all 0.2s; }
+    .drawer-nav a:hover { color: #F5F0E8; background: rgba(245,240,232,0.08); }
+    .drawer-nav a.active { color: #F5F0E8; background: rgba(245,240,232,0.12); }
+    .drawer-logout .btn-logout { width: 100%; text-align: center; padding: 0.6rem; }
+
+    @media (max-width: 768px) {
+      .topbar { padding: 0 1rem; }
+      .topbar-nav { display: none; }
+      .topbar-right { display: none; }
+      .hamburger { display: block; }
+    }
+
     .main {
       max-width: 860px;
       margin: 0 auto;
@@ -313,6 +335,40 @@ const admins = (usersData?.users ?? [])
       color: #9A9285;
       font-size: 0.875rem;
     }
+
+    @media (max-width: 768px) {
+      .main { padding: 1.25rem 1rem; }
+      .page-header h1 { font-size: 1.35rem; }
+      .card-body { padding: 1rem; }
+
+      table, thead, tbody, th, td, tr { display: block; }
+      thead { display: none; }
+      tbody tr {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(58,52,38,0.1);
+      }
+      tbody tr:last-child { border-bottom: none; }
+      tbody td {
+        padding: 0.2rem 0;
+        border-bottom: none;
+        font-size: 0.85rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      tbody td::before {
+        content: attr(data-label);
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #9A9285;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        min-width: 80px;
+        flex-shrink: 0;
+      }
+
+      .btn-primary { width: 100%; text-align: center; }
+    }
   </style>
 </head>
 <body>
@@ -332,7 +388,31 @@ const admins = (usersData?.users ?? [])
         <button type="submit" class="btn-logout">Sair</button>
       </form>
     </div>
+    <button class="hamburger" id="hamburger-btn" aria-label="Abrir menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
   </header>
+
+  <div class="mobile-overlay" id="mobile-overlay"></div>
+  <div class="mobile-drawer" id="mobile-drawer">
+    <div class="drawer-header">
+      <span>{user?.email}</span>
+      <button class="drawer-close" id="drawer-close" aria-label="Fechar menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <nav class="drawer-nav">
+      <a href="/admin">Dashboard</a>
+      <a href="/admin/materiais">Materiais</a>
+      <a href="/admin/formularios">Formulários</a>
+      <a href="/admin/usuarios" class="active">Usuários</a>
+    </nav>
+    <div class="drawer-logout">
+      <form method="POST" action="/api/auth/logout">
+        <button type="submit" class="btn-logout">Sair</button>
+      </form>
+    </div>
+  </div>
 
   <main class="main">
     <div class="page-header">
@@ -400,16 +480,16 @@ const admins = (usersData?.users ?? [])
           <tbody>
             {admins.map((a) => (
               <tr>
-                <td class="td-email">
+                <td class="td-email" data-label="E-mail">
                   {a.email}
                   {a.email === user?.email && <span class="badge-you">você</span>}
                 </td>
-                <td class="td-date">
+                <td class="td-date" data-label="Cadastrado">
                   {a.createdAt
                     ? new Date(a.createdAt).toLocaleDateString('pt-BR')
                     : '—'}
                 </td>
-                <td>
+                <td data-label="">
                   <form method="POST" onsubmit="return confirm('Remover este administrador?')">
                     <input type="hidden" name="action" value="delete" />
                     <input type="hidden" name="id" value={a.id} />
@@ -430,5 +510,26 @@ const admins = (usersData?.users ?? [])
       )}
     </div>
   </main>
+
+  <script>
+    const hamburger = document.getElementById('hamburger-btn');
+    const overlay = document.getElementById('mobile-overlay');
+    const drawer = document.getElementById('mobile-drawer');
+    const closeBtn = document.getElementById('drawer-close');
+
+    function openDrawer() {
+      overlay?.classList.add('open');
+      drawer?.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+      overlay?.classList.remove('open');
+      drawer?.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    hamburger?.addEventListener('click', openDrawer);
+    overlay?.addEventListener('click', closeDrawer);
+    closeBtn?.addEventListener('click', closeDrawer);
+  </script>
 </body>
 </html>

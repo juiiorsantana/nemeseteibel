@@ -76,6 +76,28 @@ function formatBytes(bytes: number | null): string {
     .btn-logout { background: transparent; border: 1px solid rgba(245,240,232,0.3); color: #F5F0E8; padding: 0.4rem 0.875rem; border-radius: 50px; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
     .btn-logout:hover { background: rgba(245,240,232,0.1); }
 
+    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; color: #F5F0E8; }
+    .hamburger svg { display: block; }
+    .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(58,52,38,0.5); z-index: 199; }
+    .mobile-overlay.open { display: block; }
+    .mobile-drawer { display: none; position: fixed; top: 0; right: 0; width: 260px; height: 100%; background: #3A3426; z-index: 200; padding: 1.25rem; transform: translateX(100%); transition: transform 0.3s ease; overflow-y: auto; }
+    .mobile-drawer.open { display: block; transform: translateX(0); }
+    .drawer-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(245,240,232,0.1); }
+    .drawer-header span { font-size: 0.8rem; color: rgba(245,240,232,0.65); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 170px; }
+    .drawer-close { background: none; border: none; color: #F5F0E8; cursor: pointer; padding: 0.25rem; }
+    .drawer-nav { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 1.5rem; }
+    .drawer-nav a { font-size: 0.9rem; color: rgba(245,240,232,0.7); text-decoration: none; padding: 0.7rem 0.75rem; border-radius: 8px; transition: all 0.2s; }
+    .drawer-nav a:hover { color: #F5F0E8; background: rgba(245,240,232,0.08); }
+    .drawer-nav a.active { color: #F5F0E8; background: rgba(245,240,232,0.12); }
+    .drawer-logout .btn-logout { width: 100%; text-align: center; padding: 0.6rem; }
+
+    @media (max-width: 768px) {
+      .topbar { padding: 0 1rem; }
+      .topbar-nav { display: none; }
+      .topbar-right { display: none; }
+      .hamburger { display: block; }
+    }
+
     .main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
 
     .page-header {
@@ -208,6 +230,48 @@ function formatBytes(bytes: number | null): string {
     .alert { padding: 0.75rem 1rem; border-radius: 10px; font-size: 0.875rem; margin-bottom: 1.5rem; }
     .alert-success { background: #f0fdf0; border: 1px solid #86efac; color: #166534; }
     .alert-error { background: #fff0f0; border: 1px solid #f5c0c0; color: #c0392b; }
+
+    @media (max-width: 768px) {
+      .main { padding: 1.25rem 1rem; }
+      .page-header-text h1 { font-size: 1.35rem; }
+
+      .table-card table,
+      .table-card thead,
+      .table-card tbody,
+      .table-card th,
+      .table-card td,
+      .table-card tr { display: block; }
+      .table-card thead { display: none; }
+      .table-card tbody tr {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(58,52,38,0.1);
+      }
+      .table-card tbody tr:last-child { border-bottom: none; }
+      .table-card tbody td {
+        padding: 0.25rem 0;
+        border-bottom: none;
+        font-size: 0.85rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .table-card tbody td::before {
+        content: attr(data-label);
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #9A9285;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        min-width: 80px;
+        flex-shrink: 0;
+      }
+      .actions { justify-content: flex-start; margin-top: 0.5rem; }
+      .td-title { max-width: 100%; }
+      .modal { max-width: 100%; border-radius: 14px; }
+      .modal-head { padding: 1rem 1.25rem; }
+      .modal-body { padding: 1rem 1.25rem; }
+      .modal-foot { padding: 0.75rem 1.25rem; flex-wrap: wrap; }
+    }
   </style>
 </head>
 <body>
@@ -227,7 +291,31 @@ function formatBytes(bytes: number | null): string {
         <button type="submit" class="btn-logout">Sair</button>
       </form>
     </div>
+    <button class="hamburger" id="hamburger-btn" aria-label="Abrir menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
   </header>
+
+  <div class="mobile-overlay" id="mobile-overlay"></div>
+  <div class="mobile-drawer" id="mobile-drawer">
+    <div class="drawer-header">
+      <span>{user?.email}</span>
+      <button class="drawer-close" id="drawer-close" aria-label="Fechar menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <nav class="drawer-nav">
+      <a href="/admin">Dashboard</a>
+      <a href="/admin/materiais" class="active">Materiais</a>
+      <a href="/admin/formularios">Formulários</a>
+      <a href="/admin/usuarios">Usuários</a>
+    </nav>
+    <div class="drawer-logout">
+      <form method="POST" action="/api/auth/logout">
+        <button type="submit" class="btn-logout">Sair</button>
+      </form>
+    </div>
+  </div>
 
   <!-- Modal de upload -->
   <div class="modal-overlay" id="upload-modal">
@@ -321,17 +409,17 @@ function formatBytes(bytes: number | null): string {
           <tbody>
             {list.map((m) => (
               <tr id={`row-${m.id}`}>
-                <td class="td-title">{m.title}</td>
-                <td>{m.category ?? '—'}</td>
-                <td class="td-file">{m.file_name}<br />{formatBytes(m.file_size)}</td>
-                <td class="td-num">{m.download_count}</td>
-                <td>
+                <td class="td-title" data-label="Título">{m.title}</td>
+                <td data-label="Categoria">{m.category ?? '—'}</td>
+                <td class="td-file" data-label="Arquivo">{m.file_name}<br />{formatBytes(m.file_size)}</td>
+                <td class="td-num" data-label="Downloads">{m.download_count}</td>
+                <td data-label="Status">
                   <span class={m.is_active ? 'badge-active' : 'badge-inactive'} id={`badge-${m.id}`}>
                     {m.is_active ? 'Ativo' : 'Inativo'}
                   </span>
                 </td>
-                <td class="td-date">{new Date(m.created_at).toLocaleDateString('pt-BR')}</td>
-                <td>
+                <td class="td-date" data-label="Data">{new Date(m.created_at).toLocaleDateString('pt-BR')}</td>
+                <td data-label="Ações">
                   <div class="actions">
                     <button
                       class="btn-copy"
@@ -390,11 +478,11 @@ function formatBytes(bytes: number | null): string {
           <tbody>
             {downloads.map((d) => (
               <tr>
-                <td style="font-weight:600">{d.name}</td>
-                <td style="font-size:0.82rem;color:#8C7355">{d.email ?? d.phone ?? '—'}</td>
-                <td style="font-size:0.82rem">{d.materials?.title ?? '—'}</td>
-                <td style="font-size:0.78rem;color:#9A9285">{d.source ?? '—'}</td>
-                <td class="td-date">{new Date(d.created_at).toLocaleDateString('pt-BR')}</td>
+                <td style="font-weight:600" data-label="Nome">{d.name}</td>
+                <td style="font-size:0.82rem;color:#8C7355" data-label="Contato">{d.email ?? d.phone ?? '—'}</td>
+                <td style="font-size:0.82rem" data-label="Material">{d.materials?.title ?? '—'}</td>
+                <td style="font-size:0.78rem;color:#9A9285" data-label="Origem">{d.source ?? '—'}</td>
+                <td class="td-date" data-label="Data">{new Date(d.created_at).toLocaleDateString('pt-BR')}</td>
               </tr>
             ))}
           </tbody>
@@ -554,5 +642,25 @@ function formatBytes(bytes: number | null): string {
       btn.disabled = false;
     }
   }
+
+  // Mobile drawer
+  const hamburger = document.getElementById('hamburger-btn');
+  const mobileOverlay = document.getElementById('mobile-overlay');
+  const mobileDrawer = document.getElementById('mobile-drawer');
+  const drawerCloseBtn = document.getElementById('drawer-close');
+
+  function openDrawer() {
+    mobileOverlay?.classList.add('open');
+    mobileDrawer?.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawerMenu() {
+    mobileOverlay?.classList.remove('open');
+    mobileDrawer?.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  hamburger?.addEventListener('click', openDrawer);
+  mobileOverlay?.addEventListener('click', closeDrawerMenu);
+  drawerCloseBtn?.addEventListener('click', closeDrawerMenu);
 </script>
 </html>
