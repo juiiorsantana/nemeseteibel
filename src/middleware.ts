@@ -19,5 +19,22 @@ export const onRequest = defineMiddleware(async (context, next) => {
     context.locals.user = user;
   }
 
+  if (
+    !pathname.startsWith('/admin') &&
+    !pathname.startsWith('/api') &&
+    pathname !== '/' &&
+    pathname !== '/indisponivel'
+  ) {
+    const { data } = await supabase
+      .from('page_settings')
+      .select('is_active')
+      .eq('slug', pathname)
+      .maybeSingle();
+
+    if (data && !data.is_active) {
+      return context.redirect('/indisponivel');
+    }
+  }
+
   return next();
 });
