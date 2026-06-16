@@ -1,6 +1,7 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import type { AstroCookies } from 'astro';
+import ws from 'ws';
 
 // Astro 4.x AstroCookies does NOT have getAll().
 // getAll() is implemented by parsing the raw Cookie request header.
@@ -37,6 +38,7 @@ export function createSupabaseServerClient(
         });
       },
     },
+    realtime: { transport: ws },
   });
 }
 
@@ -50,5 +52,6 @@ export function createSupabaseAdminClient(): SupabaseClient {
 
   return createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
+    realtime: { transport: ws },
   });
 }
