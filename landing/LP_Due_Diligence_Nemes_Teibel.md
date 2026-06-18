@@ -43,7 +43,7 @@ Due Diligence Rural: descubra os riscos antes de comprar sua fazenda
 ## BLOCO 02 — SUBHEADLINE
 
 ```
-Evite embargos, fraudes e prejuízos milionários com uma investigação jurídica completa antes de assinar qualquer contrato.
+Evite cair em fraudes e ter prejuízos milionários com uma investigação jurídica completa antes de assinar qualquer contrato.
 ```
 
 ---
