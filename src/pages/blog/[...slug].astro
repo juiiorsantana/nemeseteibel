@@ -1,18 +1,19 @@
 ---
+export const prerender = false;
+
 // src/pages/blog/[...slug].astro
 // Página individual de artigo
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 
-export async function getStaticPaths() {
-  const posts = await getCollection('blog');
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props:  { post },
-  }));
+const slug = Astro.params.slug;
+const posts = await getCollection('blog');
+const post = posts.find((p) => p.slug === slug);
+
+if (!post) {
+  return Astro.redirect('/blog/');
 }
 
-const { post } = Astro.props;
 const { Content } = await post.render();
 
 const av = post.data.author === 'Manuela Nemes'

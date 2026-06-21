@@ -19,16 +19,20 @@ export const onRequest = defineMiddleware(async (context, next) => {
     context.locals.user = user;
   }
 
+  const normalizedPath = pathname.length > 1 && pathname.endsWith('/')
+    ? pathname.slice(0, -1)
+    : pathname;
+
   if (
-    !pathname.startsWith('/admin') &&
-    !pathname.startsWith('/api') &&
-    pathname !== '/' &&
-    pathname !== '/indisponivel'
+    !normalizedPath.startsWith('/admin') &&
+    !normalizedPath.startsWith('/api') &&
+    normalizedPath !== '/' &&
+    normalizedPath !== '/indisponivel'
   ) {
     const { data } = await supabase
       .from('page_settings')
       .select('is_active')
-      .eq('slug', pathname)
+      .eq('slug', normalizedPath)
       .maybeSingle();
 
     if (data && !data.is_active) {

@@ -41,13 +41,14 @@ const blogPosts = await getCollection('blog');
 blogPosts
   .sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime())
   .forEach((p) => {
+    const blogSlug = `/blog/${p.slug}`;
     allItems.push({
       title: p.data.title,
-      slug: `/blog/${p.slug}`,
+      slug: blogSlug,
       type: 'Artigo',
       description: `${p.data.tag} — por ${p.data.author} (${p.data.date})`,
-      controllable: false,
-      isActive: true,
+      controllable: true,
+      isActive: statusMap[blogSlug] ?? true,
     });
   });
 

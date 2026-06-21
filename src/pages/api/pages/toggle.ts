@@ -19,8 +19,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
   const { error } = await locals.supabase
     .from('page_settings')
-    .update({ is_active: body.is_active, updated_at: new Date().toISOString() })
-    .eq('slug', body.slug);
+    .upsert(
+      { slug: body.slug, is_active: body.is_active, updated_at: new Date().toISOString() },
+      { onConflict: 'slug' },
+    );
 
   if (error) return json({ error: error.message }, 500);
 

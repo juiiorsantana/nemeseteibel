@@ -1,13 +1,26 @@
 ---
+export const prerender = false;
+
 // src/pages/blog/index.astro
 // Listagem de todos os artigos do blog
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 
+const supabase = Astro.locals.supabase;
 const allPosts = await getCollection('blog');
-const posts = allPosts.sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+
+const { data: inactivePages } = await supabase
+  .from('page_settings')
+  .select('slug')
+  .eq('is_active', false);
+
+const inactiveSlugs = new Set(
+  (inactivePages ?? []).map((p: { slug: string }) => p.slug)
 );
+
+const posts = allPosts
+  .filter((p) => !inactiveSlugs.has(`/blog/${p.slug}`))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 function avatarInfo(author: string) {
   return author === 'Manuela Nemes'
