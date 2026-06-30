@@ -6,78 +6,81 @@ export const prerender = false;
 // Conteúdo jurídico baseado na newsletter "CAR no Estado de Mato Grosso" (out/2025):
 //   • Prazo: Decreto Estadual nº 697/2020 — SEMA-MT analisa o CAR em até 180 dias úteis
 //   • Priorização: art. 20 do Decreto nº 1.031/2017
-import LPLayout from '../layouts/LPLayout.astro';
+import LPLayout from "../layouts/LPLayout.astro";
 
-const WA = 'https://wa.me/556541410010?text=Vim%20pelo%20site!%20Quero%20entender%20a%20situa%C3%A7%C3%A3o%20ambiental%20da%20minha%20propriedade.';
-const WA_PAULA = 'https://wa.me/556541410010?text=Vim%20pelo%20site!%20Gostaria%20de%20falar%20com%20a%20Dra.%20Paula%20Teibel%20sobre%20regulariza%C3%A7%C3%A3o%20ambiental.';
-const WA_MANUELA = 'https://wa.me/556541410010?text=Vim%20pelo%20site!%20Gostaria%20de%20falar%20com%20a%20Dra.%20Manuela%20Nemes%20sobre%20regulariza%C3%A7%C3%A3o%20ambiental.';
+const WA =
+  "https://wa.me/556541410010?text=Vim%20pelo%20site!%20Quero%20entender%20a%20situa%C3%A7%C3%A3o%20ambiental%20da%20minha%20propriedade.";
+const WA_PAULA =
+  "https://wa.me/556541410010?text=Vim%20pelo%20site!%20Gostaria%20de%20falar%20com%20a%20Dra.%20Paula%20Teibel%20sobre%20regulariza%C3%A7%C3%A3o%20ambiental.";
+const WA_MANUELA =
+  "https://wa.me/556541410010?text=Vim%20pelo%20site!%20Gostaria%20de%20falar%20com%20a%20Dra.%20Manuela%20Nemes%20sobre%20regulariza%C3%A7%C3%A3o%20ambiental.";
 
 const problems = [
   {
-    title: 'CAR desatualizado ou mal feito',
-    text: 'Cadastro feito sem acompanhamento técnico, com reserva legal mal delimitada ou área que não bate com a matrícula. Gera pendência que trava crédito rural, venda e financiamento.',
+    title: "CAR desatualizado ou mal feito",
+    text: "Cadastro feito sem acompanhamento técnico, com reserva legal mal delimitada ou área que não bate com a matrícula. Gera pendência que trava crédito rural, venda e financiamento.",
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75" />
     </svg>`,
-    delay: 'reveal-d1',
+    delay: "reveal-d1",
   },
   {
-    title: 'Embargo do IBAMA ou da SEMA',
-    text: 'Tem produtor que comprou terra já embargada sem saber. Enquanto o embargo não é levantado, a área fica com a mão atada — sem uso, sem crédito, sem saída.',
+    title: "Embargo do IBAMA ou da SEMA",
+    text: "Tem produtor que comprou terra já embargada sem saber. Enquanto o embargo não é levantado, a área fica com a mão atada — sem uso, sem crédito, sem saída.",
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
     </svg>`,
-    delay: 'reveal-d2',
+    delay: "reveal-d2",
   },
   {
-    title: 'Reserva legal que existe mas não está reconhecida',
-    text: 'A mata está lá, mas não está averbada na matrícula nem georreferenciada. Parece detalhe — mas impede uma série de coisas na prática.',
+    title: "Reserva legal que existe mas não está reconhecida",
+    text: "A mata está lá, mas não está averbada na matrícula nem georreferenciada. Parece detalhe — mas impede uma série de coisas na prática.",
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" d="M12.75 3.03v.568c0 .334.148.65.405.864l1.068.89c.442.369.535 1.01.216 1.49l-.51.766a2.25 2.25 0 01-1.161.886l-.143.048a1.107 1.107 0 00-.57 1.664c.369.555.169 1.307-.427 1.605L9 13.125l.423 1.059a.956.956 0 01-1.652.928l-.679-.906a1.125 1.125 0 00-1.906.172L4.5 15.75l-.612.153M12.75 3.031a9 9 0 00-8.862 12.872M12.75 3.031a9 9 0 016.69 14.036m0 0l-.177-.529A2.249 2.249 0 0017.128 15H16.5l-.324-.324a1.453 1.453 0 00-2.328.377l-.036.073a1.586 1.586 0 01-.982.816l-.99.282c-.55.157-.894.702-.8 1.267l.073.438c.08.474.49.821.97.821.846 0 1.598.542 1.865 1.345l.215.643" />
     </svg>`,
-    delay: 'reveal-d3',
+    delay: "reveal-d3",
   },
 ];
 
 // art. 20 do Decreto nº 1.031/2017 — casos de prioridade na análise do CAR em MT
 const priorityCases = [
   {
-    title: 'Estatuto do Idoso',
-    text: 'Cadastros de proprietários enquadrados no Estatuto do Idoso têm direito a prioridade na tramitação.',
+    title: "Estatuto do Idoso",
+    text: "Cadastros de proprietários enquadrados no Estatuto do Idoso têm direito a prioridade na tramitação.",
   },
   {
-    title: 'Plano de Exploração Florestal (PEF)',
-    text: 'Propriedades rurais que possuem PEF entram na fila prioritária de análise.',
+    title: "Plano de Exploração Florestal (PEF)",
+    text: "Propriedades rurais que possuem PEF entram na fila prioritária de análise.",
   },
   {
-    title: 'Inconsistências na APF-Rural',
-    text: 'Pendências que travam a emissão da Autorização Provisória de Funcionamento Rural (APF-Rural).',
+    title: "Inconsistências na APF-Rural",
+    text: "Pendências que travam a emissão da Autorização Provisória de Funcionamento Rural (APF-Rural).",
   },
   {
-    title: 'Áreas embargadas',
-    text: 'Imóveis com áreas embargadas têm prioridade para regularização e levantamento do embargo.',
+    title: "Áreas embargadas",
+    text: "Imóveis com áreas embargadas têm prioridade para regularização e levantamento do embargo.",
   },
 ];
 
 // Benefícios da regularização pelo CAR (newsletter — out/2025)
 const benefits = [
   {
-    title: 'Conformidade ambiental',
-    text: 'Evita infrações ambientais, autuações e multas que crescem com o tempo enquanto o passivo não é resolvido.',
+    title: "Conformidade ambiental",
+    text: "Evita infrações ambientais, autuações e multas que crescem com o tempo enquanto o passivo não é resolvido.",
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>`,
   },
   {
-    title: 'Valorização da propriedade',
-    text: 'Imóveis rurais regularizados têm melhor aceitação no mercado imobiliário e em programas de incentivo à sustentabilidade.',
+    title: "Valorização da propriedade",
+    text: "Imóveis rurais regularizados têm melhor aceitação no mercado imobiliário e em programas de incentivo à sustentabilidade.",
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
     </svg>`,
   },
   {
-    title: 'Acesso a crédito rural',
-    text: 'Instituições financeiras exigem a regularização ambiental para conceder financiamentos e liberar crédito rural.',
+    title: "Acesso a crédito rural",
+    text: "Instituições financeiras exigem a regularização ambiental para conceder financiamentos e liberar crédito rural.",
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
     </svg>`,
@@ -87,14 +90,15 @@ const benefits = [
 
 <LPLayout
   title="Regularização Ambiental Rural em MT | Nemes & Teibel Advogados"
-  description="CAR irregular, embargo ou reserva legal não averbada em MT? A SEMA-MT tem 180 dias úteis para analisar seu CAR. Resolva seu passivo com especialistas em Direito Ambiental Rural."
+  description="CAR irregular, embargo ou reserva legal não averbada em MT? A SEMA-MT tem 180 dias para analisar seu CAR. Resolva seu passivo com especialistas em Direito Ambiental Rural."
 >
-
   <!-- ────────────────────────────────────────────────────────────── -->
   <!-- BLOCOS 01 + 02 + 03 — Hero                                     -->
   <!-- ────────────────────────────────────────────────────────────── -->
-  <section class="lp-hero" aria-label="Regularização Ambiental Rural — apresentação">
-
+  <section
+    class="lp-hero"
+    aria-label="Regularização Ambiental Rural — apresentação"
+  >
     <img
       class="lp-hero-bg"
       src="/img/bg1.avif"
@@ -110,18 +114,23 @@ const benefits = [
     <div class="lp-hero-content">
       <img
         src="/img/logo.avif"
-        alt="Nemes &amp; Teibel Advogados"
+        alt="Nemes & Teibel Advogados"
         class="lp-hero-logo reveal"
         width="180"
         height="50"
         decoding="async"
       />
-      <span class="lp-hero-eyebrow reveal reveal-d1">Cadastro Ambiental Rural</span>
+      <span class="lp-hero-eyebrow reveal reveal-d1"
+        >Cadastro Ambiental Rural</span
+      >
       <h1 class="lp-hero-h1 reveal reveal-d2">
         A importância da regularização ambiental do seu imóvel rural
       </h1>
       <p class="lp-hero-sub reveal reveal-d3">
-        Seu CAR pode estar travando seu crédito — sem que você saiba. Embargo, reserva legal não averbada ou cadastro mal feito impedem venda, financiamento e transferência. Entenda seus direitos e os prazos que a Administração deve cumprir.
+        Seu CAR pode estar travando seu crédito — sem que você saiba. Embargo,
+        reserva legal não averbada ou cadastro mal feito impedem venda,
+        financiamento e transferência. Entenda seus direitos e os prazos que a
+        Administração deve cumprir.
       </p>
       <div class="lp-hero-cta-group reveal reveal-d4">
         <a
@@ -132,20 +141,39 @@ const benefits = [
           aria-label="Quero regularizar minha situação ambiental — WhatsApp"
         >
           <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-            <path fill="currentColor" d="M12 0C5.373 0 0 5.373 0 12c0 2.139.563 4.14 1.541 5.876L.057 23.887l6.156-1.616A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-4.992-1.363l-.358-.213-3.716.975.993-3.63-.234-.373A9.77 9.77 0 012.182 12c0-5.42 4.398-9.818 9.818-9.818 5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/>
+            <path
+              fill="currentColor"
+              d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"
+            ></path>
+            <path
+              fill="currentColor"
+              d="M12 0C5.373 0 0 5.373 0 12c0 2.139.563 4.14 1.541 5.876L.057 23.887l6.156-1.616A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-4.992-1.363l-.358-.213-3.716.975.993-3.63-.234-.373A9.77 9.77 0 012.182 12c0-5.42 4.398-9.818 9.818-9.818 5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"
+            ></path>
           </svg>
           Quero regularizar minha situação
         </a>
-        <a href="#lp-prazos" class="btn btn-outline-light lp-hero-cta-secondary">
+        <a
+          href="#lp-prazos"
+          class="btn btn-outline-light lp-hero-cta-secondary"
+        >
           Conheça os prazos
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3"></path>
           </svg>
         </a>
       </div>
     </div>
-
   </section>
 
   <!-- ────────────────────────────────────────────────────────────── -->
@@ -153,26 +181,19 @@ const benefits = [
   <!-- ────────────────────────────────────────────────────────────── -->
   <section class="lp-creds" aria-label="Credenciais da especialista">
     <div class="lp-creds-inner">
-
       <div class="lp-cred reveal reveal-d1">
         <span class="lp-cred-check" aria-hidden="true">✔</span>
-        <span>Ex-servidora do INTERMAT — conhece os órgãos ambientais de MT por dentro</span>
+        <span
+          >+ de 10 anos com atuação exclusiva em Agrário, Fundiário e Ambiental</span
+        >
       </div>
 
       <div class="lp-cred-divider" aria-hidden="true"></div>
 
       <div class="lp-cred reveal reveal-d2">
         <span class="lp-cred-check" aria-hidden="true">✔</span>
-        <span>+20 anos em Direito Agrário, Fundiário e Ambiental</span>
+        <span>Advogadas especialistas em Agrário e Ambiental</span>
       </div>
-
-      <div class="lp-cred-divider" aria-hidden="true"></div>
-
-      <div class="lp-cred reveal reveal-d3">
-        <span class="lp-cred-check" aria-hidden="true">✔</span>
-        <span>Especialização em Direito Minerário e Ambiental — PUC Minas</span>
-      </div>
-
     </div>
   </section>
 
@@ -183,24 +204,38 @@ const benefits = [
     <div class="container lp-what-inner">
       <div class="lp-what-text reveal">
         <span class="lp-eyebrow">Antes de tudo</span>
-        <h2 id="lp-what-heading" class="section-title">Afinal, o que é o CAR?</h2>
+        <h2 id="lp-what-heading" class="section-title">
+          Afinal, o que é o CAR?
+        </h2>
         <p class="lp-what-p">
           O <strong>Cadastro Ambiental Rural (CAR)</strong> é um registro eletrônico
-          <strong>obrigatório</strong> para todas as propriedades rurais do Brasil. Ele integra
-          as informações ambientais do imóvel — áreas de preservação permanente (APPs), reserva
-          legal e outros dados — para assegurar a regularização perante a legislação ambiental.
+          <strong>obrigatório</strong> para todas as propriedades rurais do Brasil.
+          Ele integra as informações ambientais do imóvel — áreas de preservação permanente
+          (APPs), reserva legal e outros dados — para assegurar a regularização perante
+          a legislação ambiental.
         </p>
         <p class="lp-what-p">
-          Em Mato Grosso, quem analisa e valida o CAR é a <strong>SEMA-MT</strong>. Um cadastro com
-          inconsistências não é só burocracia: ele trava crédito, venda e financiamento — e o passivo
-          só aumenta enquanto não é resolvido.
+          Em Mato Grosso, quem analisa e valida o CAR é a <strong
+            >SEMA-MT</strong
+          >. Um cadastro com inconsistências não é só burocracia: ele trava
+          crédito, venda e financiamento — e o passivo só aumenta enquanto não é
+          resolvido.
         </p>
       </div>
-      <ul class="lp-what-list reveal reveal-d1" aria-label="O que o CAR integra">
-        <li><span aria-hidden="true">●</span> Áreas de Preservação Permanente (APPs)</li>
+      <ul
+        class="lp-what-list reveal reveal-d1"
+        aria-label="O que o CAR integra"
+      >
+        <li>
+          <span aria-hidden="true">●</span> Áreas de Preservação Permanente (APPs)
+        </li>
         <li><span aria-hidden="true">●</span> Reserva legal da propriedade</li>
-        <li><span aria-hidden="true">●</span> Limites e georreferenciamento do imóvel</li>
-        <li><span aria-hidden="true">●</span> Embargos e restrições ambientais ativas</li>
+        <li>
+          <span aria-hidden="true">●</span> Limites e georreferenciamento do imóvel
+        </li>
+        <li>
+          <span aria-hidden="true">●</span> Embargos e restrições ambientais ativas
+        </li>
       </ul>
     </div>
   </section>
@@ -210,7 +245,6 @@ const benefits = [
   <!-- ────────────────────────────────────────────────────────────── -->
   <section class="lp-problems" aria-labelledby="lp-problems-heading">
     <div class="container">
-
       <header class="lp-section-header">
         <h2 id="lp-problems-heading" class="section-title reveal">
           Seu imóvel tem algum desses problemas?
@@ -218,78 +252,93 @@ const benefits = [
       </header>
 
       <div class="lp-problems-grid">
-        {problems.map((p) => (
-          <article class={`lp-problem-card reveal ${p.delay}`}>
-            <div class="lp-problem-icon" set:html={p.icon} />
-            <h3 class="lp-problem-title">{p.title}</h3>
-            <p class="lp-problem-text">{p.text}</p>
-          </article>
-        ))}
+        {
+          problems.map((p) => (
+            <article class={`lp-problem-card reveal ${p.delay}`}>
+              <div class="lp-problem-icon" set:html={p.icon} />
+              <h3 class="lp-problem-title">{p.title}</h3>
+              <p class="lp-problem-text">{p.text}</p>
+            </article>
+          ))
+        }
       </div>
-
     </div>
   </section>
 
   <!-- ────────────────────────────────────────────────────────────── -->
   <!-- BLOCO 05B — Prazo Legal (destaque: 180 dias úteis)             -->
   <!-- ────────────────────────────────────────────────────────────── -->
-  <section id="lp-prazos" class="lp-deadline" aria-labelledby="lp-deadline-heading">
+  <section
+    id="lp-prazos"
+    class="lp-deadline"
+    aria-labelledby="lp-deadline-heading"
+  >
     <div class="lp-deadline-inner">
-
       <div class="lp-deadline-text reveal">
-        <span class="lp-eyebrow lp-eyebrow-gold">Prazo legal para a análise</span>
+        <span class="lp-eyebrow lp-eyebrow-gold"
+          >Prazo legal para a análise</span
+        >
         <h2 id="lp-deadline-heading" class="lp-deadline-title">
           A Administração tem prazo para analisar o seu CAR
         </h2>
         <p class="lp-deadline-p">
-          O <strong>Decreto Estadual nº 697/2020</strong> determina que a SEMA-MT deve concluir a
-          análise do CAR em até <strong>180 dias úteis</strong>, contados a partir do protocolo da
-          inscrição.
+          O <strong>Decreto Estadual nº 697/2020</strong> determina que a SEMA-MT
+          deve concluir a análise do CAR em até <strong>180 dias</strong>,
+          contados a partir do protocolo da inscrição.
         </p>
         <p class="lp-deadline-p">
-          Na prática, esse prazo é muitas vezes descumprido — e o produtor fica meses, às vezes anos,
-          com o cadastro "pendente", sem conseguir crédito nem regularizar a propriedade. Quando o
-          prazo não é cumprido, existem caminhos administrativos e judiciais para exigir a análise.
+          Na prática, esse prazo é muitas vezes descumprido — e o produtor fica
+          meses, às vezes anos, com o cadastro "pendente", sem conseguir crédito
+          nem regularizar a propriedade. Quando o prazo não é cumprido, existem
+          caminhos administrativos e judiciais para exigir a análise.
         </p>
       </div>
 
       <div class="lp-deadline-card reveal reveal-d2">
         <span class="lp-deadline-num">180</span>
-        <span class="lp-deadline-unit">dias úteis</span>
-        <span class="lp-deadline-law">Prazo da SEMA-MT — Decreto Estadual nº 697/2020</span>
+        <span class="lp-deadline-unit">dias</span>
+        <span class="lp-deadline-law"
+          >Prazo da SEMA-MT — Decreto Estadual nº 697/2020</span
+        >
       </div>
-
     </div>
   </section>
 
   <!-- ────────────────────────────────────────────────────────────── -->
   <!-- BLOCO 05C — Casos de Priorização (Decreto 1.031/2017)         -->
   <!-- ────────────────────────────────────────────────────────────── -->
-  <section id="lp-prioridade" class="lp-priority" aria-labelledby="lp-priority-heading">
+  <section
+    id="lp-prioridade"
+    class="lp-priority"
+    aria-labelledby="lp-priority-heading"
+  >
     <div class="container">
-
       <header class="lp-section-header">
         <span class="lp-eyebrow reveal">Causas de prioridade</span>
         <h2 id="lp-priority-heading" class="section-title reveal reveal-d1">
           Seu caso pode ter prioridade na análise
         </h2>
         <p class="lp-priority-intro reveal reveal-d2">
-          A distribuição dos cadastros segue ordem cronológica, prioridade e complexidade. Mas o
-          <strong>artigo 20 do Decreto nº 1.031/2017</strong> prevê prioridade para casos específicos —
-          solicitada mediante justificativa:
+          A distribuição dos cadastros segue ordem cronológica, prioridade e
+          complexidade. Mas o
+          <strong>artigo 20 do Decreto nº 1.031/2017</strong> prevê prioridade para
+          casos específicos — solicitada mediante justificativa:
         </p>
       </header>
 
       <div class="lp-priority-grid">
-        {priorityCases.map((c, i) => (
-          <article class={`lp-priority-card reveal reveal-d${(i % 4) + 1}`}>
-            <span class="lp-priority-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-            <h3 class="lp-priority-title">{c.title}</h3>
-            <p class="lp-priority-text">{c.text}</p>
-          </article>
-        ))}
+        {
+          priorityCases.map((c, i) => (
+            <article class={`lp-priority-card reveal reveal-d${(i % 4) + 1}`}>
+              <span class="lp-priority-num" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <h3 class="lp-priority-title">{c.title}</h3>
+              <p class="lp-priority-text">{c.text}</p>
+            </article>
+          ))
+        }
       </div>
-
     </div>
   </section>
 
@@ -298,26 +347,27 @@ const benefits = [
   <!-- ────────────────────────────────────────────────────────────── -->
   <section class="lp-benefits" aria-labelledby="lp-benefits-heading">
     <div class="container">
-
       <header class="lp-section-header">
         <h2 id="lp-benefits-heading" class="section-title reveal">
           O que você ganha ao regularizar
         </h2>
         <p class="lp-benefits-intro reveal reveal-d1">
-          Manter o CAR em conformidade com os requisitos legais traz vantagens concretas para o produtor:
+          Manter o CAR em conformidade com os requisitos legais traz vantagens
+          concretas para o produtor:
         </p>
       </header>
 
       <div class="lp-benefits-grid">
-        {benefits.map((b, i) => (
-          <article class={`lp-benefit-card reveal reveal-d${i + 1}`}>
-            <div class="lp-benefit-icon" set:html={b.icon} />
-            <h3 class="lp-benefit-title">{b.title}</h3>
-            <p class="lp-benefit-text">{b.text}</p>
-          </article>
-        ))}
+        {
+          benefits.map((b, i) => (
+            <article class={`lp-benefit-card reveal reveal-d${i + 1}`}>
+              <div class="lp-benefit-icon" set:html={b.icon} />
+              <h3 class="lp-benefit-title">{b.title}</h3>
+              <p class="lp-benefit-text">{b.text}</p>
+            </article>
+          ))
+        }
       </div>
-
     </div>
   </section>
 
@@ -326,13 +376,23 @@ const benefits = [
   <!-- ────────────────────────────────────────────────────────────── -->
   <section class="lp-social" aria-label="Entenda o tema em vídeo">
     <div class="lp-social-inner">
-
       <!-- Coluna esquerda: frase de impacto -->
       <div class="lp-social-text">
-
         <div class="lp-social-badge reveal">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
           </svg>
           No nosso Instagram
         </div>
@@ -343,12 +403,16 @@ const benefits = [
         </blockquote>
 
         <p class="lp-social-sub reveal reveal-d2">
-          Multa sobre multa, restrição sobre restrição. Quanto antes você entender o que está
-          irregular, mais fácil e mais barato fica de resolver. Assista ao vídeo ao lado e entenda
-          como funciona a regularização ambiental do imóvel rural.
+          Multa sobre multa, restrição sobre restrição. Quanto antes você
+          entender o que está irregular, mais fácil e mais barato fica de
+          resolver. Assista ao vídeo ao lado e entenda como funciona a
+          regularização ambiental do imóvel rural.
         </p>
 
-        <div class="lp-social-stats reveal reveal-d3" aria-label="Números do escritório">
+        <div
+          class="lp-social-stats reveal reveal-d3"
+          aria-label="Números do escritório"
+        >
           <div class="lp-stat">
             <span class="lp-stat-num">20+</span>
             <span class="lp-stat-label">anos em Direito Ambiental</span>
@@ -364,7 +428,6 @@ const benefits = [
             <span class="lp-stat-label">foco no campo</span>
           </div>
         </div>
-
       </div>
 
       <!-- Coluna direita: vídeo Instagram (Reel) -->
@@ -374,11 +437,11 @@ const benefits = [
             class="instagram-media"
             data-instgrm-permalink="https://www.instagram.com/reel/DRc5ibwAdg0/?utm_source=ig_embed&utm_campaign=loading"
             data-instgrm-version="14"
-          ></blockquote>
+          >
+          </blockquote>
           <script async src="https://www.instagram.com/embed.js"></script>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -386,10 +449,8 @@ const benefits = [
   <!-- BLOCO 07 — Quem vai te atender                                 -->
   <!-- ────────────────────────────────────────────────────────────── -->
   <section class="lp-expert" aria-label="Sobre as advogadas especialistas">
-
     <!-- Paula Teibel — foto à esquerda -->
     <div class="container lp-expert-inner">
-
       <div class="lp-expert-photo-wrap reveal">
         <img
           src="/img/paula.avif"
@@ -403,9 +464,15 @@ const benefits = [
       <div class="lp-expert-bio reveal reveal-d1">
         <p class="lp-expert-label">Quem vai te atender</p>
         <h2 class="lp-expert-name">Paula Teibel</h2>
-        <p class="lp-expert-role">Advogada Especialista em Direito Ambiental e Fundiário</p>
+        <p class="lp-expert-role">
+          Advogada Especialista em Direito Ambiental e Fundiário
+        </p>
         <p class="lp-expert-text">
-          Mais de 20 anos em Direito Agrário, Fundiário e Ambiental. Ex-servidora do INTERMAT e especialista em Direito Minerário e Ambiental pela PUC Minas. Conhece os órgãos ambientais de MT por dentro e sabe quando resolver o embargo na via administrativa ou judicial.
+          Mais de 20 anos em Direito Agrário, Fundiário e Ambiental.
+          Ex-servidora do INTERMAT e especialista em Direito Minerário e
+          Ambiental pela PUC Minas. Conhece os órgãos ambientais de MT por
+          dentro e sabe quando resolver o embargo na via administrativa ou
+          judicial.
         </p>
         <a
           href={WA_PAULA}
@@ -415,26 +482,36 @@ const benefits = [
           aria-label="Falar com Paula Teibel pelo WhatsApp"
         >
           <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-            <path fill="currentColor" d="M12 0C5.373 0 0 5.373 0 12c0 2.139.563 4.14 1.541 5.876L.057 23.887l6.156-1.616A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-4.992-1.363l-.358-.213-3.716.975.993-3.63-.234-.373A9.77 9.77 0 012.182 12c0-5.42 4.398-9.818 9.818-9.818 5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/>
+            <path
+              fill="currentColor"
+              d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"
+            ></path>
+            <path
+              fill="currentColor"
+              d="M12 0C5.373 0 0 5.373 0 12c0 2.139.563 4.14 1.541 5.876L.057 23.887l6.156-1.616A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-4.992-1.363l-.358-.213-3.716.975.993-3.63-.234-.373A9.77 9.77 0 012.182 12c0-5.42 4.398-9.818 9.818-9.818 5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"
+            ></path>
           </svg>
           Falar com Paula Teibel
         </a>
       </div>
-
     </div>
 
     <div class="lp-expert-sep" aria-hidden="true"></div>
 
     <!-- Manuela Nemes — foto à direita -->
     <div class="container lp-expert-inner lp-expert-inner--reverse">
-
       <div class="lp-expert-bio reveal reveal-d1">
         <p class="lp-expert-label">Também no escritório</p>
         <h2 class="lp-expert-name">Manuela Nemes</h2>
-        <p class="lp-expert-role">Advogada Especialista em Direito Agrário e Minerário</p>
+        <p class="lp-expert-role">
+          Advogada Especialista em Direito Agrário e Minerário
+        </p>
         <p class="lp-expert-text">
-          Mais de 15 anos em Direito Agrário, Fundiário e do Agronegócio. Pós-graduada pela FMP/RS e especialista em Direito da Mineração. Atua em consultoria preventiva, regularização fundiária e demandas ambientais. Vice-Presidente da Comissão de Assuntos Fundiários da OAB/MT.
+          Mais de 15 anos em Direito Agrário, Fundiário e do Agronegócio.
+          Pós-graduada pela FMP/RS e especialista em Direito da Mineração. Atua
+          em consultoria preventiva, regularização fundiária e demandas
+          ambientais. Vice-Presidente da Comissão de Assuntos Fundiários da
+          OAB/MT.
         </p>
         <a
           href={WA_MANUELA}
@@ -444,8 +521,14 @@ const benefits = [
           aria-label="Falar com Manuela Nemes pelo WhatsApp"
         >
           <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-            <path fill="currentColor" d="M12 0C5.373 0 0 5.373 0 12c0 2.139.563 4.14 1.541 5.876L.057 23.887l6.156-1.616A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-4.992-1.363l-.358-.213-3.716.975.993-3.63-.234-.373A9.77 9.77 0 012.182 12c0-5.42 4.398-9.818 9.818-9.818 5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/>
+            <path
+              fill="currentColor"
+              d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"
+            ></path>
+            <path
+              fill="currentColor"
+              d="M12 0C5.373 0 0 5.373 0 12c0 2.139.563 4.14 1.541 5.876L.057 23.887l6.156-1.616A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-4.992-1.363l-.358-.213-3.716.975.993-3.63-.234-.373A9.77 9.77 0 012.182 12c0-5.42 4.398-9.818 9.818-9.818 5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"
+            ></path>
           </svg>
           Falar com Manuela Nemes
         </a>
@@ -460,9 +543,7 @@ const benefits = [
           decoding="async"
         />
       </div>
-
     </div>
-
   </section>
 
   <!-- ────────────────────────────────────────────────────────────── -->
@@ -471,7 +552,9 @@ const benefits = [
   <section class="lp-cta-final" aria-label="Convite final para contato">
     <div class="container lp-cta-final-inner reveal">
       <p class="lp-cta-context">
-        Passivo ambiental não some com o tempo — ele cresce. Multa sobre multa, restrição sobre restrição. Quanto antes você entender o que está irregular, mais fácil e mais barato fica de resolver.
+        Passivo ambiental não some com o tempo — ele cresce. Multa sobre multa,
+        restrição sobre restrição. Quanto antes você entender o que está
+        irregular, mais fácil e mais barato fica de resolver.
       </p>
       <a
         href={WA}
@@ -481,8 +564,14 @@ const benefits = [
         aria-label="Entender a situação ambiental da minha propriedade — WhatsApp"
       >
         <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-          <path fill="currentColor" d="M12 0C5.373 0 0 5.373 0 12c0 2.139.563 4.14 1.541 5.876L.057 23.887l6.156-1.616A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-4.992-1.363l-.358-.213-3.716.975.993-3.63-.234-.373A9.77 9.77 0 012.182 12c0-5.42 4.398-9.818 9.818-9.818 5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/>
+          <path
+            fill="currentColor"
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"
+          ></path>
+          <path
+            fill="currentColor"
+            d="M12 0C5.373 0 0 5.373 0 12c0 2.139.563 4.14 1.541 5.876L.057 23.887l6.156-1.616A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-4.992-1.363l-.358-.213-3.716.975.993-3.63-.234-.373A9.77 9.77 0 012.182 12c0-5.42 4.398-9.818 9.818-9.818 5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"
+          ></path>
         </svg>
         Entender a situação ambiental da minha propriedade
       </a>
@@ -496,7 +585,7 @@ const benefits = [
     <div class="container lp-footer-inner">
       <img
         src="/img/logo.avif"
-        alt="Nemes &amp; Teibel Advogados"
+        alt="Nemes & Teibel Advogados"
         class="lp-footer-logo"
         width="140"
         height="40"
@@ -504,19 +593,24 @@ const benefits = [
         decoding="async"
       />
       <p class="lp-footer-legal">
-        Este site não representa captação de clientela ou oferta de serviços advocatícios, conforme o Código de Ética e Disciplina da OAB.
+        Site meramente informativo e em conformidade com o código de ética e
+        disciplina da OAB.
       </p>
       <p class="lp-footer-info">
-        Nemes &amp; Teibel Advogados — OAB/MT | CNPJ: 32.181.460/0001-50 | Cuiabá, Mato Grosso
+        Nemes &amp; Teibel Advogados — OAB/MT | CNPJ: 32.181.460/0001-50 |
+        Cuiabá, Mato Grosso
       </p>
     </div>
   </footer>
-
 </LPLayout>
 
 <style>
   /* ── WA icon ─────────────────────────────────────── */
-  .wa-icon { width: 20px; height: 20px; flex-shrink: 0; }
+  .wa-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
 
   /* ── Helpers ─────────────────────────────────────── */
   .lp-eyebrow {
@@ -528,7 +622,9 @@ const benefits = [
     font-weight: 700;
     margin-bottom: 0.85rem;
   }
-  .lp-eyebrow-gold { color: var(--color-accent-gold); }
+  .lp-eyebrow-gold {
+    color: var(--color-accent-gold);
+  }
 
   /* ── HERO ────────────────────────────────────────── */
   .lp-hero {
@@ -605,8 +701,14 @@ const benefits = [
     justify-content: center;
     gap: 1rem;
   }
-  .lp-hero-cta { font-size: 1.05rem; padding: 1.05rem 2.25rem; }
-  .lp-hero-cta-secondary { font-size: 1rem; padding: 1.05rem 2rem; }
+  .lp-hero-cta {
+    font-size: 1.05rem;
+    padding: 1.05rem 2.25rem;
+  }
+  .lp-hero-cta-secondary {
+    font-size: 1rem;
+    padding: 1.05rem 2rem;
+  }
 
   /* Botão contorno claro (sobre hero escuro) */
   .btn-outline-light {
@@ -623,7 +725,7 @@ const benefits = [
 
   /* ── CREDENCIAIS ─────────────────────────────────── */
   .lp-creds {
-    background: #2A2316;
+    background: #2a2316;
     padding: 2.75rem var(--padding-x);
     border-top: 1px solid rgba(184, 151, 42, 0.2);
   }
@@ -644,9 +746,24 @@ const benefits = [
     max-width: 340px;
     padding: 1rem 2rem;
   }
-  .lp-cred-check { color: var(--color-accent); font-size: 1.1rem; flex-shrink: 0; margin-top: 0.15rem; }
-  .lp-cred span:last-child { color: rgba(255, 255, 255, 0.88); font-size: 0.9rem; line-height: 1.55; font-weight: 500; }
-  .lp-cred-divider { width: 1px; background: rgba(184, 151, 42, 0.2); align-self: stretch; flex-shrink: 0; }
+  .lp-cred-check {
+    color: var(--color-accent);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+  .lp-cred span:last-child {
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    font-weight: 500;
+  }
+  .lp-cred-divider {
+    width: 1px;
+    background: rgba(184, 151, 42, 0.2);
+    align-self: stretch;
+    flex-shrink: 0;
+  }
 
   /* ── O QUE É O CAR ───────────────────────────────── */
   .lp-what {
@@ -665,7 +782,10 @@ const benefits = [
     line-height: 1.85;
     margin-top: 1.1rem;
   }
-  .lp-what-p strong { color: var(--color-secondary); font-weight: 600; }
+  .lp-what-p strong {
+    color: var(--color-secondary);
+    font-weight: 600;
+  }
   .lp-what-list {
     display: flex;
     flex-direction: column;
@@ -684,16 +804,29 @@ const benefits = [
     color: var(--color-text);
     font-weight: 500;
   }
-  .lp-what-list li span { color: var(--color-accent-gold); font-size: 0.7rem; }
+  .lp-what-list li span {
+    color: var(--color-accent-gold);
+    font-size: 0.7rem;
+  }
 
   /* ── PROBLEMAS ───────────────────────────────────── */
   .lp-problems {
     background: var(--color-bg);
     padding: clamp(4rem, 7vw, 6rem) var(--padding-x);
   }
-  .lp-section-header { text-align: center; margin-bottom: 3rem; }
-  .lp-section-header .section-title { max-width: 600px; margin-inline: auto; }
-  .lp-problems-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .lp-section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .lp-section-header .section-title {
+    max-width: 600px;
+    margin-inline: auto;
+  }
+  .lp-problems-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
   .lp-problem-card {
     background: var(--color-white);
     border-radius: var(--radius-md);
@@ -702,15 +835,37 @@ const benefits = [
     border-top: 3px solid var(--color-accent-gold);
     transition: var(--transition);
   }
-  .lp-problem-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
-  .lp-problem-icon { width: 44px; height: 44px; color: var(--color-accent-gold); margin-bottom: 1.25rem; }
-  .lp-problem-icon svg { width: 100%; height: 100%; }
-  .lp-problem-title { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: var(--color-secondary); margin-bottom: 0.75rem; line-height: 1.3; }
-  .lp-problem-text { font-size: 0.92rem; color: var(--color-text-light); line-height: 1.75; }
+  .lp-problem-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+  }
+  .lp-problem-icon {
+    width: 44px;
+    height: 44px;
+    color: var(--color-accent-gold);
+    margin-bottom: 1.25rem;
+  }
+  .lp-problem-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+  .lp-problem-title {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+  .lp-problem-text {
+    font-size: 0.92rem;
+    color: var(--color-text-light);
+    line-height: 1.75;
+  }
 
   /* ── PRAZO LEGAL (destaque) ──────────────────────── */
   .lp-deadline {
-    background: linear-gradient(135deg, #060E06 0%, #0E1E0A 55%, #121A0A 100%);
+    background: linear-gradient(135deg, #060e06 0%, #0e1e0a 55%, #121a0a 100%);
     padding: clamp(4rem, 8vw, 7rem) var(--padding-x);
   }
   .lp-deadline-inner {
@@ -736,7 +891,10 @@ const benefits = [
     margin-bottom: 1.1rem;
     max-width: 580px;
   }
-  .lp-deadline-p strong { color: var(--color-accent-gold); font-weight: 600; }
+  .lp-deadline-p strong {
+    color: var(--color-accent-gold);
+    font-weight: 600;
+  }
   .lp-deadline-card {
     background: rgba(184, 151, 42, 0.08);
     border: 1px solid rgba(184, 151, 42, 0.35);
@@ -783,7 +941,10 @@ const benefits = [
     color: var(--color-text-light);
     line-height: 1.75;
   }
-  .lp-priority-intro strong { color: var(--color-secondary); font-weight: 600; }
+  .lp-priority-intro strong {
+    color: var(--color-secondary);
+    font-weight: 600;
+  }
   .lp-priority-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -797,7 +958,10 @@ const benefits = [
     transition: var(--transition);
     border: 1px solid rgba(140, 115, 85, 0.12);
   }
-  .lp-priority-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+  .lp-priority-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
   .lp-priority-num {
     font-family: var(--font-heading);
     font-size: 1.5rem;
@@ -806,8 +970,19 @@ const benefits = [
     display: block;
     margin-bottom: 0.75rem;
   }
-  .lp-priority-title { font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: var(--color-secondary); margin-bottom: 0.6rem; line-height: 1.3; }
-  .lp-priority-text { font-size: 0.88rem; color: var(--color-text-light); line-height: 1.7; }
+  .lp-priority-title {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+    margin-bottom: 0.6rem;
+    line-height: 1.3;
+  }
+  .lp-priority-text {
+    font-size: 0.88rem;
+    color: var(--color-text-light);
+    line-height: 1.7;
+  }
 
   /* ── BENEFÍCIOS ──────────────────────────────────── */
   .lp-benefits {
@@ -821,7 +996,11 @@ const benefits = [
     color: var(--color-text-light);
     line-height: 1.7;
   }
-  .lp-benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .lp-benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
   .lp-benefit-card {
     background: var(--color-white);
     border-radius: var(--radius-md);
@@ -829,7 +1008,10 @@ const benefits = [
     box-shadow: var(--shadow-sm);
     transition: var(--transition);
   }
-  .lp-benefit-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+  .lp-benefit-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+  }
   .lp-benefit-icon {
     width: 48px;
     height: 48px;
@@ -839,13 +1021,26 @@ const benefits = [
     padding: 11px;
     margin-bottom: 1.35rem;
   }
-  .lp-benefit-icon svg { width: 100%; height: 100%; }
-  .lp-benefit-title { font-family: var(--font-heading); font-size: 1.15rem; font-weight: 700; color: var(--color-secondary); margin-bottom: 0.7rem; }
-  .lp-benefit-text { font-size: 0.92rem; color: var(--color-text-light); line-height: 1.75; }
+  .lp-benefit-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+  .lp-benefit-title {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+    margin-bottom: 0.7rem;
+  }
+  .lp-benefit-text {
+    font-size: 0.92rem;
+    color: var(--color-text-light);
+    line-height: 1.75;
+  }
 
   /* ── PROVA SOCIAL + REEL ─────────────────────────── */
   .lp-social {
-    background: linear-gradient(135deg, #060E06 0%, #0E1E0A 55%, #121A0A 100%);
+    background: linear-gradient(135deg, #060e06 0%, #0e1e0a 55%, #121a0a 100%);
     padding: clamp(4rem, 8vw, 7rem) var(--padding-x);
     position: relative;
     overflow: hidden;
@@ -920,15 +1115,44 @@ const benefits = [
     border-top: 1px solid rgba(184, 151, 42, 0.18);
     padding-top: 2rem;
   }
-  .lp-stat { display: flex; flex-direction: column; gap: 0.3rem; padding-right: 2rem; }
-  .lp-stat + .lp-stat-divider + .lp-stat { padding-left: 2rem; padding-right: 2rem; }
-  .lp-stat:last-child { padding-right: 0; }
-  .lp-stat-num { font-family: var(--font-heading); font-size: 1.9rem; font-weight: 700; color: var(--color-accent-gold); line-height: 1; }
-  .lp-stat-label { font-size: 0.72rem; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; letter-spacing: 0.07em; }
-  .lp-stat-divider { width: 1px; height: 2.5rem; background: rgba(184, 151, 42, 0.18); flex-shrink: 0; }
+  .lp-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding-right: 2rem;
+  }
+  .lp-stat + .lp-stat-divider + .lp-stat {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  .lp-stat:last-child {
+    padding-right: 0;
+  }
+  .lp-stat-num {
+    font-family: var(--font-heading);
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--color-accent-gold);
+    line-height: 1;
+  }
+  .lp-stat-label {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+  .lp-stat-divider {
+    width: 1px;
+    height: 2.5rem;
+    background: rgba(184, 151, 42, 0.18);
+    flex-shrink: 0;
+  }
 
   /* Reel Instagram */
-  .lp-social-reel { display: flex; justify-content: center; }
+  .lp-social-reel {
+    display: flex;
+    justify-content: center;
+  }
   .lp-reel-wrap {
     width: 100%;
     max-width: 400px;
@@ -1002,60 +1226,182 @@ const benefits = [
   }
 
   /* ── CTA FINAL ───────────────────────────────────── */
-  .lp-cta-final { background: var(--color-secondary); padding: clamp(4rem, 7vw, 6rem) var(--padding-x); }
-  .lp-cta-final-inner { max-width: 720px; margin: 0 auto; text-align: center; }
-  .lp-cta-context { font-family: var(--font-heading); font-style: italic; font-size: clamp(1rem, 2.2vw, 1.2rem); color: rgba(255, 255, 255, 0.78); line-height: 1.8; margin-bottom: 2.75rem; }
-  .lp-cta-final-btn { font-size: 1.05rem; padding: 1.1rem 2rem; }
+  .lp-cta-final {
+    background: var(--color-secondary);
+    padding: clamp(4rem, 7vw, 6rem) var(--padding-x);
+  }
+  .lp-cta-final-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .lp-cta-context {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: clamp(1rem, 2.2vw, 1.2rem);
+    color: rgba(255, 255, 255, 0.78);
+    line-height: 1.8;
+    margin-bottom: 2.75rem;
+  }
+  .lp-cta-final-btn {
+    font-size: 1.05rem;
+    padding: 1.1rem 2rem;
+  }
 
   /* ── RODAPÉ ──────────────────────────────────────── */
-  .lp-footer { background: #140F08; padding: 3rem var(--padding-x); border-top: 1px solid rgba(184, 151, 42, 0.12); }
-  .lp-footer-inner { max-width: var(--max-width); margin: 0 auto; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
-  .lp-footer-logo { height: 38px; width: auto; opacity: 0.55; }
-  .lp-footer-legal { font-size: 0.78rem; color: rgba(255, 255, 255, 0.35); max-width: 600px; line-height: 1.65; }
-  .lp-footer-info { font-size: 0.78rem; color: rgba(255, 255, 255, 0.45); }
+  .lp-footer {
+    background: #140f08;
+    padding: 3rem var(--padding-x);
+    border-top: 1px solid rgba(184, 151, 42, 0.12);
+  }
+  .lp-footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .lp-footer-logo {
+    height: 38px;
+    width: auto;
+    opacity: 0.55;
+  }
+  .lp-footer-legal {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.35);
+    max-width: 600px;
+    line-height: 1.65;
+  }
+  .lp-footer-info {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.45);
+  }
 
   /* ── RESPONSIVO ──────────────────────────────────── */
   @media (max-width: 1024px) {
-    .lp-expert-inner { grid-template-columns: 280px 1fr; gap: 3rem; }
-    .lp-expert-inner--reverse { grid-template-columns: 1fr 280px; }
-    .lp-social-inner { grid-template-columns: 1fr 340px; gap: 3.5rem; }
-    .lp-priority-grid { grid-template-columns: repeat(2, 1fr); }
-    .lp-deadline-inner { grid-template-columns: 1fr 280px; gap: 3rem; }
+    .lp-expert-inner {
+      grid-template-columns: 280px 1fr;
+      gap: 3rem;
+    }
+    .lp-expert-inner--reverse {
+      grid-template-columns: 1fr 280px;
+    }
+    .lp-social-inner {
+      grid-template-columns: 1fr 340px;
+      gap: 3.5rem;
+    }
+    .lp-priority-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .lp-deadline-inner {
+      grid-template-columns: 1fr 280px;
+      gap: 3rem;
+    }
   }
   @media (max-width: 900px) {
-    .lp-what-inner { grid-template-columns: 1fr; gap: 2.25rem; }
+    .lp-what-inner {
+      grid-template-columns: 1fr;
+      gap: 2.25rem;
+    }
     .lp-expert-inner,
     .lp-expert-inner--reverse {
       grid-template-columns: 1fr;
       gap: 2.5rem;
     }
-    .lp-expert-inner--reverse .lp-expert-photo-wrap { order: -1; }
-    .lp-expert-photo-wrap { max-width: 260px; margin: 0 auto; }
-    .lp-expert-bio { text-align: center; }
-    .lp-deadline-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-    .lp-deadline-card { max-width: 340px; }
+    .lp-expert-inner--reverse .lp-expert-photo-wrap {
+      order: -1;
+    }
+    .lp-expert-photo-wrap {
+      max-width: 260px;
+      margin: 0 auto;
+    }
+    .lp-expert-bio {
+      text-align: center;
+    }
+    .lp-deadline-inner {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    .lp-deadline-card {
+      max-width: 340px;
+    }
   }
   @media (max-width: 860px) {
-    .lp-social-inner { grid-template-columns: 1fr; gap: 3rem; }
-    .lp-social-sub { max-width: 100%; }
-    .lp-social-reel { max-width: 400px; margin-inline: auto; width: 100%; }
+    .lp-social-inner {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    .lp-social-sub {
+      max-width: 100%;
+    }
+    .lp-social-reel {
+      max-width: 400px;
+      margin-inline: auto;
+      width: 100%;
+    }
   }
   @media (max-width: 768px) {
-    .lp-problems-grid { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; }
-    .lp-benefits-grid { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; }
-    .lp-priority-grid { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; }
-    .lp-creds-inner { flex-direction: column; align-items: center; }
-    .lp-cred { max-width: 100%; }
-    .lp-cred-divider { width: 60px; height: 1px; }
-    .lp-hero { min-height: auto; }
-    .lp-hero-content { padding: 4rem var(--padding-x); }
+    .lp-problems-grid {
+      grid-template-columns: 1fr;
+      max-width: 520px;
+      margin-inline: auto;
+    }
+    .lp-benefits-grid {
+      grid-template-columns: 1fr;
+      max-width: 480px;
+      margin-inline: auto;
+    }
+    .lp-priority-grid {
+      grid-template-columns: 1fr;
+      max-width: 480px;
+      margin-inline: auto;
+    }
+    .lp-creds-inner {
+      flex-direction: column;
+      align-items: center;
+    }
+    .lp-cred {
+      max-width: 100%;
+    }
+    .lp-cred-divider {
+      width: 60px;
+      height: 1px;
+    }
+    .lp-hero {
+      min-height: auto;
+    }
+    .lp-hero-content {
+      padding: 4rem var(--padding-x);
+    }
   }
   @media (max-width: 480px) {
-    .lp-hero-h1 { font-size: 1.8rem; }
-    .lp-hero-cta-group { flex-direction: column; width: 100%; }
-    .lp-hero-cta, .lp-hero-cta-secondary { width: 100%; justify-content: center; font-size: 0.95rem; padding: 0.95rem 1.4rem; }
-    .lp-social-stats { flex-wrap: wrap; gap: 1.5rem; padding-top: 1.5rem; }
-    .lp-stat, .lp-stat + .lp-stat-divider + .lp-stat { padding: 0; }
-    .lp-stat-divider { display: none; }
+    .lp-hero-h1 {
+      font-size: 1.8rem;
+    }
+    .lp-hero-cta-group {
+      flex-direction: column;
+      width: 100%;
+    }
+    .lp-hero-cta,
+    .lp-hero-cta-secondary {
+      width: 100%;
+      justify-content: center;
+      font-size: 0.95rem;
+      padding: 0.95rem 1.4rem;
+    }
+    .lp-social-stats {
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      padding-top: 1.5rem;
+    }
+    .lp-stat,
+    .lp-stat + .lp-stat-divider + .lp-stat {
+      padding: 0;
+    }
+    .lp-stat-divider {
+      display: none;
+    }
   }
 </style>
