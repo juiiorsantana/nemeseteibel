@@ -1,0 +1,535 @@
+---
+// src/pages/ditr-2026.astro
+// LP — DITR 2026 | Nemes & Teibel Advogados
+// Revisão jurídica preventiva da DITR 2026
+// Tráfego: Google Ads + orgânico
+import LPLayout from '../layouts/LPLayout.astro';
+import '../styles/ditr-2026.css';
+
+const whatsappUrl =
+  "https://wa.me/556541410010?text=Ol%C3%A1%2C%20gostaria%20de%20conversar%20sobre%20a%20an%C3%A1lise%20jur%C3%ADdica%20da%20DITR%202026.";
+
+const riskItems = [
+  {
+    index: "01",
+    title: "Área divergente",
+    text: "Matrícula, CCIR, CAR, Cafir e DITR precisam refletir corretamente a área do imóvel.",
+    tag: "Cruzamento cadastral",
+  },
+  {
+    index: "02",
+    title: "APP e Reserva Legal",
+    text: "Áreas ambientais excluídas do cálculo precisam estar informadas e possuir lastro documental.",
+    tag: "Área tributável",
+  },
+  {
+    index: "03",
+    title: "Valor da Terra Nua",
+    text: "O VTN declarado precisa considerar referências aplicáveis e fundamentação técnica adequada.",
+    tag: "Base de cálculo",
+  },
+  {
+    index: "04",
+    title: "Imóvel arrendado",
+    text: "A responsabilidade perante a Receita permanece com o proprietário, mesmo quando a exploração é de terceiro.",
+    tag: "Utilização do imóvel",
+  },
+  {
+    index: "05",
+    title: "Compra, venda ou inventário",
+    text: "A titularidade em 1º de janeiro e as responsabilidades do sucessor exigem análise do caso concreto.",
+    tag: "Responsabilidade",
+  },
+  {
+    index: "06",
+    title: "Grau de utilização",
+    text: "A área efetivamente utilizada precisa ser apurada de forma coerente com a atividade desenvolvida.",
+    tag: "Alíquota aplicável",
+  },
+];
+
+const documentItems = [
+  ["Matrícula", "Situação registral e área total do imóvel"],
+  ["CAR", "Recibo, áreas ambientais e dados declarados"],
+  ["CCIR", "Informações cadastrais perante o Incra"],
+  ["Cafir", "Dados do imóvel perante a Receita Federal"],
+  ["DITR anterior", "Histórico das informações já apresentadas"],
+  ["VTN", "Referências, laudo e fundamento do valor declarado"],
+  ["Exploração", "Produção, rebanho, pastagem e grau de utilização"],
+  ["Contratos", "Arrendamento, parceria, compra, venda ou sucessão"],
+];
+
+const faqItems = [
+  {
+    q: "A análise jurídica substitui o contador?",
+    a: "Não. A atuação jurídica verifica a coerência e a sustentação documental das informações do imóvel. Quando necessário, o trabalho é integrado ao contador, ao engenheiro agrônomo ou ao consultor ambiental responsável pelos dados técnicos.",
+  },
+  {
+    q: "Quem declara quando a fazenda está arrendada?",
+    a: "Perante a Receita Federal, a obrigação é do proprietário, titular do domínio útil ou possuidor. O contrato pode disciplinar responsabilidades entre as partes, mas não altera a sujeição perante o Fisco. Os dados produtivos devem ser solicitados ao arrendatário com antecedência.",
+  },
+  {
+    q: "Vendi o imóvel depois de 1º de janeiro. Quem apresenta a DITR?",
+    a: "Em regra, a declaração corresponde a quem era titular em 1º de janeiro de 2026. A aquisição também pode envolver responsabilidade por sucessão, por isso a documentação da operação e dos exercícios anteriores deve ser examinada.",
+  },
+  {
+    q: "Quais imóveis merecem uma revisão preventiva?",
+    a: "Especialmente imóveis médios e grandes, propriedades arrendadas, áreas com APP ou Reserva Legal relevantes, imóveis com divergências cadastrais, operações recentes de compra e venda, inventários, condomínios e holdings rurais.",
+  },
+  {
+    q: "É possível corrigir uma DITR já transmitida?",
+    a: "A retificação pode ser possível enquanto não iniciado procedimento de lançamento de ofício. Depois de uma intimação ou notificação, o caminho e os prazos mudam; a situação deve ser analisada imediatamente.",
+  },
+  {
+    q: "Recebi uma notificação relacionada ao ITR. O que fazer?",
+    a: "A notificação deve ser analisada antes de qualquer resposta ou pagamento. O prazo para impugnação é, em regra, de 30 dias contados da intimação, e a estratégia depende do conteúdo do lançamento e das provas disponíveis.",
+  },
+];
+---
+
+<LPLayout
+  title="DITR 2026 | Nemes & Teibel Advogados"
+  description="Revisão jurídica preventiva da DITR 2026 para proprietários rurais, holdings e empresas do agronegócio."
+>
+
+    <main>
+      <div class="site-grid" aria-hidden="true"></div>
+
+      <header class="site-header">
+        <a class="brand" href="#inicio" aria-label="Nemes e Teibel Advogados">
+          <span class="brand-name">NEMES &amp; TEIBEL</span>
+          <span class="brand-detail">
+            <i></i>
+            ADVOGADOS
+            <i></i>
+          </span>
+        </a>
+
+        <nav class="desktop-nav" aria-label="Navegação principal">
+          <a href="#analise">A análise</a>
+          <span aria-hidden="true">·</span>
+          <a href="#atencao">Pontos de atenção</a>
+          <span aria-hidden="true">·</span>
+          <a href="#como-funciona">Como funciona</a>
+        </nav>
+
+        <a class="header-cta" href={whatsappUrl} target="_blank" rel="noreferrer">
+          Falar com a equipe
+        </a>
+
+        <details class="mobile-menu">
+          <summary aria-label="Abrir menu">
+            <span></span>
+            <span></span>
+          </summary>
+          <nav aria-label="Navegação móvel">
+            <a href="#analise">A análise</a>
+            <a href="#atencao">Pontos de atenção</a>
+            <a href="#como-funciona">Como funciona</a>
+            <a href={whatsappUrl} target="_blank" rel="noreferrer">
+              Falar com a equipe
+            </a>
+          </nav>
+        </details>
+      </header>
+
+      <section class="hero section-shell" id="inicio">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span>DITR 2026</span>
+            <i></i>
+            10 AGO — 30 SET
+          </p>
+          <h1>
+            Sua DITR está coerente com os documentos da propriedade?
+          </h1>
+          <p class="hero-description">
+            Revisão jurídica preventiva de matrícula, CAR, CCIR, Cafir, VTN,
+            áreas ambientais e utilização do imóvel antes do envio à Receita
+            Federal.
+          </p>
+          <a class="primary-cta" href={whatsappUrl} target="_blank" rel="noreferrer">
+            <span>Solicitar avaliação do caso</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+          </a>
+          <p class="location">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+            Atuação jurídica preventiva <b>·</b> Cuiabá/MT
+          </p>
+        </div>
+
+        <div class="hero-visual" aria-label="Representação de documentos da propriedade rural">
+          <div class="visual-halo"></div>
+          <img
+            src="/img/hero-dossier.webp"
+            alt="Dossiê de documentos e mapas de uma propriedade rural"
+          />
+          <div class="document-labels" aria-hidden="true">
+            <span>Matrícula</span>
+            <span>CAR</span>
+            <span>CCIR</span>
+            <span>Cafir</span>
+            <span>VTN</span>
+          </div>
+          <div class="risk-note">
+            <span class="shield">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.7 3.2 7.9 7.5 9.5 4.3-1.6 7.5-4.8 7.5-9.5V6L12 3Z"></path><path d="m8.5 12 2.1 2.1 4.9-5"></path></svg>
+            </span>
+            <p>
+              O risco não está apenas no prazo.
+              <strong>Está no que os documentos sustentam.</strong>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="deadline-bar" aria-label="Prazo da DITR 2026">
+        <span class="deadline-index">01</span>
+        <p>
+          A obrigação termina em setembro.
+          <strong>A coerência documental começa antes.</strong>
+        </p>
+        <span class="deadline-date">30 · 09 · 2026</span>
+      </section>
+
+      <section class="intro section-shell" id="analise">
+        <div class="section-number" aria-hidden="true">01 / ANÁLISE</div>
+        <div class="intro-heading">
+          <p class="eyebrow">Muito além do preenchimento</p>
+          <h2>O ITR conecta informações tributárias, fundiárias, ambientais e produtivas.</h2>
+        </div>
+        <div class="intro-copy">
+          <p>
+            A declaração não existe isoladamente. Área total, áreas ambientais,
+            valor da terra nua e grau de utilização precisam ser compatíveis
+            com os documentos e com a realidade do imóvel.
+          </p>
+          <p>
+            Quando matrícula, CAR, CCIR, Cafir e DITR contam histórias
+            diferentes, uma obrigação anual pode se transformar em exposição
+            patrimonial.
+          </p>
+        </div>
+      </section>
+
+      <section class="analysis-panel section-shell">
+        <div class="analysis-card">
+          <div class="analysis-card-top">
+            <span>Coerência documental</span>
+            <small>DITR / 2026</small>
+          </div>
+          <div class="analysis-diagram" aria-hidden="true">
+            <div class="diagram-core">
+              <span>DITR</span>
+              <small>declaração</small>
+            </div>
+            <div class="diagram-node node-1">Matrícula</div>
+            <div class="diagram-node node-2">CAR</div>
+            <div class="diagram-node node-3">CCIR</div>
+            <div class="diagram-node node-4">Cafir</div>
+            <div class="diagram-node node-5">VTN</div>
+          </div>
+        </div>
+        <div class="analysis-statement">
+          <p class="eyebrow">A pergunta central</p>
+          <blockquote>
+            Não basta informar.
+            <span>É preciso sustentar.</span>
+          </blockquote>
+          <p>
+            A análise preventiva identifica pontos que merecem documentação,
+            ajuste ou orientação especializada antes da transmissão.
+          </p>
+        </div>
+      </section>
+
+      <section class="risks section-shell" id="atencao">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Pontos que exigem atenção</p>
+            <h2>Onde uma declaração aparentemente simples se torna sensível.</h2>
+          </div>
+          <p>
+            A DITR utiliza informações que já existem em diferentes cadastros,
+            documentos e bases públicas. A inconsistência pode surgir antes
+            mesmo do preenchimento.
+          </p>
+        </div>
+
+        <div class="risk-grid">
+          {riskItems.map((item) => (
+            <article class="risk-card">
+              <div class="risk-card-index">{item.index}</div>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+              <span>{item.tag}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="impact">
+        <div class="impact-inner section-shell">
+          <div class="impact-number">
+            <span>até</span>
+            <strong>29×</strong>
+          </div>
+          <div class="impact-copy">
+            <p class="eyebrow">O grau de utilização importa</p>
+            <h2>A alíquota muda conforme a área total e o uso efetivo da terra.</h2>
+            <p>
+              Em um imóvel de 2.000 hectares, a alíquota pode variar de 0,30%
+              a 8,60%, conforme a faixa de utilização. A diferença nasce dos
+              dados declarados e de como eles podem ser comprovados.
+            </p>
+          </div>
+          <div class="impact-scale" aria-label="Comparação de alíquotas">
+            <div>
+              <span>GU acima de 80%</span>
+              <strong>0,30%</strong>
+            </div>
+            <i></i>
+            <div>
+              <span>GU até 30%</span>
+              <strong>8,60%</strong>
+            </div>
+            <small>Exemplo para imóvel de 1.000 a 5.000 ha</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="audience section-shell">
+        <div class="audience-copy">
+          <p class="eyebrow">Para quem é a análise</p>
+          <h2>Patrimônio rural que exige uma decisão bem fundamentada.</h2>
+          <p>
+            A revisão é indicada quando o risco jurídico e patrimonial supera
+            a simples transmissão de uma obrigação acessória.
+          </p>
+          <a href={whatsappUrl} target="_blank" rel="noreferrer" class="text-link">
+            Conversar sobre a situação do imóvel <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+          </a>
+        </div>
+        <div class="audience-list">
+          <article>
+            <span>01</span>
+            <h3>Proprietários rurais</h3>
+            <p>Imóveis médios e grandes, especialmente acima de 100 hectares.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Holdings e empresas</h3>
+            <p>Estruturas que administram um ou vários imóveis e operações rurais.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Fazendas arrendadas</h3>
+            <p>Exploração por terceiros e dependência de dados produtivos externos.</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Operações recentes</h3>
+            <p>Compra, venda, inventário, sucessão, condomínio ou reorganização.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="documents">
+        <div class="documents-inner section-shell">
+          <div class="documents-heading">
+            <p class="eyebrow">Escopo documental</p>
+            <h2>O que pode ser verificado na análise preventiva.</h2>
+            <p>
+              O conjunto necessário é definido conforme a realidade do imóvel.
+              Não se trata de uma checklist genérica, mas da leitura integrada
+              das informações que sustentam a declaração.
+            </p>
+          </div>
+          <div class="documents-list">
+            {documentItems.map(([title, text], index) => (
+              <div class="document-row">
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <strong>{title}</strong>
+                <p>{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="process section-shell" id="como-funciona">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Como funciona</p>
+            <h2>Uma análise organizada antes da transmissão.</h2>
+          </div>
+          <p>
+            A atuação é dimensionada conforme o caso. Quando os dados dependem
+            de conhecimento técnico, a equipe orienta a integração com o
+            profissional habilitado.
+          </p>
+        </div>
+        <ol class="process-grid">
+          <li>
+            <span>01</span>
+            <h3>Contexto do imóvel</h3>
+            <p>Entendimento da titularidade, exploração, histórico e prazo aplicável.</p>
+          </li>
+          <li>
+            <span>02</span>
+            <h3>Documentos</h3>
+            <p>Recebimento dos cadastros, declarações, contratos e elementos técnicos.</p>
+          </li>
+          <li>
+            <span>03</span>
+            <h3>Análise integrada</h3>
+            <p>Comparação dos dados e identificação das divergências ou pontos sensíveis.</p>
+          </li>
+          <li>
+            <span>04</span>
+            <h3>Orientação</h3>
+            <p>Indicação das providências adequadas antes da apresentação da DITR.</p>
+          </li>
+        </ol>
+        <div class="integration-note">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.7 3.2 7.9 7.5 9.5 4.3-1.6 7.5-4.8 7.5-9.5V6L12 3Z"></path><path d="m8.5 12 2.1 2.1 4.9-5"></path></svg>
+          <p>
+            <strong>Atuação jurídica integrada.</strong>
+            A análise não substitui contador, agrônomo ou consultor ambiental.
+            Ela organiza juridicamente as informações e indica quando o suporte
+            técnico é necessário.
+          </p>
+        </div>
+      </section>
+
+      <section class="notification">
+        <div class="notification-inner section-shell">
+          <div class="notification-mark">30</div>
+          <div>
+            <p class="eyebrow">Já recebeu uma notificação?</p>
+            <h2>O prazo de defesa exige atenção imediata.</h2>
+            <p>
+              A impugnação administrativa é apresentada, em regra, em até 30
+              dias da intimação e suspende a exigibilidade do crédito. Depois
+              do início do procedimento fiscal, a retificadora deixa de ser o
+              caminho adequado.
+            </p>
+          </div>
+          <a class="secondary-cta" href={whatsappUrl} target="_blank" rel="noreferrer">
+            Falar sobre a notificação <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+          </a>
+        </div>
+      </section>
+
+      <section class="authority section-shell">
+        <div class="authority-heading">
+          <p class="eyebrow">Experiência aplicada ao patrimônio rural</p>
+          <h2>Direito Agrário, Fundiário e Ambiental lidos em conjunto.</h2>
+        </div>
+        <div class="lawyers">
+          <article>
+            <div class="lawyer-monogram">MN</div>
+            <div>
+              <p class="lawyer-role">Sócia · OAB/MT</p>
+              <h3>Manuela Nemes</h3>
+              <p>
+                Mais de 15 anos de atuação em Direito Agrário, Fundiário e
+                Agronegócio. Vice-Presidente da Comissão de Assuntos Fundiários
+                da OAB/MT.
+              </p>
+            </div>
+          </article>
+          <article>
+            <div class="lawyer-monogram">PT</div>
+            <div>
+              <p class="lawyer-role">Sócia · OAB/MT</p>
+              <h3>Paula Teibel</h3>
+              <p>
+                Mais de 20 anos de atuação em Direito Agrário, Fundiário e
+                Ambiental. Ex-servidora do INTERMAT e integrante da Comissão de
+                Assuntos Fundiários da CGJ/TJMT.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="faq section-shell">
+        <div class="faq-heading">
+          <p class="eyebrow">Perguntas frequentes</p>
+          <h2>Dúvidas comuns antes de apresentar a DITR.</h2>
+        </div>
+        <div class="faq-list">
+          {faqItems.map((item, index) => (
+            <details>
+              <summary>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                {item.q}
+                <i aria-hidden="true"></i>
+              </summary>
+              <p>{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section class="final-cta section-shell">
+        <div class="final-cta-line" aria-hidden="true"><i></i><span>DITR · 2026</span><i></i></div>
+        <p class="eyebrow">Antes de transmitir</p>
+        <h2>Verifique se os documentos sustentam o que será declarado.</h2>
+        <p>
+          Converse com a equipe da Nemes &amp; Teibel sobre a realidade documental
+          da sua propriedade rural.
+        </p>
+        <a class="primary-cta" href={whatsappUrl} target="_blank" rel="noreferrer">
+          <span>Solicitar avaliação do caso</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+        </a>
+      </section>
+
+      <footer class="minimal-footer">
+        <div>
+          <span>NEMES &amp; TEIBEL ADVOGADOS</span>
+          <small>Direito Agrário · Fundiário · Ambiental</small>
+        </div>
+        <address>
+          Av. Historiador Rubens de Mendonça, 2368<br />
+          Bosque da Saúde · Cuiabá/MT
+        </address>
+        <div class="footer-contact">
+          <a href="tel:+556541410010">(65) 4141-0010</a>
+          <a href="mailto:nemeseteibeladvogados@hotmail.com">
+            nemeseteibeladvogados@hotmail.com
+          </a>
+        </div>
+        <p>
+          Material de caráter informativo, com base na legislação vigente em
+          julho de 2026. Não constitui parecer jurídico e não dispensa a análise
+          do caso concreto.
+        </p>
+      </footer>
+
+      <a
+        class="floating-whatsapp"
+        href={whatsappUrl}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Conversar com a equipe pelo WhatsApp"
+      >
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.4-4.1A8 8 0 1 1 20 11.5Z"></path><path d="M8.3 8.1c.2-.4.4-.4.7-.4h.5c.2 0 .4 0 .5.4l.7 1.7c.1.3.1.5-.1.7l-.5.7c-.2.2-.1.4 0 .6.6 1 1.5 1.8 2.5 2.3.2.1.4.1.6-.1l.8-1c.2-.2.4-.2.7-.1l1.7.8c.3.1.4.3.4.5 0 .3-.2 1.4-.9 2-.7.6-1.6.8-2.6.5-1-.3-2.3-.9-3.8-2.2-1.2-1-2.2-2.4-2.7-3.6-.6-1.4 0-2.4.5-2.8Z"></path></svg>
+      </a>
+    </main>
+
+</LPLayout>
+
+<style is:global>
+  /* Hide the LPLayout green WhatsApp float — DITR has its own gold-themed one */
+  body.ditr-page .wa-float {
+    display: none !important;
+  }
+</style>
+
+<script>
+  // Add marker class for CSS scoping
+  document.body.classList.add('ditr-page');
+</script>

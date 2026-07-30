@@ -1,0 +1,367 @@
+---
+// Solutions.astro
+// --------------------------------------------------------
+// Seção de conversão: 3 cards lado a lado → landing pages.
+// Fundo: gradiente oliva→bronze + grid animado em ouro
+// (CSS puro, funciona em desktop e mobile) + glow no cursor.
+// --------------------------------------------------------
+
+const paths = [
+  {
+    tag:    'Direito Fundiário',
+    title:  'Regularização de Imóvel Rural',
+    lead:   'Matrícula, divisas e documentação em ordem para vender, financiar ou partilhar sem entraves.',
+    action: 'Regularizar meu imóvel',
+    href:   '/regularizacao-imovel-rural',
+    delay:  'reveal-d1',
+  },
+  {
+    tag:    'Direito Ambiental',
+    title:  'Regularização Ambiental Rural',
+    lead:   'CAR analisado, embargos resolvidos e crédito destravado — com os prazos da SEMA-MT a seu favor.',
+    action: 'Destravar meu CAR',
+    href:   '/regularizacao-ambiental-rural',
+    delay:  'reveal-d2',
+  },
+  {
+    tag:    'Antes de comprar',
+    title:  'Due Diligence Rural',
+    lead:   'A fazenda investigada a fundo antes da assinatura: você compra terra, não problema.',
+    action: 'Investigar a fazenda',
+    href:   '/due-diligence-rural',
+    delay:  'reveal-d3',
+  },
+];
+---
+
+<section class="sol" id="solucoes" aria-labelledby="sol-heading">
+
+  <!-- Grid animado — linhas em ouro deslizando em loop -->
+  <div class="sol-gridbg" aria-hidden="true"></div>
+
+  <div class="sol-glow" aria-hidden="true"></div>
+  <div class="sol-cursor" aria-hidden="true"></div>
+
+  <div class="sol-inner">
+
+    <header class="sol-header">
+      <p class="sol-eyebrow reveal">Caminhos para regularizar</p>
+      <h2 id="sol-heading" class="sol-title reveal reveal-d1">
+        Qual é a situação da sua propriedade hoje?
+      </h2>
+      <div class="sol-divider reveal reveal-d1" aria-hidden="true"></div>
+      <p class="sol-sub reveal reveal-d2">
+        Cada caso pede uma estratégia diferente. Escolha o caminho que descreve
+        o seu momento — e fale direto com quem resolve.
+      </p>
+    </header>
+
+    <div class="sol-list">
+      {paths.map((p) => (
+        <article class={`sol-card reveal ${p.delay}`}>
+
+          <div class="sol-card-text">
+            <p class="sol-tag">{p.tag}</p>
+            <h3 class="sol-card-title">{p.title}</h3>
+            <p class="sol-lead">{p.lead}</p>
+          </div>
+
+          <a class="sol-link" href={p.href}>
+            <span class="sol-action">{p.action}</span>
+            <span class="sol-circle" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </span>
+          </a>
+
+        </article>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* ── Faixa ──────────────────────────────────────────── */
+  .sol {
+    position: relative;
+    padding: clamp(4.5rem, 8vw, 7rem) var(--padding-x);
+    background: linear-gradient(160deg, #3A4028 0%, #46432C 52%, #4E4430 100%);
+    overflow: hidden;
+  }
+
+  /* Grid animado — duas malhas em ouro deslizando em
+     velocidades diferentes (parallax sutil), CSS puro */
+  .sol-gridbg {
+    position: absolute;
+    inset: -60px;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(232, 207, 114, 0.10) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232, 207, 114, 0.10) 1px, transparent 1px),
+      linear-gradient(rgba(232, 207, 114, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232, 207, 114, 0.05) 1px, transparent 1px);
+    background-size:
+      56px 56px,
+      56px 56px,
+      14px 14px,
+      14px 14px;
+    /* esmaece nas bordas para não competir com o conteúdo */
+    -webkit-mask-image: radial-gradient(ellipse 90% 85% at 50% 45%, #000 30%, transparent 78%);
+    mask-image: radial-gradient(ellipse 90% 85% at 50% 45%, #000 30%, transparent 78%);
+    animation: sol-grid-drift 36s linear infinite;
+  }
+
+  @keyframes sol-grid-drift {
+    to { transform: translate3d(56px, 56px, 0); }
+  }
+
+  /* Brilho dourado fixo no topo */
+  .sol-glow {
+    position: absolute;
+    top: -30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 600px;
+    max-width: 130%;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(184, 151, 42, 0.26) 0%,
+      rgba(184, 151, 42, 0) 68%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Glow sutil que segue o cursor */
+  .sol-cursor {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      480px circle at var(--gx, 50%) var(--gy, 50%),
+      rgba(232, 207, 114, 0.10) 0%,
+      rgba(232, 207, 114, 0) 70%
+    );
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .sol.is-tracking .sol-cursor { opacity: 1; }
+
+  .sol-inner {
+    position: relative;
+    z-index: 2;
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  /* ── Cabeçalho ──────────────────────────────────────── */
+  .sol-header {
+    text-align: center;
+    margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  }
+
+  .sol-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #E8CF72;
+    margin-bottom: 0.875rem;
+  }
+
+  .sol-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--color-white);
+    line-height: 1.2;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .sol-divider {
+    width: 48px;
+    height: 3px;
+    background: var(--color-accent-gold);
+    border-radius: 2px;
+    margin: 1.25rem auto 0;
+  }
+
+  .sol-sub {
+    font-size: clamp(0.95rem, 2vw, 1.05rem);
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.7;
+    max-width: 600px;
+    margin: 1.25rem auto 0;
+  }
+
+  /* ── Cards ──────────────────────────────────────────── */
+  .sol-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .sol-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    padding: 2.25rem 2rem 2rem;
+    border-radius: var(--radius-md);
+    background: rgba(26, 25, 14, 0.34);
+    backdrop-filter: blur(14px) saturate(130%);
+    -webkit-backdrop-filter: blur(14px) saturate(130%);
+    border: 1px solid rgba(232, 207, 114, 0.16);
+    transition:
+      background 0.35s ease,
+      border-color 0.35s ease,
+      transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.35s ease;
+  }
+
+  .sol-card:hover,
+  .sol-card:focus-within {
+    background: rgba(26, 25, 14, 0.22);
+    border-color: rgba(232, 207, 114, 0.55);
+    transform: translateY(-5px);
+    box-shadow: 0 18px 44px rgba(20, 18, 8, 0.28);
+  }
+
+  /* ── Conteúdo ───────────────────────────────────────── */
+  .sol-card-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    flex: 1;
+  }
+
+  .sol-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #E8CF72;
+  }
+
+  .sol-card-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.3rem, 2vw, 1.55rem);
+    font-weight: 700;
+    color: var(--color-white);
+    line-height: 1.22;
+  }
+
+  .sol-lead {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.65;
+  }
+
+  /* ── Ação (link esticado sobre o card) ──────────────── */
+  .sol-link {
+    /* static de propósito: o ::after ancora no .sol-card e cobre o card todo */
+    position: static;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .sol-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-md);
+    z-index: 3;
+  }
+  .sol-link:focus-visible::after {
+    outline: 3px solid var(--color-accent-gold);
+    outline-offset: 3px;
+  }
+
+  .sol-action {
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: rgba(232, 207, 114, 0.85);
+    opacity: 0.75;
+    transition: opacity 0.3s ease, color 0.3s ease;
+  }
+  .sol-card:hover .sol-action,
+  .sol-card:focus-within .sol-action {
+    opacity: 1;
+    color: #E8CF72;
+  }
+
+  .sol-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(232, 207, 114, 0.5);
+    color: var(--color-white);
+    transition: background 0.32s ease, border-color 0.32s ease, color 0.32s ease;
+  }
+  .sol-circle svg {
+    width: 19px;
+    height: 19px;
+    transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .sol-card:hover .sol-circle,
+  .sol-card:focus-within .sol-circle {
+    background: var(--color-accent-gold);
+    border-color: var(--color-accent-gold);
+    color: #2B2612;
+  }
+  .sol-card:hover .sol-circle svg,
+  .sol-card:focus-within .sol-circle svg { transform: translateX(3px); }
+
+  /* ── Responsivo ─────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .sol-list { grid-template-columns: repeat(2, 1fr); }
+    .sol-card:last-child { grid-column: 1 / -1; }
+  }
+
+  @media (max-width: 768px) {
+    .sol-list { grid-template-columns: 1fr; }
+    .sol-card:last-child { grid-column: auto; }
+    .sol-card { padding: 1.875rem 1.5rem 1.625rem; gap: 1.25rem; }
+    .sol-circle { width: 44px; height: 44px; }
+  }
+
+  /* ── Movimento reduzido ─────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .sol-gridbg { animation: none; }
+    .sol-cursor { display: none; }
+    .sol-card,
+    .sol-circle,
+    .sol-circle svg { transition: none; }
+    .sol-card:hover,
+    .sol-card:focus-within { transform: none; }
+  }
+</style>
+
+<script>
+  // Glow que segue o cursor — 1 listener, só grava CSS vars na seção
+  const sol = document.getElementById('solucoes');
+
+  if (sol && window.matchMedia('(hover: hover)').matches) {
+    sol.addEventListener('pointermove', (e) => {
+      const rect = sol.getBoundingClientRect();
+      sol.style.setProperty('--gx', `${e.clientX - rect.left}px`);
+      sol.style.setProperty('--gy', `${e.clientY - rect.top}px`);
+      sol.classList.add('is-tracking');
+    });
+    sol.addEventListener('pointerleave', () => {
+      sol.classList.remove('is-tracking');
+    });
+  }
+</script>
