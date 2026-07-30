@@ -133,44 +133,40 @@ const faqItems = [
         </details>
       </header>
 
-      <section class="hero section-shell" id="inicio">
-        <div class="hero-copy">
-          <p class="eyebrow">
-            <span>DITR 2026</span>
-            <i></i>
-            10 AGO — 30 SET
-          </p>
-          <h1>
-            Sua DITR está coerente com os documentos da propriedade?
-          </h1>
-          <p class="hero-description">
-            Revisão jurídica preventiva de matrícula, CAR, CCIR, Cafir, VTN,
-            áreas ambientais e utilização do imóvel antes do envio à Receita
-            Federal.
-          </p>
-          <a class="primary-cta" href={whatsappUrl} target="_blank" rel="noreferrer">
-            <span>Solicitar avaliação do caso</span>
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
-          </a>
-          <p class="location">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
-            Atuação jurídica preventiva <b>·</b> Cuiabá/MT
-          </p>
-        </div>
-
-        <div class="hero-visual" aria-label="Representação de documentos da propriedade rural">
-          <div class="visual-halo"></div>
-          <img
-            src="/img/hero-dossier.webp"
-            alt="Dossiê de documentos e mapas de uma propriedade rural"
+      <section class="hero" id="inicio">
+        <picture class="hero-bg">
+          <source
+            media="(max-width: 767px)"
+            srcset="/img/hero-ditr-2026-mobile.avif"
           />
-          <div class="document-labels" aria-hidden="true">
-            <span>Matrícula</span>
-            <span>CAR</span>
-            <span>CCIR</span>
-            <span>Cafir</span>
-            <span>VTN</span>
+          <img src="/img/hero-ditr-2026.avif" alt="" aria-hidden="true" />
+        </picture>
+
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <p class="eyebrow">
+              <span>DITR 2026</span>
+              <i></i>
+              10 AGO — 30 SET
+            </p>
+            <h1>
+              Sua DITR está coerente com os documentos da propriedade?
+            </h1>
+            <p class="hero-description">
+              Revisão jurídica preventiva de matrícula, CAR, CCIR, Cafir, VTN,
+              áreas ambientais e utilização do imóvel antes do envio à Receita
+              Federal.
+            </p>
+            <a class="primary-cta" href={whatsappUrl} target="_blank" rel="noreferrer">
+              <span>Solicitar avaliação do caso</span>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+            </a>
+            <p class="location">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+              Atuação jurídica preventiva <b>·</b> Cuiabá/MT
+            </p>
           </div>
+
           <div class="risk-note">
             <span class="shield">
               <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.7 3.2 7.9 7.5 9.5 4.3-1.6 7.5-4.8 7.5-9.5V6L12 3Z"></path><path d="m8.5 12 2.1 2.1 4.9-5"></path></svg>
