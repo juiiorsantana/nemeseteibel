@@ -97,12 +97,13 @@ const faqItems = [
 
       <header class="site-header">
         <a class="brand" href="#inicio" aria-label="Nemes e Teibel Advogados">
-          <span class="brand-name">NEMES &amp; TEIBEL</span>
-          <span class="brand-detail">
-            <i></i>
-            ADVOGADOS
-            <i></i>
-          </span>
+          <img
+            src="/img/logo-white.png"
+            alt=""
+            width="500"
+            height="250"
+            decoding="async"
+          />
         </a>
 
         <nav class="desktop-nav" aria-label="Navegação principal">
@@ -179,13 +180,19 @@ const faqItems = [
         </div>
       </section>
 
-      <section class="deadline-bar" aria-label="Prazo da DITR 2026">
-        <span class="deadline-index">01</span>
-        <p>
+      <section class="deadline" aria-label="Prazo da DITR 2026">
+        <p class="deadline-label">Obrigação anual</p>
+        <p class="deadline-date">
+          <time datetime="2026-09-30">
+            <span class="deadline-day">30</span>
+            <span class="deadline-month">Set</span>
+            <span class="deadline-year">2026</span>
+          </time>
+        </p>
+        <p class="deadline-note">
           A obrigação termina em setembro.
           <strong>A coerência documental começa antes.</strong>
         </p>
-        <span class="deadline-date">30 · 09 · 2026</span>
       </section>
 
       <section class="intro section-shell" id="analise">
@@ -214,17 +221,16 @@ const faqItems = [
             <span>Coerência documental</span>
             <small>DITR / 2026</small>
           </div>
-          <div class="analysis-diagram" aria-hidden="true">
-            <div class="diagram-core">
-              <span>DITR</span>
-              <small>declaração</small>
-            </div>
-            <div class="diagram-node node-1">Matrícula</div>
-            <div class="diagram-node node-2">CAR</div>
-            <div class="diagram-node node-3">CCIR</div>
-            <div class="diagram-node node-4">Cafir</div>
-            <div class="diagram-node node-5">VTN</div>
-          </div>
+          <figure class="analysis-figure">
+            <img
+              src="/img/dirt.avif"
+              alt="Matrícula, CAR, CCIR, Cafir e VTN reunidos sobre a mesa para conferência cruzada"
+              width="1536"
+              height="1024"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
         </div>
         <div class="analysis-statement">
           <p class="eyebrow">A pergunta central</p>
@@ -423,28 +429,53 @@ const faqItems = [
           <h2>Direito Agrário, Fundiário e Ambiental lidos em conjunto.</h2>
         </div>
         <div class="lawyers">
-          <article>
-            <div class="lawyer-monogram">MN</div>
-            <div>
+          <article class="lawyer">
+            <figure class="lawyer-portrait">
+              <img
+                src="/img/Manu.avif"
+                alt="Manuela Nemes, sócia do escritório"
+                width="1080"
+                height="1350"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>
+                <span class="lawyer-years">15+</span>
+                <span class="lawyer-years-label">anos de atuação</span>
+              </figcaption>
+            </figure>
+            <div class="lawyer-body">
               <p class="lawyer-role">Sócia · OAB/MT</p>
               <h3>Manuela Nemes</h3>
-              <p>
-                Mais de 15 anos de atuação em Direito Agrário, Fundiário e
-                Agronegócio. Vice-Presidente da Comissão de Assuntos Fundiários
-                da OAB/MT.
-              </p>
+              <ul class="lawyer-credentials">
+                <li>Direito Agrário, Fundiário e Agronegócio</li>
+                <li>Vice-Presidente da Comissão de Assuntos Fundiários da OAB/MT</li>
+              </ul>
             </div>
           </article>
-          <article>
-            <div class="lawyer-monogram">PT</div>
-            <div>
+
+          <article class="lawyer">
+            <figure class="lawyer-portrait">
+              <img
+                src="/img/paula.avif"
+                alt="Paula Teibel, sócia do escritório"
+                width="1080"
+                height="1350"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>
+                <span class="lawyer-years">20+</span>
+                <span class="lawyer-years-label">anos de atuação</span>
+              </figcaption>
+            </figure>
+            <div class="lawyer-body">
               <p class="lawyer-role">Sócia · OAB/MT</p>
               <h3>Paula Teibel</h3>
-              <p>
-                Mais de 20 anos de atuação em Direito Agrário, Fundiário e
-                Ambiental. Ex-servidora do INTERMAT e integrante da Comissão de
-                Assuntos Fundiários da CGJ/TJMT.
-              </p>
+              <ul class="lawyer-credentials">
+                <li>Direito Agrário, Fundiário e Ambiental</li>
+                <li>Ex-servidora do INTERMAT e integrante da Comissão de Assuntos Fundiários da CGJ/TJMT</li>
+              </ul>
             </div>
           </article>
         </div>
@@ -485,7 +516,15 @@ const faqItems = [
 
       <footer class="minimal-footer">
         <div>
-          <span>NEMES &amp; TEIBEL ADVOGADOS</span>
+          <img
+            class="footer-logo"
+            src="/img/logo-white.png"
+            alt="Nemes &amp; Teibel Advogados"
+            width="500"
+            height="250"
+            loading="lazy"
+            decoding="async"
+          />
           <small>Direito Agrário · Fundiário · Ambiental</small>
         </div>
         <address>
