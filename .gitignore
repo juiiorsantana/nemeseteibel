@@ -9,6 +9,7 @@ node_modules/
 # Arquivos de credenciais sensíveis
 *credentials*.env
 .vercel/
+.codex/
 
 # Pasta de trabalho/rascunho (referências e scaffolds locais)
 clonar/
