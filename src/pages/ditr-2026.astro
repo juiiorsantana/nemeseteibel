@@ -3,60 +3,67 @@
 // LP — DITR 2026 | Nemes & Teibel Advogados
 // Revisão jurídica preventiva da DITR 2026
 // Tráfego: Google Ads + orgânico
+//
+// A página é deliberadamente curta e gira em torno de dois eixos: o PRAZO
+// e os DOCUMENTOS. Os pontos de atenção que antes viviam em uma seção
+// própria foram fundidos em cada documento — é lá que eles fazem sentido.
 import LPLayout from '../layouts/LPLayout.astro';
 import '../styles/ditr-2026.css';
 
 const whatsappUrl =
   "https://wa.me/556541410010?text=Ol%C3%A1%2C%20gostaria%20de%20conversar%20sobre%20a%20an%C3%A1lise%20jur%C3%ADdica%20da%20DITR%202026.";
 
-const riskItems = [
+// Cada item carrega o que o documento é (`what`) e o ponto que costuma
+// gerar divergência na análise (`why`).
+const documentItems = [
   {
-    index: "01",
-    title: "Área divergente",
-    text: "Matrícula, CCIR, CAR, Cafir e DITR precisam refletir corretamente a área do imóvel.",
+    title: "Matrícula",
+    what: "Situação registral e área total do imóvel.",
+    why: "A área registrada precisa conversar com CCIR, CAR, Cafir e DITR. A divergência entre cadastros é a origem mais comum das inconsistências.",
     tag: "Cruzamento cadastral",
   },
   {
-    index: "02",
-    title: "APP e Reserva Legal",
-    text: "Áreas ambientais excluídas do cálculo precisam estar informadas e possuir lastro documental.",
+    title: "CAR",
+    what: "Recibo de inscrição, áreas ambientais e dados declarados.",
+    why: "APP e Reserva Legal excluídas do cálculo precisam estar informadas e possuir lastro documental que as sustente.",
     tag: "Área tributável",
   },
   {
-    index: "03",
-    title: "Valor da Terra Nua",
-    text: "O VTN declarado precisa considerar referências aplicáveis e fundamentação técnica adequada.",
+    title: "CCIR",
+    what: "Informações cadastrais do imóvel perante o Incra.",
+    why: "Área, titularidade e classificação no cadastro fundiário precisam refletir o que consta na matrícula.",
+    tag: "Cadastro fundiário",
+  },
+  {
+    title: "Cafir",
+    what: "Dados do imóvel perante a Receita Federal.",
+    why: "É a base que a Receita utiliza para confrontar o que foi declarado. Dado desatualizado aparece no cruzamento.",
+    tag: "Base da Receita",
+  },
+  {
+    title: "DITR anterior",
+    what: "Histórico das informações já apresentadas.",
+    why: "Alterações relevantes entre exercícios sem justificativa documental merecem atenção antes da nova transmissão.",
+    tag: "Histórico declaratório",
+  },
+  {
+    title: "VTN",
+    what: "Referências, laudo e fundamento do valor da terra nua.",
+    why: "O VTN declarado precisa considerar referências aplicáveis e fundamentação técnica adequada.",
     tag: "Base de cálculo",
   },
   {
-    index: "04",
-    title: "Imóvel arrendado",
-    text: "A responsabilidade perante a Receita permanece com o proprietário, mesmo quando a exploração é de terceiro.",
-    tag: "Utilização do imóvel",
-  },
-  {
-    index: "05",
-    title: "Compra, venda ou inventário",
-    text: "A titularidade em 1º de janeiro e as responsabilidades do sucessor exigem análise do caso concreto.",
-    tag: "Responsabilidade",
-  },
-  {
-    index: "06",
-    title: "Grau de utilização",
-    text: "A área efetivamente utilizada precisa ser apurada de forma coerente com a atividade desenvolvida.",
+    title: "Exploração",
+    what: "Produção, rebanho, pastagem e área efetivamente utilizada.",
+    why: "O grau de utilização define a alíquota aplicável. A área utilizada precisa ser apurada de forma coerente com a atividade desenvolvida.",
     tag: "Alíquota aplicável",
   },
-];
-
-const documentItems = [
-  ["Matrícula", "Situação registral e área total do imóvel"],
-  ["CAR", "Recibo, áreas ambientais e dados declarados"],
-  ["CCIR", "Informações cadastrais perante o Incra"],
-  ["Cafir", "Dados do imóvel perante a Receita Federal"],
-  ["DITR anterior", "Histórico das informações já apresentadas"],
-  ["VTN", "Referências, laudo e fundamento do valor declarado"],
-  ["Exploração", "Produção, rebanho, pastagem e grau de utilização"],
-  ["Contratos", "Arrendamento, parceria, compra, venda ou sucessão"],
+  {
+    title: "Contratos",
+    what: "Arrendamento, parceria, compra, venda ou sucessão.",
+    why: "No imóvel arrendado, a responsabilidade perante a Receita permanece com o proprietário. Em compra, venda ou inventário, a titularidade em 1º de janeiro define quem declara.",
+    tag: "Responsabilidade",
+  },
 ];
 
 const faqItems = [
@@ -89,7 +96,7 @@ const faqItems = [
 
 <LPLayout
   title="DITR 2026 | Nemes & Teibel Advogados"
-  description="Revisão jurídica preventiva da DITR 2026 para proprietários rurais, holdings e empresas do agronegócio."
+  description="Prazo da DITR 2026 e os documentos necessários para declarar. Revisão jurídica preventiva de matrícula, CAR, CCIR, Cafir e VTN antes do envio à Receita Federal."
 >
 
     <main>
@@ -107,9 +114,9 @@ const faqItems = [
         </a>
 
         <nav class="desktop-nav" aria-label="Navegação principal">
-          <a href="#analise">A análise</a>
+          <a href="#prazo">Prazo</a>
           <span aria-hidden="true">·</span>
-          <a href="#atencao">Pontos de atenção</a>
+          <a href="#documentos">Documentos</a>
           <span aria-hidden="true">·</span>
           <a href="#como-funciona">Como funciona</a>
         </nav>
@@ -124,8 +131,8 @@ const faqItems = [
             <span></span>
           </summary>
           <nav aria-label="Navegação móvel">
-            <a href="#analise">A análise</a>
-            <a href="#atencao">Pontos de atenção</a>
+            <a href="#prazo">Prazo</a>
+            <a href="#documentos">Documentos</a>
             <a href="#como-funciona">Como funciona</a>
             <a href={whatsappUrl} target="_blank" rel="noreferrer">
               Falar com a equipe
@@ -180,182 +187,103 @@ const faqItems = [
         </div>
       </section>
 
-      <section class="deadline" aria-label="Prazo da DITR 2026">
-        <p class="deadline-label">Obrigação anual</p>
-        <p class="deadline-date">
-          <time datetime="2026-09-30">
-            <span class="deadline-day">30</span>
-            <span class="deadline-month">Set</span>
-            <span class="deadline-year">2026</span>
-          </time>
-        </p>
-        <p class="deadline-note">
-          A obrigação termina em setembro.
-          <strong>A coerência documental começa antes.</strong>
-        </p>
-      </section>
-
-      <section class="intro section-shell" id="analise">
-        <div class="section-number" aria-hidden="true">01 / ANÁLISE</div>
-        <div class="intro-heading">
-          <p class="eyebrow">Muito além do preenchimento</p>
-          <h2>O ITR conecta informações tributárias, fundiárias, ambientais e produtivas.</h2>
-        </div>
-        <div class="intro-copy">
-          <p>
-            A declaração não existe isoladamente. Área total, áreas ambientais,
-            valor da terra nua e grau de utilização precisam ser compatíveis
-            com os documentos e com a realidade do imóvel.
-          </p>
-          <p>
-            Quando matrícula, CAR, CCIR, Cafir e DITR contam histórias
-            diferentes, uma obrigação anual pode se transformar em exposição
-            patrimonial.
-          </p>
-        </div>
-      </section>
-
-      <section class="analysis-panel section-shell">
-        <div class="analysis-card">
-          <div class="analysis-card-top">
-            <span>Coerência documental</span>
-            <small>DITR / 2026</small>
-          </div>
-          <figure class="analysis-figure">
-            <img
-              src="/img/dirt.avif"
-              alt="Matrícula, CAR, CCIR, Cafir e VTN reunidos sobre a mesa para conferência cruzada"
-              width="1536"
-              height="1024"
-              loading="lazy"
-              decoding="async"
-            />
-          </figure>
-        </div>
-        <div class="analysis-statement">
-          <p class="eyebrow">A pergunta central</p>
-          <blockquote>
-            Não basta informar.
-            <span>É preciso sustentar.</span>
-          </blockquote>
-          <p>
-            A análise preventiva identifica pontos que merecem documentação,
-            ajuste ou orientação especializada antes da transmissão.
-          </p>
-        </div>
-      </section>
-
-      <section class="risks section-shell" id="atencao">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Pontos que exigem atenção</p>
-            <h2>Onde uma declaração aparentemente simples se torna sensível.</h2>
-          </div>
-          <p>
-            A DITR utiliza informações que já existem em diferentes cadastros,
-            documentos e bases públicas. A inconsistência pode surgir antes
-            mesmo do preenchimento.
+      <section class="prazo section-shell" id="prazo">
+        <div class="prazo-heading">
+          <p class="eyebrow">Prazo · DITR 2026</p>
+          <h2>A entrega vai de 10 de agosto a 30 de setembro.</h2>
+          <p class="prazo-lead">
+            A obrigação tem data para terminar. A coerência entre matrícula,
+            CAR, CCIR, Cafir e VTN precisa estar resolvida antes da
+            transmissão — não durante.
           </p>
         </div>
 
-        <div class="risk-grid">
-          {riskItems.map((item) => (
-            <article class="risk-card">
-              <div class="risk-card-index">{item.index}</div>
-              <h3>{item.title}</h3>
-              <p>{item.text}</p>
-              <span>{item.tag}</span>
-            </article>
-          ))}
+        <div class="prazo-panel">
+          <div class="prazo-countdown" data-deadline="2026-09-30" hidden>
+            <span class="prazo-countdown-value"></span>
+            <span class="prazo-countdown-label">dias até o encerramento</span>
+          </div>
+
+          <ol class="prazo-timeline">
+            <li class="is-now">
+              <span class="prazo-when">Agora</span>
+              <strong>Revisão documental preventiva</strong>
+              <p>
+                Janela para reunir documentos, solicitar dados produtivos ao
+                arrendatário e resolver divergências cadastrais.
+              </p>
+            </li>
+            <li>
+              <span class="prazo-when">
+                <time datetime="2026-08-10">10 ago 2026</time>
+              </span>
+              <strong>Abertura da entrega</strong>
+              <p>
+                Início do período de apresentação da declaração à Receita
+                Federal.
+              </p>
+            </li>
+            <li>
+              <span class="prazo-when">
+                <time datetime="2026-09-30">30 set 2026</time>
+              </span>
+              <strong>Encerramento do prazo</strong>
+              <p>
+                Último dia para transmitir a DITR 2026 dentro do prazo
+                regular.
+              </p>
+            </li>
+          </ol>
         </div>
       </section>
 
-      <section class="impact">
-        <div class="impact-inner section-shell">
-          <div class="impact-number">
-            <span>até</span>
-            <strong>29×</strong>
-          </div>
-          <div class="impact-copy">
-            <p class="eyebrow">O grau de utilização importa</p>
-            <h2>A alíquota muda conforme a área total e o uso efetivo da terra.</h2>
-            <p>
-              Em um imóvel de 2.000 hectares, a alíquota pode variar de 0,30%
-              a 8,60%, conforme a faixa de utilização. A diferença nasce dos
-              dados declarados e de como eles podem ser comprovados.
-            </p>
-          </div>
-          <div class="impact-scale" aria-label="Comparação de alíquotas">
-            <div>
-              <span>GU acima de 80%</span>
-              <strong>0,30%</strong>
-            </div>
-            <i></i>
-            <div>
-              <span>GU até 30%</span>
-              <strong>8,60%</strong>
-            </div>
-            <small>Exemplo para imóvel de 1.000 a 5.000 ha</small>
-          </div>
-        </div>
-      </section>
-
-      <section class="audience section-shell">
-        <div class="audience-copy">
-          <p class="eyebrow">Para quem é a análise</p>
-          <h2>Patrimônio rural que exige uma decisão bem fundamentada.</h2>
-          <p>
-            A revisão é indicada quando o risco jurídico e patrimonial supera
-            a simples transmissão de uma obrigação acessória.
-          </p>
-          <a href={whatsappUrl} target="_blank" rel="noreferrer" class="text-link">
-            Conversar sobre a situação do imóvel <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
-          </a>
-        </div>
-        <div class="audience-list">
-          <article>
-            <span>01</span>
-            <h3>Proprietários rurais</h3>
-            <p>Imóveis médios e grandes, especialmente acima de 100 hectares.</p>
-          </article>
-          <article>
-            <span>02</span>
-            <h3>Holdings e empresas</h3>
-            <p>Estruturas que administram um ou vários imóveis e operações rurais.</p>
-          </article>
-          <article>
-            <span>03</span>
-            <h3>Fazendas arrendadas</h3>
-            <p>Exploração por terceiros e dependência de dados produtivos externos.</p>
-          </article>
-          <article>
-            <span>04</span>
-            <h3>Operações recentes</h3>
-            <p>Compra, venda, inventário, sucessão, condomínio ou reorganização.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="documents">
+      <section class="documents" id="documentos">
         <div class="documents-inner section-shell">
-          <div class="documents-heading">
-            <p class="eyebrow">Escopo documental</p>
-            <h2>O que pode ser verificado na análise preventiva.</h2>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Documentos necessários</p>
+              <h2>O que precisa estar em mãos — e o que cada documento sustenta.</h2>
+            </div>
             <p>
-              O conjunto necessário é definido conforme a realidade do imóvel.
-              Não se trata de uma checklist genérica, mas da leitura integrada
-              das informações que sustentam a declaração.
+              O conjunto exato é definido conforme a realidade do imóvel. Em
+              cada documento está indicado o ponto que costuma gerar
+              divergência na análise.
             </p>
           </div>
-          <div class="documents-list">
-            {documentItems.map(([title, text], index) => (
-              <div class="document-row">
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <strong>{title}</strong>
-                <p>{text}</p>
-              </div>
+
+          <div class="doc-grid">
+            {documentItems.map((item, index) => (
+              <article class="doc-card">
+                <div class="doc-card-head">
+                  <span class="doc-card-index">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <h3>{item.title}</h3>
+                </div>
+                <p class="doc-card-what">{item.what}</p>
+                <p class="doc-card-why">
+                  <span>Atenção</span>
+                  {item.why}
+                </p>
+                <span class="doc-card-tag">{item.tag}</span>
+              </article>
             ))}
           </div>
+
+          <div class="integration-note doc-note">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.7 3.2 7.9 7.5 9.5 4.3-1.6 7.5-4.8 7.5-9.5V6L12 3Z"></path><path d="m8.5 12 2.1 2.1 4.9-5"></path></svg>
+            <p>
+              <strong>Não é uma checklist genérica.</strong>
+              Os mesmos dados aparecem em cadastros diferentes e precisam
+              contar a mesma história. É essa leitura integrada que a análise
+              preventiva faz.
+            </p>
+          </div>
+
+          <a class="primary-cta documents-cta" href={whatsappUrl} target="_blank" rel="noreferrer">
+            <span>Enviar meus documentos para análise</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+          </a>
         </div>
       </section>
 
@@ -401,25 +329,6 @@ const faqItems = [
             Ela organiza juridicamente as informações e indica quando o suporte
             técnico é necessário.
           </p>
-        </div>
-      </section>
-
-      <section class="notification">
-        <div class="notification-inner section-shell">
-          <div class="notification-mark">30</div>
-          <div>
-            <p class="eyebrow">Já recebeu uma notificação?</p>
-            <h2>O prazo de defesa exige atenção imediata.</h2>
-            <p>
-              A impugnação administrativa é apresentada, em regra, em até 30
-              dias da intimação e suspende a exigibilidade do crédito. Depois
-              do início do procedimento fiscal, a retificadora deixa de ser o
-              caminho adequado.
-            </p>
-          </div>
-          <a class="secondary-cta" href={whatsappUrl} target="_blank" rel="noreferrer">
-            Falar sobre a notificação <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
-          </a>
         </div>
       </section>
 
@@ -567,4 +476,29 @@ const faqItems = [
 <script>
   // Add marker class for CSS scoping
   document.body.classList.add('ditr-page');
+
+  // Contador de dias até o encerramento. Fica escondido por padrão e só
+  // aparece quando há prazo pela frente — a página é prerenderizada, então
+  // a conta precisa acontecer aqui, no cliente.
+  const countdown = document.querySelector<HTMLElement>('.prazo-countdown');
+  const deadlineAttr = countdown?.dataset.deadline;
+
+  if (countdown && deadlineAttr) {
+    const [year, month, day] = deadlineAttr.split('-').map(Number);
+    const deadline = new Date(year, month - 1, day);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const daysLeft = Math.ceil(
+      (deadline.getTime() - today.getTime()) / 86_400_000
+    );
+
+    if (daysLeft > 0) {
+      const value = countdown.querySelector('.prazo-countdown-value');
+      const label = countdown.querySelector('.prazo-countdown-label');
+      if (value) value.textContent = String(daysLeft);
+      if (label) label.textContent = daysLeft === 1 ? 'dia até o encerramento' : 'dias até o encerramento';
+      countdown.hidden = false;
+    }
+  }
 </script>

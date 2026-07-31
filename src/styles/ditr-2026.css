@@ -81,7 +81,6 @@ body.ditr-page .wa-float {
 
 .section-shell,
 .site-header,
-.deadline,
 .minimal-footer {
   width: min(100% - 4rem, 1380px);
   margin-inline: auto;
@@ -381,95 +380,23 @@ body.ditr-page .wa-float {
   font-weight: 450;
 }
 
-/* Faixa de prazo — discreta: só fios finos, sem caixa preenchida.
-   A data é o elemento dominante; o resto recua. */
-.deadline {
-  position: relative;
-  z-index: 2;
+/* ============================================================
+   PRAZO — primeiro dos dois eixos da página (o outro é DOCUMENTOS).
+   O contador só aparece quando ainda há prazo pela frente, então a
+   linha do tempo precisa se sustentar sozinha.
+============================================================ */
+.prazo {
   display: grid;
-  grid-template-columns: auto auto auto;
-  justify-content: center;
-  gap: 2rem;
-  align-items: center;
-  padding-block: 1.15rem;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 5.5rem;
+  align-items: start;
+  padding-block: 7.5rem 8rem;
   border-top: 1px solid var(--line-cool);
-  border-bottom: 1px solid var(--line-cool);
 }
 
-.deadline p {
-  margin: 0;
-}
-
-.deadline-label {
-  color: var(--copper);
-  font-size: 0.58rem;
-  font-weight: 520;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-
-.deadline-date {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  padding-left: 2rem;
-  border-left: 1px solid var(--line-cool);
-  white-space: nowrap;
-}
-
-.deadline-day {
-  color: var(--gold);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.95rem;
-  line-height: 1;
-  letter-spacing: -0.04em;
-}
-
-.deadline-month {
-  color: var(--gold);
-  font-size: 0.68rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-.deadline-year {
-  color: #6f8494;
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-}
-
-.deadline-note {
-  padding-left: 2rem;
-  border-left: 1px solid var(--line-cool);
-  color: var(--slate);
-  font-size: 0.78rem;
-  line-height: 1.6;
-}
-
-.deadline-note strong {
-  color: var(--ivory);
-  font-weight: 500;
-}
-
-.intro {
-  display: grid;
-  grid-template-columns: 0.45fr 1.2fr 0.85fr;
-  gap: 4.2rem;
-  padding-block: 9rem 7.5rem;
-  border-bottom: 1px solid var(--line-cool);
-}
-
-.section-number {
-  padding-top: 0.2rem;
-  color: #657580;
-  font-family: "IBM Plex Mono", "Courier New", monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.13em;
-}
-
-.intro-heading h2 {
-  max-width: 670px;
-  margin: 1.2rem 0 0;
+.prazo-heading h2 {
+  max-width: 620px;
+  margin: 1rem 0 0;
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(2.5rem, 4vw, 4rem);
   font-weight: 400;
@@ -477,100 +404,109 @@ body.ditr-page .wa-float {
   letter-spacing: -0.045em;
 }
 
-.intro-copy {
-  padding-top: 2rem;
+.prazo-lead {
+  max-width: 520px;
+  margin: 1.6rem 0 0;
   color: var(--slate);
   font-size: 0.9rem;
   line-height: 1.8;
 }
 
-.intro-copy p {
-  margin: 0 0 1.4rem;
-}
-
-.analysis-panel {
+.prazo-panel {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 5rem;
-  align-items: center;
-  padding-block: 8rem 9rem;
+  gap: 2.6rem;
 }
 
-.analysis-card {
+.prazo-countdown {
   display: flex;
-  flex-direction: column;
-  min-height: 500px;
-  overflow: hidden;
-  border: 1px solid rgba(211, 162, 99, 0.25);
-  background:
-    linear-gradient(rgba(181, 198, 209, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(181, 198, 209, 0.06) 1px, transparent 1px),
-    rgba(12, 25, 35, 0.52);
-  background-size: 52px 52px;
-  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.22);
+  align-items: baseline;
+  gap: 0.9rem;
+  padding-bottom: 1.7rem;
+  border-bottom: 1px solid var(--line);
 }
 
-.analysis-card-top {
-  display: flex;
-  justify-content: space-between;
-  padding: 1.2rem 1.4rem;
-  border-bottom: 1px solid rgba(211, 162, 99, 0.2);
-  color: #bfc6ca;
-  font-size: 0.72rem;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
+.prazo-countdown[hidden] {
+  display: none;
 }
 
-.analysis-card-top small {
-  color: var(--copper);
-}
-
-/* Ocupa toda a área do card abaixo da barra de título. */
-.analysis-figure {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  margin: 0;
-  overflow: hidden;
-}
-
-.analysis-figure img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-/* Vinheta suave para a foto assentar dentro da moldura do card. */
-.analysis-figure::after {
-  position: absolute;
-  inset: 0;
-  content: "";
-  background: radial-gradient(120% 100% at 50% 45%, transparent 55%, rgba(6, 16, 25, 0.5));
-  pointer-events: none;
-}
-
-.analysis-statement blockquote {
-  margin: 1.1rem 0 1.7rem;
+.prazo-countdown-value {
+  color: var(--gold);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2.65rem, 4.2vw, 4.4rem);
-  font-weight: 400;
-  line-height: 1;
+  font-size: clamp(3.4rem, 6vw, 5rem);
+  line-height: 0.85;
   letter-spacing: -0.05em;
 }
 
-.analysis-statement blockquote span {
-  display: block;
-  color: var(--gold);
-  font-style: italic;
+.prazo-countdown-label {
+  color: var(--slate);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
-.analysis-statement > p:last-child {
-  max-width: 490px;
+.prazo-timeline {
   margin: 0;
-  color: var(--slate);
-  font-size: 0.92rem;
-  line-height: 1.8;
+  padding: 0;
+  list-style: none;
+}
+
+/* O trilho é a própria borda esquerda de cada item; o último a dispensa
+   para a linha não sobrar depois do fim do prazo. */
+.prazo-timeline li {
+  position: relative;
+  padding: 0 0 2.3rem 2.1rem;
+  border-left: 1px solid var(--line-cool);
+}
+
+.prazo-timeline li:last-child {
+  padding-bottom: 0;
+  border-left-color: transparent;
+}
+
+.prazo-timeline li::before {
+  position: absolute;
+  top: 0.34rem;
+  left: -4px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3f5464;
+  content: "";
+}
+
+.prazo-timeline li.is-now::before {
+  background: var(--gold);
+  box-shadow: 0 0 0 4px rgba(219, 164, 94, 0.16);
+}
+
+.prazo-when {
+  display: block;
+  color: var(--copper);
+  font-family: "IBM Plex Mono", "Courier New", monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.prazo-timeline li.is-now .prazo-when {
+  color: var(--gold);
+}
+
+.prazo-timeline strong {
+  display: block;
+  margin-top: 0.55rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.32rem;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.prazo-timeline p {
+  max-width: 430px;
+  margin: 0.5rem 0 0;
+  color: #8f9ca5;
+  font-size: 0.78rem;
+  line-height: 1.7;
 }
 
 .section-heading {
@@ -581,9 +517,6 @@ body.ditr-page .wa-float {
 }
 
 .section-heading h2,
-.audience-copy h2,
-.documents-heading h2,
-.notification h2,
 .authority-heading h2,
 .faq-heading h2,
 .final-cta h2 {
@@ -605,263 +538,6 @@ body.ditr-page .wa-float {
   color: var(--slate);
   font-size: 0.9rem;
   line-height: 1.8;
-}
-
-.risks {
-  padding-block: 8.5rem 9rem;
-  border-top: 1px solid var(--line-cool);
-}
-
-.risk-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin-top: 4.5rem;
-  border-top: 1px solid rgba(219, 164, 94, 0.25);
-  border-left: 1px solid rgba(219, 164, 94, 0.16);
-}
-
-.risk-card {
-  position: relative;
-  min-height: 280px;
-  padding: 1.8rem;
-  border-right: 1px solid rgba(219, 164, 94, 0.16);
-  border-bottom: 1px solid rgba(219, 164, 94, 0.16);
-  background: linear-gradient(145deg, rgba(16, 30, 41, 0.48), rgba(6, 16, 25, 0.18));
-  transition: background 200ms ease, transform 200ms ease;
-}
-
-.risk-card::after {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 2.8rem;
-  height: 1px;
-  background: var(--copper);
-  content: "";
-}
-
-.risk-card:hover {
-  z-index: 1;
-  background: linear-gradient(145deg, rgba(27, 45, 57, 0.7), rgba(9, 20, 29, 0.55));
-  transform: translateY(-3px);
-}
-
-.risk-card-index {
-  color: var(--copper);
-  font-family: "IBM Plex Mono", "Courier New", monospace;
-  font-size: 0.64rem;
-  letter-spacing: 0.12em;
-}
-
-.risk-card h3 {
-  margin: 2.25rem 0 0.8rem;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.62rem;
-  font-weight: 400;
-  letter-spacing: -0.03em;
-}
-
-.risk-card p {
-  margin: 0;
-  color: #98a4ae;
-  font-size: 0.79rem;
-  line-height: 1.7;
-}
-
-.risk-card > span {
-  position: absolute;
-  right: 1.8rem;
-  bottom: 1.5rem;
-  left: 1.8rem;
-  padding-top: 0.8rem;
-  border-top: 1px solid var(--line-cool);
-  color: #627580;
-  font-size: 0.56rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.impact {
-  position: relative;
-  border-block: 1px solid rgba(219, 164, 94, 0.22);
-  background:
-    linear-gradient(90deg, rgba(197, 119, 66, 0.07), transparent 45%),
-    #0a1721;
-}
-
-.impact::before {
-  position: absolute;
-  inset: 0;
-  opacity: 0.15;
-  background-image:
-    linear-gradient(rgba(197, 119, 66, 0.2) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(197, 119, 66, 0.2) 1px, transparent 1px);
-  background-size: 80px 80px;
-  content: "";
-  mask-image: linear-gradient(90deg, black, transparent 75%);
-}
-
-.impact-inner {
-  position: relative;
-  display: grid;
-  grid-template-columns: 0.58fr 1.08fr 0.84fr;
-  gap: 4.5rem;
-  align-items: center;
-  min-height: 430px;
-}
-
-.impact-number {
-  display: flex;
-  align-items: flex-start;
-  color: var(--gold);
-}
-
-.impact-number span {
-  margin: 1rem 0.6rem 0 0;
-  font-size: 0.62rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.impact-number strong {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(6rem, 9vw, 9rem);
-  font-weight: 400;
-  line-height: 0.8;
-  letter-spacing: -0.08em;
-}
-
-.impact-copy h2 {
-  margin: 1rem 0;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2.3rem, 3.4vw, 3.5rem);
-  font-weight: 400;
-  line-height: 1.03;
-  letter-spacing: -0.045em;
-}
-
-.impact-copy > p:last-child {
-  max-width: 580px;
-  margin: 0;
-  color: var(--slate);
-  font-size: 0.82rem;
-  line-height: 1.75;
-}
-
-.impact-scale {
-  padding: 1.6rem;
-  border: 1px solid rgba(219, 164, 94, 0.22);
-  background: rgba(6, 16, 25, 0.5);
-}
-
-.impact-scale div {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-}
-
-.impact-scale span {
-  color: #87949d;
-  font-size: 0.68rem;
-}
-
-.impact-scale strong {
-  color: var(--ivory);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 2.2rem;
-  font-weight: 400;
-}
-
-.impact-scale i {
-  display: block;
-  width: 100%;
-  height: 1px;
-  margin-block: 1rem;
-  background: linear-gradient(90deg, var(--gold) 5%, var(--copper) 95%);
-}
-
-.impact-scale small {
-  display: block;
-  margin-top: 1rem;
-  color: #52636e;
-  font-size: 0.55rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.audience {
-  display: grid;
-  grid-template-columns: 0.78fr 1.22fr;
-  gap: 7rem;
-  padding-block: 9rem;
-}
-
-.audience-copy {
-  position: sticky;
-  top: 2rem;
-  align-self: start;
-}
-
-.audience-copy h2 {
-  max-width: 580px;
-  font-size: clamp(2.7rem, 4.4vw, 4.6rem);
-}
-
-.audience-copy > p {
-  max-width: 490px;
-  margin: 1.4rem 0 0;
-  color: var(--slate);
-  font-size: 0.88rem;
-  line-height: 1.8;
-}
-
-.text-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.7rem;
-  margin-top: 2rem;
-  padding-bottom: 0.45rem;
-  border-bottom: 1px solid rgba(219, 164, 94, 0.55);
-  color: #e1b473;
-  font-size: 0.77rem;
-}
-
-.text-link svg {
-  width: 18px;
-}
-
-.audience-list {
-  border-top: 1px solid var(--line-cool);
-}
-
-.audience-list article {
-  display: grid;
-  grid-template-columns: 46px 0.7fr 1fr;
-  gap: 1.5rem;
-  align-items: center;
-  min-height: 150px;
-  border-bottom: 1px solid var(--line-cool);
-}
-
-.audience-list article > span {
-  color: var(--copper);
-  font-family: "IBM Plex Mono", "Courier New", monospace;
-  font-size: 0.6rem;
-}
-
-.audience-list h3 {
-  margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.55rem;
-  font-weight: 400;
-  letter-spacing: -0.025em;
-}
-
-.audience-list p {
-  margin: 0;
-  color: var(--slate);
-  font-size: 0.78rem;
-  line-height: 1.7;
 }
 
 .documents {
@@ -888,54 +564,100 @@ body.ditr-page .wa-float {
 .documents-inner {
   position: relative;
   z-index: 1;
+}
+
+.doc-grid {
   display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  gap: 7rem;
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 4.5rem;
+  border-top: 1px solid rgba(219, 164, 94, 0.25);
+  border-left: 1px solid rgba(219, 164, 94, 0.16);
 }
 
-.documents-heading h2 {
-  max-width: 560px;
-  font-size: clamp(2.7rem, 4.2vw, 4.4rem);
+/* O padding inferior reserva a faixa da tag, que é posicionada no rodapé
+   do card para alinhar entre colunas de alturas diferentes. */
+.doc-card {
+  position: relative;
+  padding: 1.9rem 1.9rem 3.6rem;
+  border-right: 1px solid rgba(219, 164, 94, 0.16);
+  border-bottom: 1px solid rgba(219, 164, 94, 0.16);
+  background: linear-gradient(145deg, rgba(16, 30, 41, 0.48), rgba(6, 16, 25, 0.18));
+  transition: background 200ms ease;
 }
 
-.documents-heading > p:last-child {
-  max-width: 500px;
-  margin: 1.5rem 0 0;
-  color: var(--slate);
-  font-size: 0.85rem;
-  line-height: 1.8;
+.doc-card:hover {
+  background: linear-gradient(145deg, rgba(27, 45, 57, 0.7), rgba(9, 20, 29, 0.55));
 }
 
-.documents-list {
-  border-top: 1px solid rgba(219, 164, 94, 0.24);
+.doc-card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
 }
 
-.document-row {
-  display: grid;
-  grid-template-columns: 44px 0.48fr 1fr;
-  gap: 1.2rem;
-  align-items: center;
-  min-height: 82px;
-  border-bottom: 1px solid rgba(219, 164, 94, 0.14);
-}
-
-.document-row > span {
+.doc-card-index {
   color: var(--copper);
   font-family: "IBM Plex Mono", "Courier New", monospace;
-  font-size: 0.58rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
 }
 
-.document-row strong {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.16rem;
-  font-weight: 400;
-}
-
-.document-row p {
+.doc-card h3 {
   margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.72rem;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.doc-card-what {
+  margin: 0.9rem 0 0;
+  color: var(--ivory-muted);
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+
+/* O ponto de atenção vinha de uma seção própria; aqui fica colado ao
+   documento que o origina, que é onde ele significa alguma coisa. */
+.doc-card-why {
+  margin: 1.1rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line-cool);
   color: #8f9ca5;
-  font-size: 0.72rem;
-  line-height: 1.55;
+  font-size: 0.76rem;
+  line-height: 1.7;
+}
+
+.doc-card-why span {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: var(--gold);
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.doc-card-tag {
+  position: absolute;
+  right: 1.9rem;
+  bottom: 1.5rem;
+  left: 1.9rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--line-cool);
+  color: #627580;
+  font-size: 0.56rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.doc-note {
+  max-width: 880px;
+  margin-top: 3.2rem;
+}
+
+.documents-cta {
+  margin-top: 3rem;
 }
 
 .process {
