@@ -55,10 +55,21 @@ body.ditr-page svg {
   stroke-width: 1.6;
 }
 
+/* `clip` e não `hidden`, nos dois: `hidden` faz do elemento um scroll
+   container, e `position: sticky` passa a ser resolvido contra ele em vez
+   da viewport — o que mata o empilhamento dos cards de documentos.
+   `clip` recorta igual sem criar scroll container. A regra do body vence
+   o `body { overflow-x: hidden }` de global.css sem afetar as outras
+   páginas. Se alguém devolver qualquer um dos dois para `hidden`, o
+   empilhamento morre silenciosamente. */
+body.ditr-page {
+  overflow-x: clip;
+}
+
 body.ditr-page main {
   position: relative;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: clip;
 }
 
 /* Hide global.css elements on DITR page */
@@ -572,19 +583,22 @@ body.ditr-page .wa-float {
   z-index: 1;
 }
 
+/* Coluna mais estreita que o shell: o título da seção ocupa a largura
+   toda e a grade recua, criando hierarquia entre os dois. */
 .doc-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  margin-top: 4.5rem;
+  max-width: 1140px;
+  margin: 4.5rem auto 0;
   border-top: 1px solid rgba(219, 164, 94, 0.25);
   border-left: 1px solid rgba(219, 164, 94, 0.16);
 }
 
-/* O padding inferior reserva a faixa da tag, que é posicionada no rodapé
-   do card para alinhar entre colunas de alturas diferentes. */
 .doc-card {
   position: relative;
-  padding: 1.9rem 1.9rem 3.6rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1.9rem;
   border-right: 1px solid rgba(219, 164, 94, 0.16);
   border-bottom: 1px solid rgba(219, 164, 94, 0.16);
   background: linear-gradient(145deg, rgba(16, 30, 41, 0.48), rgba(6, 16, 25, 0.18));
@@ -623,47 +637,39 @@ body.ditr-page .wa-float {
   line-height: 1.65;
 }
 
-/* O ponto de atenção vinha de uma seção própria; aqui fica colado ao
-   documento que o origina, que é onde ele significa alguma coisa. */
-.doc-card-why {
-  margin: 1.1rem 0 0;
-  padding-top: 1rem;
-  border-top: 1px solid var(--line-cool);
-  color: #8f9ca5;
-  font-size: 0.76rem;
-  line-height: 1.7;
-}
-
-.doc-card-why span {
-  display: block;
-  margin-bottom: 0.45rem;
-  color: var(--gold);
-  font-size: 0.55rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
+/* `margin-top: auto` mantém as etiquetas alinhadas na base entre cards de
+   alturas diferentes na mesma linha da grade — sem reservar padding fixo. */
 .doc-card-tag {
-  position: absolute;
-  right: 1.9rem;
-  bottom: 1.5rem;
-  left: 1.9rem;
-  padding-top: 0.8rem;
-  border-top: 1px solid var(--line-cool);
+  margin-top: auto;
+  padding-top: 1.4rem;
   color: #627580;
   font-size: 0.56rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
-.doc-note {
-  max-width: 880px;
-  margin-top: 3.2rem;
+/* Fecho da seção. Centralizado no desktop; no mobile volta para a esquerda
+   (ver bloco de 820px) — texto grande centralizado em coluna estreita fica
+   ruim de ler no celular. */
+.doc-closing {
+  max-width: 960px;
+  margin: 4.5rem auto 0;
+  color: var(--ivory);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.55rem, 2.5vw, 2.35rem);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.035em;
+  text-align: center;
+  text-wrap: balance;
 }
 
+/* `width: fit-content` porque `.primary-cta` é inline-flex — sem isso o
+   `margin-inline: auto` não teria o que centralizar. */
 .documents-cta {
-  margin-top: 3rem;
+  display: flex;
+  width: fit-content;
+  margin: 3rem auto 0;
 }
 
 .process {
@@ -1329,9 +1335,46 @@ body.ditr-page .floating-whatsapp svg {
     padding-block: 6.5rem;
   }
 
+  /* Baralho: cada card sobe, trava e é coberto pelo próximo, que deixa só
+     uma faixa (`--peek`) visível. Depende do `overflow-x: clip` lá no topo
+     do arquivo — com `hidden` o sticky não engata. */
   .doc-grid {
-    grid-template-columns: 1fr;
-    margin-top: 3.5rem;
+    --stack-top: 5.5rem;
+    --peek: 12px;
+    --card-gap: 14px;
+
+    display: block;
+    margin-top: 3rem;
+    /* Segura o baralho montado por um instante antes de sair de cena.
+       É o único respiro depois do último card — passar disso vira buraco. */
+    padding-bottom: 11vh;
+    border: 0;
+  }
+
+  .doc-card {
+    position: sticky;
+    top: calc(var(--stack-top) + var(--i) * var(--peek));
+    margin-bottom: var(--card-gap);
+    border: 1px solid rgba(219, 164, 94, 0.22);
+    /* Opaco de propósito: o gradiente translúcido do desktop deixaria
+       o card de baixo aparecer através do de cima. */
+    background: #0d1c27;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  /* O último não precisa de respiro: o padding da grade já dá. */
+  .doc-card:last-child {
+    margin-bottom: 0;
+  }
+
+  .doc-closing {
+    margin-top: 0;
+    font-size: clamp(1.9rem, 7vw, 2.5rem);
+    text-align: left;
+  }
+
+  .documents-cta {
+    margin-inline: 0;
   }
 
   .process {
@@ -1424,16 +1467,11 @@ body.ditr-page .floating-whatsapp svg {
   }
 
   .doc-card {
-    padding: 1.5rem 1.5rem 3.4rem;
+    padding: 1.5rem;
   }
 
   .doc-card h3 {
     font-size: 1.5rem;
-  }
-
-  .doc-card-tag {
-    right: 1.5rem;
-    left: 1.5rem;
   }
 
   .process-grid {
@@ -1452,15 +1490,13 @@ body.ditr-page .floating-whatsapp svg {
     align-items: flex-start;
   }
 
-  /* Empilha: retrato acima (largura contida) e texto abaixo. */
+  /* Empilha: retrato acima e texto abaixo, ambos na largura interna do
+     card. O retrato não leva `max-width`: travá-lo deixava um vazio à
+     direita, já que a coluna do grid ocupa a largura toda. */
   .lawyer {
     grid-template-columns: 1fr;
     gap: 1.3rem;
     padding: 1.1rem;
-  }
-
-  .lawyer-portrait {
-    max-width: 210px;
   }
 
   .lawyer-body {
@@ -1512,6 +1548,13 @@ body.ditr-page .floating-whatsapp svg {
   *::before,
   *::after {
     transition-duration: 0.01ms !important;
+  }
+
+  /* O empilhamento move os cards em ritmos diferentes conforme o scroll —
+     é o tipo de efeito que incomoda quem pediu menos movimento. Degrada
+     para a lista simples. */
+  .doc-card {
+    position: static;
   }
 }
 
